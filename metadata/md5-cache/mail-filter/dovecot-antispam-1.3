@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile install setup
+DEPEND=<net-mail/dovecot-2 dspam? ( mail-filter/dspam ) crm114? ( app-text/crm114 )
+DESCRIPTION=A dovecot antispam plugin supporting multiple backends
+EAPI=1
+HOMEPAGE=http://johannes.sipsolutions.net/Projects/dovecot-antispam
+IUSE=debug +dspam crm114 mailtrain signature-log spool2dir syslog
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-2
+RDEPEND=<net-mail/dovecot-2 dspam? ( mail-filter/dspam ) crm114? ( app-text/crm114 )
+RESTRICT=mirror
+SLOT=0
+SRC_URI=http://johannes.sipsolutions.net/download/dovecot-antispam/dovecot-antispam-1.3.tar.bz2
+_eclasses_=confutils	2ab69b52fa6ea0c0669a47fb94b354b4	eutils	998e5931fb95b10a6a11ec796ada2759	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac
+_md5_=af56eb878a90b64d3c250a67c9442525

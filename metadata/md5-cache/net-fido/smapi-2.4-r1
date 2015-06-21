@@ -1,0 +1,12 @@
+DEFINED_PHASES=unpack
+DEPEND=!net-fido/husky dev-vcs/cvs
+DESCRIPTION=HUSKY Portable Fidosoft Project - smapi
+EAPI=5
+HOMEPAGE=http://husky.sf.net
+IUSE=-debug
+KEYWORDS=~x86 ~amd64
+LICENSE=LGPL-2.1
+RDEPEND=!net-fido/husky
+SLOT=0
+_eclasses_=cvs	a4cb8da1bb586b224ade5b54f1d2fda0	eutils	998e5931fb95b10a6a11ec796ada2759	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac
+_md5_=e735658d20f3ecd550d8d831ef7e10ef

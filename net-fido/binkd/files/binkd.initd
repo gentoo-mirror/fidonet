@@ -1,0 +1,19 @@
+#!/sbin/runscript
+
+depend() {
+        need net localmount
+        use dns logger clock wlan
+        after bootmisc hostname
+}
+
+start() {
+        ebegin "Starting binkd"
+        start-stop-daemon --start --user ${BINKD_USER} --exec /usr/bin/binkd --pidfile ${BINKD_PID} -- ${BINKD_OPTIONS} ${BINKD_CFG}
+        eend $?
+}
+
+stop() {
+        ebegin "Stopping binkd"
+        start-stop-daemon --stop --user ${BINKD_USER} --exec /usr/bin/binkd --pidfile ${BINKD_PID}
+        eend $?
+}
