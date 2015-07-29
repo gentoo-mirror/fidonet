@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile install prepare unpack
+DEPEND=dev-lang/perl
+DESCRIPTION=A FTN Messages tracker
+EAPI=2
+HOMEPAGE=http://ftrack-as.sourceforge.net/
+IUSE=perl
+KEYWORDS=amd64 x86
+LICENSE=GPL-2
+RDEPEND=dev-lang/perl
+SLOT=0
+SRC_URI=mirror://sourceforge/ftrack-as/1.26/rntrack-1_26-src.tgz
+_eclasses_=eutils	998e5931fb95b10a6a11ec796ada2759	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac	versionator	cd0bcdb170807e4a1984115e9d53a26f
+_md5_=6ba8beadcac806da424327b9eb9b015d
