@@ -1,0 +1,12 @@
+_eclasses_=toolchain-funcs	42408102d713fbad60ca21349865edb4	flag-o-matic	c9602887773166fe300444712fc7ff98	multilib	62927b3db3a589b0806255f3a002d5d3	subversion	c12bdf4fcc82f86ad89b14c8f76c4026	libtool	52d0e17251d04645ffaa61bfdd858944	autotools	2264f05fbbbaaf83d34ec81e72b38ffd	eutils	9fb270e417e0e83d64ca52586c4a79de
+_md5_=a2ee3ff9636e7a1d20d75750d1728ed9
+SLOT=0
+DEFINED_PHASES=compile install preinst prepare unpack
+EAPI=2
+DEPEND=dev-lang/perl !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.15:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4 || ( dev-vcs/subversion[http] dev-vcs/subversion[webdav-neon] dev-vcs/subversion[webdav-serf] ) net-misc/rsync
+DESCRIPTION=A FTN Messages tracker
+LICENSE=GPL-2
+IUSE=perl
+KEYWORDS=~amd64 ~x86
+HOMEPAGE=http://ftrack-as.sourceforge.net/
+RDEPEND=dev-lang/perl

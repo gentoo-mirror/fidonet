@@ -1,0 +1,13 @@
+_eclasses_=toolchain-funcs	42408102d713fbad60ca21349865edb4	versionator	cd0bcdb170807e4a1984115e9d53a26f	multilib	62927b3db3a589b0806255f3a002d5d3	eutils	9fb270e417e0e83d64ca52586c4a79de
+_md5_=393e112c1c60f1860c29dac2efa40f92
+SLOT=0
+DEFINED_PHASES=compile install prepare unpack
+EAPI=2
+DEPEND=dev-lang/perl
+DESCRIPTION=A FTN Messages tracker
+LICENSE=GPL-2
+IUSE=perl
+SRC_URI=ftp://fidonet.overlay.junc.org/pub/overlays/fidonet/rntrack-1_32-src.tar.lzma
+KEYWORDS=amd64 x86
+HOMEPAGE=http://ftrack-as.sourceforge.net/
+RDEPEND=dev-lang/perl
