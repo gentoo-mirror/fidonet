@@ -1,14 +1,14 @@
+_eclasses_=toolchain-funcs	42408102d713fbad60ca21349865edb4	distutils-r1	715b22a21726d3fd76b17e007c5daf5f	multilib	62927b3db3a589b0806255f3a002d5d3	python-r1	d9c8348f26710ea523a385c2328cf027	multibuild	6d4858dc00f8bc51caf3f957f8430eb0	multiprocessing	d7f2985a2c76c365ee20269db5261414	eutils	9fb270e417e0e83d64ca52586c4a79de	python-utils-r1	295a286ec27cab6af76b3b75ba07a3a
+_md5_=e162d3d6e0867a93722aabeb3a6f00e5
+SLOT=0
 DEFINED_PHASES=compile configure install prepare test
+EAPI=5
 DEPEND=python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_python2_7(-)]
 DESCRIPTION=Fuglu Mail Content Scanner
-EAPI=5
-HOMEPAGE=http://www.fuglu.org
-IUSE=python_targets_python2_7
-KEYWORDS=~x86
 LICENSE=Apache-2.0
-RDEPEND=python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_python2_7(-)]
+IUSE=python_targets_python2_7
 REQUIRED_USE=|| ( python_targets_python2_7 )
-SLOT=0
 SRC_URI=mirror://pypi/f/fuglu/fuglu-0.6.2.tar.gz
-_eclasses_=distutils-r1	c01d5c4af34f4a37a51fc9638299c222	eutils	998e5931fb95b10a6a11ec796ada2759	multibuild	6d4858dc00f8bc51caf3f957f8430eb0	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	multiprocessing	d7f2985a2c76c365ee20269db5261414	python-r1	331701099758706863819fe3ff6ddc8a	python-utils-r1	e3288bc2e6e487674ce218b632701c9e	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac
-_md5_=e162d3d6e0867a93722aabeb3a6f00e5
+KEYWORDS=~x86
+HOMEPAGE=http://www.fuglu.org
+RDEPEND=python_targets_python2_7? ( >=dev-lang/python-2.7.5-r2:2.7 ) >=dev-lang/python-exec-2:=[python_targets_python2_7(-)?,-python_single_target_python2_7(-)]
