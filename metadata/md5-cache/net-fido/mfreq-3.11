@@ -1,10 +1,10 @@
-_eclasses_=toolchain-funcs	42408102d713fbad60ca21349865edb4	multilib	62927b3db3a589b0806255f3a002d5d3	eutils	9fb270e417e0e83d64ca52586c4a79de
-_md5_=af84fc53877b7cdd5cd9ce49d8271735
-SLOT=0
 DEFINED_PHASES=compile install
-EAPI=3
 DESCRIPTION=SRIF filerequest server / indexer
-LICENSE=EUPL-1.1
-SRC_URI=ftp://fidonet.overlay.junc.org/pub/base/mfreq311.tgz
-KEYWORDS=~x86
+EAPI=3
 HOMEPAGE=http://sourceforge.net/p/ftnapps/mfreq/ci/master/tree/
+KEYWORDS=~x86
+LICENSE=EUPL-1.1
+SLOT=0
+SRC_URI=ftp://fidonet.overlay.junc.org/pub/base/mfreq311.tgz
+_eclasses_=eutils	998e5931fb95b10a6a11ec796ada2759	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac
+_md5_=af84fc53877b7cdd5cd9ce49d8271735

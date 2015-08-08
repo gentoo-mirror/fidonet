@@ -1,14 +1,14 @@
-_eclasses_=toolchain-funcs	42408102d713fbad60ca21349865edb4	versionator	cd0bcdb170807e4a1984115e9d53a26f	multilib	62927b3db3a589b0806255f3a002d5d3	user	f54e098dd38ba1c0847a13e685b87747	ssl-cert	b53367370fde96e19beca78050a47c61	eutils	9fb270e417e0e83d64ca52586c4a79de
-_md5_=3c3ccfbc715945182a99bdf3138858f7
-SLOT=0
 DEFINED_PHASES=compile configure install postinst prepare setup
-EAPI=4
 DEPEND=berkdb? ( sys-libs/db ) caps? ( sys-libs/libcap ) kerberos? ( virtual/krb5 ) ldap? ( net-nds/openldap ) mysql? ( virtual/mysql ) pam? ( virtual/pam ) postgres? ( dev-db/postgresql-base !dev-db/postgresql-base[ldap,threads] ) sqlite? ( dev-db/sqlite ) ssl? ( dev-libs/openssl ) vpopmail? ( net-mail/vpopmail ) ssl? ( dev-libs/openssl )
 DESCRIPTION=An IMAP and POP3 server written with security primarily in mind
-LICENSE=LGPL-2.1 MIT
-IUSE=berkdb caps cydir dbox doc ipv6 kerberos ldap +maildir managesieve mbox mysql pam postgres sieve sqlite +ssl suid vpopmail zlib ssl
-RESTRICT=mirror
-SRC_URI=http://dovecot.org/releases/1.2/dovecot-1.2.17.tar.gz sieve? ( http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-sieve-0.1.19.tar.gz ) managesieve? ( http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2.17-managesieve-0.11.13.diff.gz http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-managesieve-0.11.13.tar.gz http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-sieve-0.1.19.tar.gz )
-KEYWORDS=alpha amd64 arm ppc sparc x86
+EAPI=4
 HOMEPAGE=http://www.dovecot.org/
+IUSE=berkdb caps cydir dbox doc ipv6 kerberos ldap +maildir managesieve mbox mysql pam postgres sieve sqlite +ssl suid vpopmail zlib ssl
+KEYWORDS=alpha amd64 arm ppc sparc x86
+LICENSE=LGPL-2.1 MIT
 RDEPEND=berkdb? ( sys-libs/db ) caps? ( sys-libs/libcap ) kerberos? ( virtual/krb5 ) ldap? ( net-nds/openldap ) mysql? ( virtual/mysql ) pam? ( virtual/pam ) postgres? ( dev-db/postgresql-base !dev-db/postgresql-base[ldap,threads] ) sqlite? ( dev-db/sqlite ) ssl? ( dev-libs/openssl ) vpopmail? ( net-mail/vpopmail ) >=net-mail/mailbase-0.00-r8
+RESTRICT=mirror
+SLOT=0
+SRC_URI=http://dovecot.org/releases/1.2/dovecot-1.2.17.tar.gz sieve? ( http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-sieve-0.1.19.tar.gz ) managesieve? ( http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2.17-managesieve-0.11.13.diff.gz http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-managesieve-0.11.13.tar.gz http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-sieve-0.1.19.tar.gz )
+_eclasses_=eutils	998e5931fb95b10a6a11ec796ada2759	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	ssl-cert	b53367370fde96e19beca78050a47c61	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac	user	f54e098dd38ba1c0847a13e685b87747	versionator	cd0bcdb170807e4a1984115e9d53a26f
+_md5_=3c3ccfbc715945182a99bdf3138858f7
