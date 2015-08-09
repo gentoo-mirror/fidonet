@@ -1,14 +1,14 @@
-_eclasses_=toolchain-funcs	4b8d3388c0a6e798504e20ba30b49361	multilib	df4e4d5cfd3d137d0c248e1991c0e4d6	eutils	351a78113be5b393c09a2c948701ad36
-_md5_=cad89a8c2485377dc9b8381f3e88eee
-SLOT=0
 DEFINED_PHASES=compile configure install
-EAPI=3
 DEPEND=bzip2? ( >=app-arch/bzip2-1.0.6 ) zlib? ( >=sys-libs/zlib-1.2.3-r1 ) perl? ( dev-lang/perl )
 DESCRIPTION=Binkd daemon for ftn over ip
-LICENSE=GPL-2
-IUSE=aso bwlim +bzip2 doc ntlm perl proxy +zlib
-RESTRICT=mirror
-SRC_URI=ftp://fidonet.overlay.junc.org/pub/overlays/fidonet/binkd-1.1a-r27.tar.bz2
-KEYWORDS=x86 amd64
+EAPI=3
 HOMEPAGE=http://www.corbina.net/~maloff/binkd/
+IUSE=aso bwlim +bzip2 doc ntlm perl proxy +zlib
+KEYWORDS=x86 amd64
+LICENSE=GPL-2
 RDEPEND=bzip2? ( >=app-arch/bzip2-1.0.6 ) zlib? ( >=sys-libs/zlib-1.2.3-r1 ) perl? ( dev-lang/perl )
+RESTRICT=mirror
+SLOT=0
+SRC_URI=ftp://fidonet.overlay.junc.org/pub/overlays/fidonet/binkd-1.1a-r27.tar.bz2
+_eclasses_=eutils	351a78113be5b393c09a2c948701ad36	multilib	df4e4d5cfd3d137d0c248e1991c0e4d6	toolchain-funcs	4b8d3388c0a6e798504e20ba30b49361
+_md5_=0cad89a8c2485377dc9b8381f3e88eee
