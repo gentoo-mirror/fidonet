@@ -9,5 +9,5 @@ RDEPEND=sys-libs/ncurses net-dialup/mgetty
 RESTRICT=mirror
 SLOT=0
 SRC_URI=ftp://f0.n230.z2.binkp.net/pub/overlays/fidonet/qico-0.57.1xe.tar.bz2
-_eclasses_=autotools	8fc2dd333ef9346c906ffd9a523d8211	eutils	998e5931fb95b10a6a11ec796ada2759	libtool	52d0e17251d04645ffaa61bfdd858944	multilib	3bf24e6abb9b76d9f6c20600f0b716bf	toolchain-funcs	0dfbfa13f57c6184f4728d12ac002aac
+_eclasses_=autotools	8056957fdccf2b3cd6e282a4b4551d1a	eutils	351a78113be5b393c09a2c948701ad36	libtool	7f78cd7d403808a350c9ae23f5821fb4	multilib	df4e4d5cfd3d137d0c248e1991c0e4d6	toolchain-funcs	4b8d3388c0a6e798504e20ba30b49361
 _md5_=213d27fa749d06b8ba3af7906a5eecda
