@@ -8,5 +8,5 @@ KEYWORDS=~x86 ~amd64
 LICENSE=LGPL-2.1
 RDEPEND=!net-fido/husky
 SLOT=0
-_eclasses_=cvs	e94c89c58918dff87fa3db1e817c25be	eutils	43da5163ba106e87d22d2e7d6d67537f	multilib	df4e4d5cfd3d137d0c248e1991c0e4d6	toolchain-funcs	7a212e5e01adfa4805c9978366e6ee85
+_eclasses_=cvs	e94c89c58918dff87fa3db1e817c25be	eutils	8644194de7be04932084752fb1327080	multilib	df4e4d5cfd3d137d0c248e1991c0e4d6	toolchain-funcs	7a212e5e01adfa4805c9978366e6ee85
 _md5_=e735658d20f3ecd550d8d831ef7e10ef
