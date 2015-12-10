@@ -23,3 +23,5 @@ net-fido/smapi 2.4-r1: HUSKY Portable Fidosoft Project - smapi
 net-fido/sqpack 1.4: HUSKY Portable Fidosoft Project - sqpack
 net-mail/dovecot 1.2.17: An IMAP and POP3 server written with security primarily in mind
 net-www/modoboa 1.2.0: Mail hosting made simple
+perl-gcpan/Paranoid 0.36: Paranoia support for safer programs
+perl-gcpan/Parse-PlainConfig 2.06: Parser for plain-text configuration files
