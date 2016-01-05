@@ -1,0 +1,10 @@
+# ChangeLog for mail-filter/rspamd
+# Copyright 1999-2015 Gentoo Foundation; Distributed under the GPL v2
+# (auto-generated from git log)
+
+*rspamd-1.0.11 (26 Dec 2015)
+
+  26 Dec 2015; Dirkjan Ochtman <djc@gentoo.org> +files/rspamd.init,
+  +files/rspamd.logrotate, +metadata.xml, +rspamd-1.0.11.ebuild:
+  new ebuild, from my overlay
+
