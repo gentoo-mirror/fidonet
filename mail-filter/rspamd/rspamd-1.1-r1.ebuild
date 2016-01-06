@@ -7,7 +7,7 @@ EAPI=5
 inherit cmake-utils user
 
 DESCRIPTION="Rapid spam filtering system"
-SRC_URI="http://distfiles.overlay.junc.org/fidonet/rspamd-master.zip"
+SRC_URI="http://distfiles.overlay.junc.org/fidonet/rspamd-1.1.tar.xz"
 HOMEPAGE="https://github.com/vstakhov/rspamd"
 
 LICENSE="BSD-2"
@@ -27,7 +27,7 @@ DEPEND="dev-libs/libpcre
 		dev-libs/hiredis"
 RDEPEND="${DEPEND}"
 
-S=${WORKDIR}/rspamd-master
+# S=${WORKDIR}/rspamd-master
 
 pkg_setup() {
 	enewgroup rspamd
