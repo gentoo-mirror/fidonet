@@ -47,13 +47,11 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 	newinitd "${FILESDIR}/rspamd.init" rspamd
-
 	dodir /var/lib/rspamd
 	dodir /var/lib/rspamd/dynamic
 	dodir /var/log/rspamd
 	dodir /var/run/rspamd
-	fowners rspamd:rspamd /var/lib/rspamd /var/lib/rspamd/dynamic /var/log/rspamd /var/run/rspamd 
-
+	fowners rspamd:rspamd /var/lib/rspamd /var/lib/rspamd/dynamic /var/log/rspamd /var/run/rspamd
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/rspamd.logrotate" rspamd
 }
