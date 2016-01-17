@@ -1,0 +1,15 @@
+# ChangeLog for mail-filter/rmilter
+# Copyright 1999-2016 Gentoo Foundation; Distributed under the GPL v2
+# (auto-generated from git log)
+
+*rmilter-1.6.7 (26 Dec 2015)
+
+  26 Dec 2015; Dirkjan Ochtman <djc@gentoo.org> +files/rmilter.initd,
+  +metadata.xml, +rmilter-1.6.7.ebuild:
+  new ebuild, imported from my overlay
+
+  07 Jan 2016; Justin Lecher <jlec@gentoo.org> metadata.xml:
+  Update remote-ids in metadata.xml
+
+  Signed-off-by: Justin Lecher <jlec@gentoo.org>
+
