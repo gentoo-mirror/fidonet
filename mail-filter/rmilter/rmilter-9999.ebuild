@@ -18,13 +18,11 @@ IUSE=""
 
 DEPEND="dev-libs/libpcre
 		mail-filter/libmilter
-		mail-filter/opendkim
-		mail-filter/libspf2"
+		mail-filter/opendkim"
 RDEPEND="${DEPEND}"
 
 src_unpack() {
 	git-2_src_unpack
-	cd "${S}"
 }
 
 pkg_setup() {
