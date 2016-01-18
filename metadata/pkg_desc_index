@@ -3,26 +3,6 @@ mail-filter/fuglu 0.6.5: Fuglu Mail Content Scanner
 mail-filter/opendmarc 1.3.1 1.3.1-r1 1.3.1-r2: Open source DMARC implementation
 mail-filter/rmilter 9999: Another sendmail milter for different mail checks
 mail-filter/rspamd 9999: Rapid spam filtering system
-net-fido/areastat 1.9: HUSKY Portable Fidosoft Project - areastat
-net-fido/binkd 1.1a-r2: Binkd daemon for ftn over ip
-net-fido/bsopack 1.4: HUSKY Portable Fidosoft Project - bsopack
-net-fido/fidoconf 1.9: HUSKY Portable Fidosoft Project - fidoconfig
-net-fido/ftrack 1.16: FIDO FTN Tracker
-net-fido/golded+ 9999: FTN Editor golded+
-net-fido/hpt 1.9: HUSKY Portable Fidosoft Project - hpt
-net-fido/hptkill 1.4: HUSKY Portable Fidosoft Project - hptkill
-net-fido/hptsqfix 1.4: HUSKY Portable Fidosoft Project - hptsqfix
-net-fido/hpucode 1.4: HUSKY Portable Fidosoft Project - hpucode
-net-fido/htick 1.4: HUSKY Portable Fidosoft Project - htick
-net-fido/huskmisc 1.4: HUSKY Portable Fidosoft Project - huskmisc
-net-fido/makenl 3.4.1 3.4.5: MakeNL the Nodelist maker
-net-fido/mfreq 3.11: SRIF filerequest server / indexer
-net-fido/msged 6.2: HUSKY Portable Fidosoft Project - msged
-net-fido/nltools 1.4: HUSKY Portable Fidosoft Project - nltools
-net-fido/qico 0.57.1-r1 0.57.1-r2 0.58: Qico is an FidoNet Technology Network (FTN) mailer
-net-fido/rntrack 1.14 1.26 1.32 9999: A FTN Messages tracker
-net-fido/smapi 2.4-r1: HUSKY Portable Fidosoft Project - smapi
-net-fido/sqpack 1.4: HUSKY Portable Fidosoft Project - sqpack
 net-mail/dovecot 1.2.17: An IMAP and POP3 server written with security primarily in mind
 net-www/modoboa 1.2.0: Mail hosting made simple
 perl-gcpan/Paranoid 0.36: Paranoia support for safer programs

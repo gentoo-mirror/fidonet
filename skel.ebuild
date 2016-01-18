@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 # NOTE: The comments in this file are for instruction and documentation.
 # They're not meant to appear with your final, production ebuild.  Please
@@ -8,7 +8,7 @@
 # doesn't mean you can't add your own comments though.
 
 # The 'Header' on the third line should just be left alone.  When your ebuild
-# will be committed to cvs, the details on that line will be automatically
+# will be committed to git, the details on that line will be automatically
 # generated to contain the correct data.
 
 # The EAPI variable tells the ebuild format in use.
@@ -36,7 +36,7 @@ inherit eutils
 DESCRIPTION="This is a sample skeleton ebuild file"
 
 # Homepage, not used by Portage directly but handy for developer reference
-HOMEPAGE="http://foo.example.org/"
+HOMEPAGE="https://foo.example.org/"
 
 # Point to any required sources; these will be automatically downloaded by
 # Portage.
@@ -130,7 +130,7 @@ RDEPEND="${DEPEND}"
 	#	--mandir=/usr/share/man || die
 	# Note the use of --infodir and --mandir, above. This is to make
 	# this package FHS 2.2-compliant.  For more information, see
-	#   http://www.pathname.com/fhs/
+	#   https://www.pathname.com/fhs/
 #}
 
 # The following src_compile function is implemented as default by portage, so
