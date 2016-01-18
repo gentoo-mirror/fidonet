@@ -4,11 +4,12 @@
 
 EAPI=5
 
+PYTHON_COMPAT=( python2_7 )
+
 inherit distutils-r1
 
-SUPPORT_PYTHON_ABIS="1"
-DISTUTILS_SRC_TEST="setup.py"
-PYTHON_COMPAT=( python-2_7 )
+# SUPPORT_PYTHON_ABIS="1"
+# DISTUTILS_SRC_TEST="setup.py"
 
 DESCRIPTION="Mail hosting made simple"
 HOMEPAGE="http://modoboa.org/"
@@ -20,13 +21,11 @@ SLOT="0"
 IUSE="doc"
 
 DEPEND="dev-python/setuptools"
-RDEPEND="!<net-www/django-1.7
-	>=net-www/django-1.6
+RDEPEND="dev-python/django
 	dev-python/setuptools"
 
-
 src_install() {
-	distutils_src_install
+	distutils-r1_src_install
 	if use doc; then
 		dodoc -r doc
 	fi
