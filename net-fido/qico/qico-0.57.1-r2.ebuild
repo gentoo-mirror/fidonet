@@ -36,11 +36,14 @@ WANT_AUTOMAKE="1.9"
 inherit libtool autotools eutils toolchain-funcs
 
 DESCRIPTION="Qico is an FidoNet Technology Network (FTN) mailer"
-#SRC_URI="ftp://ftp.freebsd.org/pub/FreeBSD/distfiles/${P}xe.tar.bz2" # http://andre.grueneberg.de/binkd/${P}xe-ipv6.diff"
+
+# SRC_URI="ftp://ftp.freebsd.org/pub/FreeBSD/distfiles/${P}xe.tar.bz2" # http://andre.grueneberg.de/binkd/${P}xe-ipv6.diff"
+# <flag name="ipv6">ipv6 support in qico client, for serving ipv6 use xinetd</flag>
+# IUSE="ipv6"
+
 SRC_URI="ftp://f0.n230.z2.binkp.net/pub/overlays/fidonet/${P}xe.tar.bz2"
 HOMEPAGE="http://sourceforge.net/projects/qico"
 
-#IUSE="ipv6"
 IUSE=""
 SLOT="0"
 LICENSE="BSD"

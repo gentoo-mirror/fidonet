@@ -14,7 +14,6 @@ net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
 net-fido/binkd:proxy - HTTPS proxy
-net-fido/qico:ipv6 - ipv6 support in qico client, for serving ipv6 use xinetd
 net-mail/dovecot:cydir - Add cydir storage support
 net-mail/dovecot:dbox - Add dbox storage support
 net-mail/dovecot:managesieve - Add managesieve protocol support

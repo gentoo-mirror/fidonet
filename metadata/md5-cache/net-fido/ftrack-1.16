@@ -1,6 +1,6 @@
 DEFINED_PHASES=compile configure install prepare test unpack
 DESCRIPTION=FIDO FTN Tracker
-EAPI=3
+EAPI=5
 HOMEPAGE=http://ftrack-as.sourceforge.net
 KEYWORDS=x86 amd64
 LICENSE=GPL-2
@@ -8,4 +8,4 @@ SLOT=0
 SRC_URI=ftp://fidonet.overlay.junc.org/pub/overlays/fidonet/ftrack-1.16.tar.lzma
 _eclass_exported_funcs=src_unpack:- src_prepare:- src_configure:- src_compile:- src_test:autotools-utils src_install:-
 _eclasses_=autotools	07e71b3b5690738ef7e8bc097077e00c	autotools-utils	419811142edf3516b0d0cf1a254d93cb	eutils	d9bd2ddd85a58e470b49ca997e255a4c	libtool	b75230758539a7da029e24afdb693960	multilib	3972ca401cf7dbb430df9995f5d8d580	toolchain-funcs	7a212e5e01adfa4805c9978366e6ee85
-_md5_=c676fe5400c65e97832aec60a76a679f
+_md5_=2cf0db6ab9ebcd770c02b537af3d16fe

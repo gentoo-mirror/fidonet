@@ -1,8 +1,8 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI=3
+EAPI=5
 
 inherit eutils autotools-utils
 
@@ -16,21 +16,21 @@ IUSE=""
 WANT_AUTOMAKE="1.9"
 
 src_unpack() {
-    unpack ${A}
-    cd "${S}"
+	unpack ${A}
+	cd "${S}"
 }
 src_prepare() {
-    epatch "${FILESDIR}/${PV}-ftrack.patch"
+	epatch "${FILESDIR}/${PV}-ftrack.patch"
 }
 src_configure() {
-    autotools-utils_src_prepare
-    autotools-utils_src_configure
+	autotools-utils_src_prepare
+	autotools-utils_src_configure
 }
 src_compile() {
-    emake
+	emake
 }
 src_install() {
-    dobin src/rntrack
-    doman doc/rntrack.1
-    dodoc doc/FAQ doc/MANUAL samples/tpl/audit.tpl samples/tpl/badfrom.tpl samples/tpl/badto.tpl samples/tpl/loop.tpl
+	dobin src/rntrack
+	doman doc/rntrack.1
+	dodoc doc/FAQ doc/MANUAL samples/tpl/audit.tpl samples/tpl/badfrom.tpl samples/tpl/badto.tpl samples/tpl/loop.tpl
 }

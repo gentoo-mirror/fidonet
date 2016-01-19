@@ -1,7 +1,8 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+# $Id$
 
-EAPI=2
+EAPI=5
 
 ECVS_AUTH="pserver"
 ECVS_SERVER="golded-plus.cvs.sourceforge.net:/cvsroot/golded-plus"
