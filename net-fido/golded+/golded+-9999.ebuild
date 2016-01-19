@@ -29,7 +29,7 @@ IUSE="-doc"
 # 	)
 # 	doc? ( sys-apps/texinfo )"
 
-DEPEND=">=sys-libs/ncurses-5.4
+DEPEND="sys-libs/ncurses:0
 	doc? ( sys-apps/texinfo )"
 RDEPEND="${DEPEND}"
 
@@ -63,7 +63,7 @@ src_prepare() {
 	# use hunspell && ewarn "Dynamic linking with external hunspell library is an experimental feature!"
 
 	# Add header with personal configuration
-	cp ${FILESDIR}/mygolded.h ./golded3/mygolded.h
+	cp "${FILESDIR}/mygolded.h" ./golded3/mygolded.h
 
 	# Disable MS Office spellchecker support
 	sed -i 's/#CPPFLAGS+=-DGCFG_NO_MSSPELL/CPPFLAGS+=-DGCFG_NO_MSSPELL/' ./Config.def
