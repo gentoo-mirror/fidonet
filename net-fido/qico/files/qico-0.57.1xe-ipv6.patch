@@ -1,0 +1,296 @@
+diff -ur qico-0.57.1xe/configure.in qico-0.57.1xe-ipv6//configure.in
+--- qico-0.57.1xe/configure.in	2005-08-23 12:15:55.000000000 +0200
++++ qico-0.57.1xe-ipv6//configure.in	2011-11-03 18:46:54.000000000 +0100
+@@ -1,9 +1,9 @@
+ dnl Process this file with autoconf to produce a configure script.
+-AC_INIT([qico],[0.57.1xe],[r45c at mail dot ru])
++AC_INIT([qico],[0.57.1xe-ipv6],[r45c at mail dot ru])
+ AC_REVISION([$Id: configure.in,v 1.26 2005/08/23 10:15:55 mitry Exp $])
+ AC_PREREQ(2.53)
+ AC_CONFIG_SRCDIR([src/main.c])
+-AM_INIT_AUTOMAKE([qico],[0.57.1xe])
++AM_INIT_AUTOMAKE([qico],[0.57.1xe-ipv6])
+ AM_CONFIG_HEADER([config.h])
+ 
+ dnl Checks for programs.
+@@ -421,7 +421,7 @@
+ 	AC_MSG_RESULT([yes, use loglevels in config to tune])
+ 	AC_DEFINE(NEED_DEBUG,1,[Build debug loglevels support])
+ else
+-	AC_MSG_RESULT([no, logleves in config are useless]),
++	AC_MSG_RESULT([no, logleves in config are useless])
+ fi
+ 
+ 
+diff -ur qico-0.57.1xe/src/main.c qico-0.57.1xe-ipv6//src/main.c
+--- qico-0.57.1xe/src/main.c	2005-08-11 21:15:14.000000000 +0200
++++ qico-0.57.1xe-ipv6//src/main.c	2011-11-03 17:10:13.000000000 +0100
+@@ -214,7 +214,7 @@
+     int rc, spd;
+     char *cs;
+     char host[ MAXHOSTNAMELEN + 1 ];
+-    struct sockaddr_in sa;
++    struct sockaddr_storage sa;
+     socklen_t ss = sizeof( sa );
+     TIO tio;
+     sts_t sts;
+@@ -252,7 +252,7 @@
+     tty_fd = 0;
+     tty_online = TRUE;
+     if( is_ip && getpeername( 0, (struct sockaddr*) &sa, &ss ) == 0 ) {
+-        get_hostname( &sa, host, sizeof( host ));
++        get_hostname( &sa, ss, host, sizeof( host ));
+         write_log( "remote is %s", host );
+         spd = TCP_SPEED;
+         tcp_setsockopts( tty_fd );
+diff -ur qico-0.57.1xe/src/tcp.c qico-0.57.1xe-ipv6//src/tcp.c
+--- qico-0.57.1xe/src/tcp.c	2005-08-16 22:13:32.000000000 +0200
++++ qico-0.57.1xe-ipv6//src/tcp.c	2011-11-03 18:20:36.000000000 +0100
+@@ -64,21 +64,20 @@
+ 
+ 
+ /* Returns hostname or ip address */
+-char *get_hostname(struct sockaddr_in *addr, char *host, int len)
++char *get_hostname(struct sockaddr *addr, socklen_t salen, char *host, int len)
+ {
+-	struct hostent		*he;
+-	struct sockaddr_in	sa;
++	char ipaddr[MAXHOSTNAMELEN + 1];
++	char hostbuf[MAXHOSTNAMELEN + 1];
++	int niErr = 1;
++
++	getnameinfo( addr, salen, ipaddr, sizeof(ipaddr), NULL, 0, NI_NUMERICHOST );
++	if ( cfgi( CFG_RESOLVEHOSTNAME ))
++		niErr = getnameinfo( addr, salen, hostbuf, sizeof(hostbuf), NULL, 0, NI_NAMEREQD );
+ 
+-	memcpy( &sa, addr, sizeof( struct sockaddr_in ) );
+-	if ( cfgi( CFG_RESOLVEHOSTNAME )) {
+-		he = gethostbyaddr( (char *) &sa.sin_addr, sizeof sa.sin_addr, AF_INET );
+-		if ( he ) {
+-			snprintf( host, len, "%s (%s)", he->h_name, inet_ntoa( sa.sin_addr ));
+-			return host;
+-		}
+-	}
+-
+-	xstrcpy( host, inet_ntoa( sa.sin_addr ), len );
++	if ( niErr == 0 )
++		snprintf( host, len, "%s (%s)", hostbuf, ipaddr );
++	else
++		xstrcpy( host, ipaddr, len );
+ 
+ 	return host;
+ }
+@@ -398,7 +397,7 @@
+ }
+ 
+ 
+-#define GET_PORT() ( proxy ? ( sp ? 1080 : 3128 ) : ( bink ? 24554 : 60179 ))
++#define GET_PORT() ( proxy ? ( sp ? "1080" : "3128" ) : ( bink ? "24554" : "60179" ))
+ 
+ /*
+  * Open tcp/ip connection to host. Arguments are:
+@@ -414,111 +413,108 @@
+ tcp_connect(char *name, char *proxy, int sp)
+ {
+ 	char			*portname, *p;
+-	int			misc;
+-	unsigned short		portnum;
+-	struct servent		*se;
+-	struct hostent		*he;
+-	struct sockaddr_in	server;
+-
+-	server.sin_family = AF_INET;
++	struct addrinfo		hints =	      { .ai_family = PF_UNSPEC,
++						.ai_socktype = SOCK_STREAM,
++						.ai_protocol = IPPROTO_TCP };
++	struct addrinfo		*ai, *aiHead;
++	int			aiErr;
+ 
+ 	if (( portname = strchr( proxy ? proxy : name, ':' ))) {
+ 		*portname++ = '\0';
+ 		if (( p = strchr( portname, ' ' )))
+ 			*p = '\0';
+-
+-		if (( portnum = atoi( portname ))) {
+-			server.sin_port = htons( portnum );
+-		} else {
+-			if (( se = getservbyname( portname, "tcp" )))
+-				server.sin_port = se->s_port;
+-			else
+-				server.sin_port = htons( GET_PORT() );
+-		}
+ 	} else {
+-		if (( se = getservbyname( proxy ? ( sp ? "socks" : "proxy" ) :
+-		    ( bink ? "binkp" : "fido" ), "tcp" )))
+-			server.sin_port = se->s_port;
+-		else {
+-			if ( proxy && !sp && ( se = getservbyname( "squid", "tcp" )))
+-				server.sin_port = se->s_port;
+-			else
+-				server.sin_port = htons( GET_PORT() );
+-		}
++		portname = (proxy ? ( sp ? "socks" : "proxy" ) :
++                    ( bink ? "binkp" : "fido" ) );
+ 	}
+ 
+-	if ( sscanf( proxy ? proxy : name, "%d.%d.%d.%d", &misc, &misc, &misc, &misc ) == 4 )
+-		server.sin_addr.s_addr = inet_addr( proxy ? proxy : name );
+-	else {
+-		if (( he = gethostbyname( proxy ? proxy : name )))
+-			memcpy( &server.sin_addr, he->h_addr, he->h_length );
+-		else {
+-			write_log("can't resolve ip for %s%s",
+-				proxy ? ( sp ? "socks " : "proxy " ) : "",
+-				proxy ? proxy : name );
+-			return -1;
+-		}
++	aiErr = getaddrinfo( proxy ? proxy : name, portname, &hints, &aiHead);
++	if ( aiErr == EAI_SERVICE ) {
++		hints.ai_flags |= AI_NUMERICSERV;
++		aiErr = getaddrinfo( proxy ? proxy : name, GET_PORT(), &hints, &aiHead);
+ 	}
+ 
+-	sline("Connecting to %s%s%s%s:%d",
+-		proxy ? name : "",
+-		proxy ? " via " : "",
+-		proxy ? ( sp ? "socks " : "proxy " ) : "",
+-		inet_ntoa( server.sin_addr ),
+-		(int) ntohs( server.sin_port ));
++	if ( aiErr != 0 ) {
++		write_log("can't resolve ip for %s%s: %s",
++			proxy ? ( sp ? "socks " : "proxy " ) : "",
++			proxy ? proxy : name, gai_strerror(aiErr) );
++		
++		return -1;
++	}
+ 
+ 	signal( SIGTERM, tty_sighup );
+ 	signal( SIGPIPE, tty_sighup );
+ 	signal( SIGHUP, tty_sighup );
+ 
+-	if (( tty_fd = socket( AF_INET, SOCK_STREAM, 0)) < 0 ) {
+-		write_log("can't create socket: %s", strerror( errno ));
+-		return -1;
+-	}
+-
+-	if ( fd_make_stddev( tty_fd ) != OK ) {
+-		write_log( "tcp_connect: can't make stdin/stdout/stderr" );
+-		close( tty_fd );
+-		return ERROR;
+-	}
+-
+-	tty_fd = 0;
+-
+-	if ( connect( tty_fd, (struct sockaddr*) &server, sizeof( server )) < 0 ) {
+-		write_log( "can't connect to %s: %s", inet_ntoa( server.sin_addr ), strerror( errno ));
+-		tcp_done();
+-		return ERROR;
+-	}
+-
+-	if ( !tcp_setsockopts( tty_fd )) {
+-		write_log( "can't set socket options" );
+-		tcp_done();
+-		return ERROR;
+-	}
+-
+-	write_log( "TCP/IP connection with %s%s:%d",
+-		proxy ? ( sp ? "socks " : "proxy " ) : "" ,
+-		inet_ntoa( server.sin_addr ),
+-		(int) ntohs( server.sin_port ));
+-
+-	tty_online = TRUE;
+-
+-	if ( proxy ) {
+-		sline("%s server found. waiting for reply...", sp ? "Socks" : "Proxy");
+-		if ( !sp ) {
+-			if ( !tcp_connect_proxy( name )) {
++	for ( ai = aiHead; !tty_online && ai != NULL; ai = ai->ai_next ) {
++		char	hostbuf[MAXHOSTNAMELEN + 1];
++		char	servbuf[NI_MAXSERV + 1];
++
++		getnameinfo( ai->ai_addr, ai->ai_addrlen, hostbuf, sizeof(hostbuf), servbuf, sizeof(servbuf), NI_NUMERICHOST | NI_NUMERICSERV );
++		sline("Connecting to %s%s%s%s:%s",
++			proxy ? name : "",
++			proxy ? " via " : "",
++			proxy ? ( sp ? "socks " : "proxy " ) : "",
++			hostbuf,
++			servbuf);
++
++		if (( tty_fd = socket( ai->ai_family, ai->ai_socktype, ai->ai_protocol)) < 0 ) {
++			write_log("can't create socket: %s", strerror( errno ));
++			continue;
++		}
++
++		if ( fd_make_stddev( tty_fd ) != OK ) {
++			write_log( "tcp_connect: can't make stdin/stdout/stderr" );
++			close( tty_fd );
++			continue;
++		}
++
++		tty_fd = 0;
++
++		if ( connect( tty_fd, ai->ai_addr, ai->ai_addrlen) < 0 ) {
++			write_log( "can't connect to %s: %s", hostbuf, strerror( errno ));
++			close ( tty_fd );
++			continue;
++		}
++
++		if ( !tcp_setsockopts( tty_fd )) {
++			write_log( "can't set socket options" );
++			close ( tty_fd );
++			continue;
++		}
++
++		write_log( "TCP/IP connection with %s%s:%d",
++			proxy ? ( sp ? "socks " : "proxy " ) : "" ,
++			hostbuf,
++			servbuf);
++
++		tty_online = TRUE;
++
++		if ( proxy ) {
++			sline("%s server found. waiting for reply...", sp ? "Socks" : "Proxy");
++			if ( !sp ) {
++				if ( !tcp_connect_proxy( name )) {
++					tcp_done();
++					freeaddrinfo(aiHead);
++					return ERROR;
++				}
++			} else if ( !tcp_connect_socks( name )) {
+ 				tcp_done();
++				freeaddrinfo(aiHead);
+ 				return ERROR;
+ 			}
+-		} else if ( !tcp_connect_socks( name )) {
+-			tcp_done();
+-			return ERROR;
+ 		}
+ 	}
+ 
+-	sline("FTN server found. waiting for reply...");
+-	
+-	return tty_fd;
++	freeaddrinfo(aiHead);
++	if ( tty_online ) {
++		sline("FTN server found. waiting for reply...");
++		return tty_fd;
++	}
++
++	write_log( "Cannot connect %s: all addresses failed", name );
++	tcp_done();
++	return ERROR;
+ }
+ 
+ int tcp_dial(ftnaddr_t *fa, char *host)
+diff -ur qico-0.57.1xe/src/tcp.h qico-0.57.1xe-ipv6//src/tcp.h
+--- qico-0.57.1xe/src/tcp.h	2005-05-06 22:47:37.000000000 +0200
++++ qico-0.57.1xe-ipv6//src/tcp.h	2011-11-03 17:16:52.000000000 +0100
+@@ -36,7 +36,7 @@
+   #define MAXHOSTNAMELEN 255
+ #endif
+ 
+-char *get_hostname(struct sockaddr_in *, char *, int);
++char *get_hostname(struct sockaddr *, socklen_t, char *, int);
+ int tcp_setsockopts(int);
+ 
+ int tcp_dial(ftnaddr_t *, char *);

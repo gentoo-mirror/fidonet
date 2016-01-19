@@ -10,6 +10,11 @@ mail-filter/dovecot-antispam:spool2dir - Build spool directory backend
 mail-filter/opendmarc:minimal - try to be more minimal
 mail-filter/opendmarc:mysql - Mysql Database Support
 mail-filter/opendmarc:spf - Sender Policy Framework
+net-fido/binkd:aso - Amiga Style Outbound
+net-fido/binkd:bwlim - Bandwidth Limit
+net-fido/binkd:ntlm - NTLM Auth
+net-fido/binkd:proxy - HTTPS proxy
+net-fido/qico:ipv6 - ipv6 support in qico client, for serving ipv6 use xinetd
 net-mail/dovecot:cydir - Add cydir storage support
 net-mail/dovecot:dbox - Add dbox storage support
 net-mail/dovecot:managesieve - Add managesieve protocol support
