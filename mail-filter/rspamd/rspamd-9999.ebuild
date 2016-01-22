@@ -50,6 +50,7 @@ src_configure() {
 src_install() {
 	cmake-utils_src_install
 	newinitd "${FILESDIR}/rspamd.initd" rspamd
+	newconfd "${FILESDIR}/rspamd.confd" rspamd
 	dodir /var/lib/rspamd
 	dodir /var/lib/rspamd/dynamic
 	dodir /var/log/rspamd

@@ -33,6 +33,7 @@ pkg_setup() {
 src_install() {
 	cmake-utils_src_install
 	newinitd "${FILESDIR}/rmilter.initd" rmilter
+	newconfd "${FILESDIR}/rmilter.confd" rmilter
 	insinto /etc/rmilter
 	newins rmilter.conf.sample rmilter.conf.sample
 	newins rmilter-grey.conf rmilter-grey.conf
