@@ -25,7 +25,9 @@ start() {
 	chmod g+s $RUNDIR
 	rm -f $RUNDIR/$SVCNAME.sock
 	start-stop-daemon --start --quiet --pidfile $PIDFILE -u rspamd -g rspamd \
-						--exec /usr/bin/rspamd
+			--nicelevel ${RSPAMD_NICELEVEL:-0} \
+			--ionice ${RSPAMD_IONICE_LEVEL:-0} \
+			--exec /usr/bin/rspamd
 	eend $?
 }
 

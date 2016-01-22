@@ -16,7 +16,9 @@ start() {
 	chmod g+s $RUNDIR
 	rm -f $RUNDIR/$SVCNAME.sock
 	start-stop-daemon --start --quiet --pidfile $PIDFILE -u rmilter \
-						--exec /usr/sbin/rmilter -- -c /etc/rmilter/rmilter.conf
+			--nicelevel ${RMILTER_NICELEVEL:-0} \
+			--ionice ${RMILTER_IONICE_LEVEL:-0} \
+			--exec /usr/sbin/rmilter -- -c /etc/rmilter/rmilter.conf
 	eend $?
 }
 
