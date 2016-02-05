@@ -40,13 +40,30 @@ src_prepare() {
 	cp "${FILESDIR}"/gentoo-makefile "${S}/Makefile"
 }
 
-# src_configure() {
-# 	econf || die
-# }
-
 src_compile() {
 	emake -f Makefile CC="$(tc-getCC)" LDFLAGS="-lmilter -lpthread -L/usr/lib -lspf2" || die
 }
+
+src_install() {
+	dosbin smf-spf
+	insinto /etc/opendmarc
+}
+
+
+# CDEPEND="|| ( mail-filter/libmilter mail-mta/sendmail )
+# 	mysql? ( dev-db/opendbx[mysql=] )"
+
+#RDEPEND="${CDEPEND}
+#	sys-process/psmisc
+#	!minimal? ( dev-perl/DBI
+#		mysql? ( dev-perl/DBD-mysql )
+#	)"
+
+#	newinitd "${FILESDIR}"/opendmarc.init opendmarc
+#	insinto /etc/opendmarc
+#	newins	"${D}"/usr/share/doc/${P}/opendmarc.conf.sample opendmarc.conf
+#}
+
 
 # src_install() {
 #	dosbin src/qico
