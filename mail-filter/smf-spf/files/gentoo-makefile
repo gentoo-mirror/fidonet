@@ -1,0 +1,39 @@
+#CC = gcc
+PREFIX = /usr
+SBINDIR = $(PREFIX)/sbin
+DATADIR = /var/run/smfs
+CONFDIR = /etc/mail/smfs
+USER = smfs
+GROUP = smfs
+CFLAGS = -O2 -D_REENTRANT -fomit-frame-pointer -I/usr/include
+
+# Linux
+# LDFLAGS = -lmilter -lpthread -L/usr/lib -lspf2
+
+all: smf-spf
+
+smf-spf: smf-spf.o
+	$(CC) -o smf-spf smf-spf.o $(LDFLAGS)
+
+smf-spf.o: smf-spf.c
+	$(CC) $(CFLAGS) -c smf-spf.c
+
+# clean:
+# 	rm -f smf-spf.o smf-spf
+
+# install:
+# 	@./install.sh
+# 	@cp -f -p smf-spf $(SBINDIR)
+# 	@if test ! -d $(DATADIR); then \
+# 	mkdir -m 700 $(DATADIR); \
+# 	chown $(USER):$(GROUP) $(DATADIR); \
+# 	fi
+# 	@if test ! -d $(CONFDIR); then \
+# 	mkdir -m 755 $(CONFDIR); \
+# 	fi
+# 	@if test ! -f $(CONFDIR)/smf-spf.conf; then \
+# 	cp -p smf-spf.conf $(CONFDIR)/smf-spf.conf; \
+# 	else \
+# 	cp -p smf-spf.conf $(CONFDIR)/smf-spf.conf.new; \
+# 	fi
+# 	@echo Please, inspect and edit the $(CONFDIR)/smf-spf.conf file.

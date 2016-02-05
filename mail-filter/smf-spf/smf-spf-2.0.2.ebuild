@@ -37,6 +37,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/04-logging.patch
 	epatch "${FILESDIR}"/05-insert_header.patch
 	epatch "${FILESDIR}"/06-ipv6.patch
+	cp "${FILESDIR}"/gentoo-makefile "${S}/Makefile"
 }
 
 # src_configure() {
@@ -44,7 +45,7 @@ src_prepare() {
 # }
 
 src_compile() {
-	emake -f Makefile CC="$(tc-getCC)" LDFLAGS="" || die
+	emake -f Makefile CC="$(tc-getCC)" LDFLAGS="-lmilter -lpthread -L/usr/lib -lspf2" || die
 }
 
 # src_install() {
