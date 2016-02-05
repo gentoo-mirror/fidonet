@@ -4,8 +4,7 @@
 
 EAPI=5
 
-# inherit libtool autotools autotools-utils eutils toolchain-funcs user
-inherit user toolchain-funcs
+inherit user toolchain-funcs eutils
 
 DESCRIPTION="spf milter"
 
@@ -18,7 +17,7 @@ LICENSE="BSD"
 KEYWORDS="~x86 ~amd64"
 RESTRICT="mirror"
 DEPEND=""
-RDEPEND=""
+RDEPEND="mail-filter/libmilter"
 
 pkg_setup() {
 	enewgroup smfs || die
@@ -46,34 +45,7 @@ src_compile() {
 
 src_install() {
 	dosbin smf-spf
-	insinto /etc/opendmarc
+	dodir /etc/mail/smfs
+	insinto /etc/mail/smfs
+	newins	"${S}"/smf-spf.conf smf-spf.conf
 }
-
-
-# CDEPEND="|| ( mail-filter/libmilter mail-mta/sendmail )
-# 	mysql? ( dev-db/opendbx[mysql=] )"
-
-#RDEPEND="${CDEPEND}
-#	sys-process/psmisc
-#	!minimal? ( dev-perl/DBI
-#		mysql? ( dev-perl/DBD-mysql )
-#	)"
-
-#	newinitd "${FILESDIR}"/opendmarc.init opendmarc
-#	insinto /etc/opendmarc
-#	newins	"${D}"/usr/share/doc/${P}/opendmarc.conf.sample opendmarc.conf
-#}
-
-
-# src_install() {
-#	dosbin src/qico
-#	dobin src/{qcc,qctl}
-#	dodoc ChangeLog Changes README FAQ qico.conf.sample qico.passwd.sample qico.substs.sample
-#	doman man/{qcc.8,qctl.8,qico.8}
-#	insinto /etc/fidonet
-#	newins qico.conf.sample qico.conf
-#	exeinto /etc/init.d
-#	newexe stuff/ftn ftn
-#	diropts -o fidonet -g fidonet
-#	dodir /var/run/fidonet /var/log/fidonet /var/spool/fidonet
-#}
