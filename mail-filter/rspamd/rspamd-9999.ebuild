@@ -32,14 +32,15 @@ DEPEND="dev-libs/openssl:0
 		sys-apps/file
 		virtual/libiconv"
 RDEPEND="${DEPEND}"
+CDEPEND="${DEPEND}"
+
+src_unpack() {
+	git-2_src_unpack
+}
 
 pkg_setup() {
 	enewgroup rspamd
 	enewuser rspamd -1 -1 /var/lib/rspamd rspamd
-}
-
-src_unpack() {
-	git-2_src_unpack
 }
 
 src_configure() {
