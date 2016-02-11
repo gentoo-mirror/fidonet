@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -14,27 +14,32 @@ HOMEPAGE="https://github.com/vstakhov/rspamd"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="+jit"
 
-DEPEND="dev-libs/libpcre
-		mail-filter/libmilter
-		mail-filter/opendkim
-		mail-filter/libspf2
-		dev-lang/luajit:2
+DEPEND="dev-libs/openssl:0
+		jit? (
+			dev-libs/libpcre[jit]
+			dev-lang/luajit:2
+		)
+		!jit? (
+			dev-libs/libpcre[-jit]
+			>=dev-lang/lua-5.1:0
+		)
 		dev-libs/libevent
 		dev-db/sqlite:3
 		dev-libs/glib:2
 		dev-libs/gmime
-		dev-libs/hiredis"
+		sys-apps/file
+		virtual/libiconv"
 RDEPEND="${DEPEND}"
-
-src_unpack() {
-	git-2_src_unpack
-}
 
 pkg_setup() {
 	enewgroup rspamd
 	enewuser rspamd -1 -1 /var/lib/rspamd rspamd
+}
+
+src_unpack() {
+	git-2_src_unpack
 }
 
 src_configure() {
@@ -43,6 +48,7 @@ src_configure() {
 		-DRUNDIR=/var/run/rspamd
 		-DDBDIR=/var/lib/rspamd
 		-DLOGDIR=/var/log/rspamd
+		-DENABLE_LUAJIT=$(usex jit)
 	)
 	cmake-utils_src_configure
 }
