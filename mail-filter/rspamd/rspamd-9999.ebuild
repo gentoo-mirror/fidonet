@@ -50,8 +50,8 @@ src_configure() {
 		-DDBDIR=/var/lib/rspamd
 		-DLOGDIR=/var/log/rspamd
 	)
-	if use jit; then
-		mycmakeargs="${mycmakeargs} -DENABLE_LUAJIT"
+	if ! use jit; then
+		mycmakeargs="${mycmakeargs} -DENABLE_LUAJIT=OFF"
 	fi
 	cmake-utils_src_configure
 }
