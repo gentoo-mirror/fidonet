@@ -3,11 +3,11 @@ DEPEND=dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit?
 DESCRIPTION=Rapid spam filtering system
 EAPI=5
 HOMEPAGE=https://github.com/vstakhov/rspamd
-IUSE=+jit debug static-libs
+IUSE=+jit debug +static-libs
 KEYWORDS=~amd64 ~x86
 LICENSE=BSD-2
 RDEPEND=dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv
 SLOT=0
 _eclass_exported_funcs=pkg_setup:- src_unpack:- src_prepare:cmake-utils src_configure:- src_compile:cmake-utils src_test:cmake-utils src_install:-
 _eclasses_=autotools	07e71b3b5690738ef7e8bc097077e00c	cmake-utils	c67ce9708a9c02be2d296cf547740e9c	eutils	28fb3e5852485af1c348d446b0b98389	flag-o-matic	d270fa247153df66074f795fa42dba3e	git-2	df00117322129fb906bb0a53c3d6a020	libtool	b75230758539a7da029e24afdb693960	multilib	3972ca401cf7dbb430df9995f5d8d580	toolchain-funcs	7a212e5e01adfa4805c9978366e6ee85	user	906f3c8eb3a2350a4f1191a89baa3e46	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
-_md5_=f8f4ba9e94dec45b8d5633cf55971929
+_md5_=8e71056c64f0c63c43b73b6978c8f48a
