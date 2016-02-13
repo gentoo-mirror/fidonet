@@ -7,5 +7,7 @@
 	</maintainer>
 	<use>
 		<flag name="jit">use just in time</flag>
+		<flag name="debug">enable debug</flag>
+		<flag name="static-libs">enable static libs</flag>
 	</use>
 </pkgmetadata>

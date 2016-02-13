@@ -14,7 +14,7 @@ HOMEPAGE="https://github.com/vstakhov/rspamd"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+jit"
+IUSE="+jit debug static-libs"
 
 DEPEND="dev-libs/openssl:0
 		jit? (
@@ -52,6 +52,12 @@ src_configure() {
 	)
 	if ! use jit; then
 		mycmakeargs="${mycmakeargs} -DENABLE_LUAJIT=OFF"
+	fi
+	if use debug; then
+		mycmakeargs="${mycmakeargs} -DDEBUG_MODE=ON"
+	fi
+	if use static-libs; then
+		mycmakeargs="${mycmakeargs} -DNO_SHARED=OFF"
 	fi
 	cmake-utils_src_configure
 }
