@@ -43,13 +43,14 @@ pkg_setup() {
 	enewuser rspamd -1 -1 /var/lib/rspamd rspamd
 }
 
+#		-DENABLE_LUAJIT="$(usex jit)"
+
 src_configure() {
 	local mycmakeargs=(
 		-DCONFDIR=/etc/rspamd
 		-DRUNDIR=/var/run/rspamd
 		-DDBDIR=/var/lib/rspamd
 		-DLOGDIR=/var/log/rspamd
-		-DENABLE_LUAJIT=$(usex jit)
 	)
 	cmake-utils_src_configure
 }

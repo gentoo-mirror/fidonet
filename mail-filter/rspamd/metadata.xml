@@ -2,12 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer>
-		<email>
-			me@junc.eu
-		</email>
-		<name>
-			Benny Pedersen
-		</name>
+		<email>me@junc.eu</email>
+		<name>Benny Pedersen</name>
 	</maintainer>
 	<use>
 		<flag name="jit">use just in time</flag>
