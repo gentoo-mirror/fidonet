@@ -45,19 +45,16 @@ pkg_setup() {
 
 src_configure() {
 	local mycmakeargs=(
-		-DCONFDIR=/etc/rspamd
-		-DRUNDIR=/var/run/rspamd
-		-DDBDIR=/var/lib/rspamd
-		-DLOGDIR=/var/log/rspamd
+		-DCONFDIR=/etc/rspamd -DRUNDIR=/var/run/rspamd -DDBDIR=/var/lib/rspamd -DLOGDIR=/var/log/rspamd
 	)
 	if ! use jit; then
-		mycmakeargs="${mycmakeargs} -DENABLE_LUAJIT=OFF"
+		mycmakeargs=${mycmakeargs} -DENABLE_LUAJIT=OFF
 	fi
 	if use debug; then
-		mycmakeargs="${mycmakeargs} -DDEBUG_MODE=ON"
+		mycmakeargs=${mycmakeargs} -DDEBUG_MODE=ON
 	fi
 	if ! use static-libs; then
-		mycmakeargs="${mycmakeargs} -DNO_SHARED=OFF"
+		mycmakeargs=${mycmakeargs} -DNO_SHARED=OFF
 	fi
 	cmake-utils_src_configure
 }
