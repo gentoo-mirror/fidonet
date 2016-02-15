@@ -54,7 +54,7 @@ src_configure() {
 		mycmakeargs=${mycmakeargs} -DDEBUG_MODE=ON
 	fi
 	if ! use static-libs; then
-		mycmakeargs=${mycmakeargs} -DNO_SHARED=OFF
+		mycmakeargs=${mycmakeargs} -DNO_SHARED=ON
 	fi
 	cmake-utils_src_configure
 }
