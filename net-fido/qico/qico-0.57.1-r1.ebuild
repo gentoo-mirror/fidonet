@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils toolchain-funcs
+inherit eutils libtool toolchain-funcs user
 
 DESCRIPTION="Qico is an FidoNet Technology Network (FTN) mailer"
 SRC_URI="http://distfiles.overlay.junc.org/fidonet/${P}xe.tar.bz2"

@@ -6,7 +6,7 @@ EAPI=5
 
 WANT_AUTOMAKE="1.9"
 
-inherit libtool autotools eutils toolchain-funcs
+inherit autotools eutils libtool toolchain-funcs user
 
 DESCRIPTION="Qico is an FidoNet Technology Network (FTN) mailer"
 SRC_URI="http://distfiles.overlay.junc.org/fidonet/${P}xe.tar.bz2"
