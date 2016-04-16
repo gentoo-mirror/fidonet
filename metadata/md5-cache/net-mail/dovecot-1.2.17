@@ -1,5 +1,5 @@
 DEFINED_PHASES=compile configure install postinst prepare setup
-DEPEND=berkdb? ( sys-libs/db ) caps? ( sys-libs/libcap ) kerberos? ( virtual/krb5 ) ldap? ( net-nds/openldap ) mysql? ( virtual/mysql ) pam? ( virtual/pam ) postgres? ( dev-db/postgresql !dev-db/postgresql[ldap,threads] ) sqlite? ( dev-db/sqlite ) ssl? ( dev-libs/openssl ) vpopmail? ( net-mail/vpopmail ) ssl? ( dev-libs/openssl )
+DEPEND=berkdb? ( sys-libs/db ) caps? ( sys-libs/libcap ) kerberos? ( virtual/krb5 ) ldap? ( net-nds/openldap ) mysql? ( virtual/mysql ) pam? ( virtual/pam ) postgres? ( dev-db/postgresql !dev-db/postgresql[ldap,threads] ) sqlite? ( dev-db/sqlite ) ssl? ( dev-libs/openssl ) vpopmail? ( net-mail/vpopmail ) ssl? ( || ( dev-libs/openssl:0= dev-libs/libressl:0= ) )
 DESCRIPTION=An IMAP and POP3 server written with security primarily in mind
 EAPI=4
 HOMEPAGE=http://www.dovecot.org/
@@ -11,5 +11,5 @@ RESTRICT=mirror
 SLOT=0
 SRC_URI=http://dovecot.org/releases/1.2/dovecot-1.2.17.tar.gz sieve? ( http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-sieve-0.1.19.tar.gz ) managesieve? ( http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2.17-managesieve-0.11.13.diff.gz http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-managesieve-0.11.13.tar.gz http://pigeonhole.dovecot.org/releases/1.2/dovecot-1.2-sieve-0.1.19.tar.gz )
 _eclass_exported_funcs=pkg_postinst:- pkg_setup:- src_prepare:- src_configure:- src_compile:- src_install:-
-_eclasses_=eutils	9d81603248f2ba3ec59124320d123e5e	multilib	23ae8c186171e6476af098d2a50d0ee0	ssl-cert	fd7c91ac6f84156489f28c0bc7a114e0	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	user	906f3c8eb3a2350a4f1191a89baa3e46	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
+_eclasses_=eutils	9d81603248f2ba3ec59124320d123e5e	multilib	23ae8c186171e6476af098d2a50d0ee0	ssl-cert	3ffe9a38dc10da66b5a04e8889040faa	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	user	906f3c8eb3a2350a4f1191a89baa3e46	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
 _md5_=4a61f683cb7ed8a959af3931e02ce1ce
