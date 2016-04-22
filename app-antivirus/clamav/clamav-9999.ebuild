@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils flag-o-matic user systemd git-2
+inherit eutils flag-o-matic user systemd git-r3
 
 DESCRIPTION="Clam Anti-Virus Scanner"
 HOMEPAGE="http://www.clamav.net/"
@@ -37,7 +37,7 @@ RDEPEND="${CDEPEND}
 DOCS=( AUTHORS BUGS ChangeLog FAQ INSTALL NEWS README UPGRADE )
 
 src_unpack() {
-	git-2_src_unpack
+	git-r3_src_unpack
 }
 
 pkg_setup() {

@@ -24,3 +24,4 @@ net-mail/dovecot:dbox - Add dbox storage support
 net-mail/dovecot:managesieve - Add managesieve protocol support
 net-mail/dovecot:sieve - Add sieve support
 net-mail/dovecot:vpopmail - Add vpopmail support
+www-apps/postfixadmin:vacation - Install vacation.pl script and dependencies

@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit cmake-utils user eutils git-2 autotools
+inherit cmake-utils user eutils git-r3
 
 DESCRIPTION="Another sendmail milter for different mail checks"
 SRC_URI=""
@@ -22,7 +22,7 @@ DEPEND="dev-libs/libpcre
 RDEPEND="${DEPEND}"
 
 src_unpack() {
-	git-2_src_unpack
+	git-r3_src_unpack
 }
 
 pkg_setup() {

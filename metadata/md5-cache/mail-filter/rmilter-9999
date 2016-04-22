@@ -1,5 +1,5 @@
 DEFINED_PHASES=compile configure install prepare setup test unpack
-DEPEND=dev-libs/libpcre mail-filter/libmilter mail-filter/opendkim sys-devel/make >=dev-util/cmake-2.8.12 dev-vcs/git !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.15:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
+DEPEND=dev-libs/libpcre mail-filter/libmilter mail-filter/opendkim sys-devel/make >=dev-util/cmake-2.8.12 >=dev-vcs/git-1.8.2.1
 DESCRIPTION=Another sendmail milter for different mail checks
 EAPI=5
 HOMEPAGE=https://github.com/vstakhov/rmilter
@@ -8,5 +8,5 @@ LICENSE=BSD
 RDEPEND=dev-libs/libpcre mail-filter/libmilter mail-filter/opendkim
 SLOT=0
 _eclass_exported_funcs=pkg_setup:- src_unpack:- src_prepare:cmake-utils src_configure:cmake-utils src_compile:cmake-utils src_test:cmake-utils src_install:-
-_eclasses_=autotools	07e71b3b5690738ef7e8bc097077e00c	cmake-utils	422bbd1bee2557490177a34dbe0a662b	eutils	792f83d5ec9536cb5ccef375469d8bde	flag-o-matic	d270fa247153df66074f795fa42dba3e	git-2	672c3929a162f221a53b4ccb4d25d8a2	libtool	4890219c51da247200223277f993e054	multilib	23ae8c186171e6476af098d2a50d0ee0	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	user	906f3c8eb3a2350a4f1191a89baa3e46	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
-_md5_=8785881e95201cd38d7b5310764fc345
+_eclasses_=cmake-utils	422bbd1bee2557490177a34dbe0a662b	eutils	792f83d5ec9536cb5ccef375469d8bde	flag-o-matic	d270fa247153df66074f795fa42dba3e	git-r3	ef66dfc3db09f327af21cf32f140fb2b	multilib	23ae8c186171e6476af098d2a50d0ee0	toolchain-funcs	d513d423d449877e49d99af3f7af7acb	user	906f3c8eb3a2350a4f1191a89baa3e46	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
+_md5_=5e47ff007f0093043f93a9fe8019b468

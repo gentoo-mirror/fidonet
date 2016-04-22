@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit cmake-utils user eutils git-2 autotools
+inherit cmake-utils user eutils git-r3
 
 DESCRIPTION="Rapid spam filtering system"
 SRC_URI=""
@@ -35,7 +35,7 @@ RDEPEND="${DEPEND}"
 CDEPEND="${DEPEND}"
 
 src_unpack() {
-	git-2_src_unpack
+	git-r3_src_unpack
 }
 
 pkg_setup() {
