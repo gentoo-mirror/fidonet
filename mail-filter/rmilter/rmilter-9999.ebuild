@@ -17,8 +17,9 @@ KEYWORDS="~amd64 ~x86"
 IUSE=""
 
 DEPEND="dev-libs/libpcre
-		mail-filter/libmilter
-		mail-filter/opendkim"
+	dev-libs/libmemcached
+	mail-filter/libmilter
+	mail-filter/opendkim"
 RDEPEND="${DEPEND}"
 
 src_unpack() {
