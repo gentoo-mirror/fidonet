@@ -30,7 +30,8 @@ DEPEND="dev-libs/openssl:0
 		dev-libs/glib:2
 		dev-libs/gmime
 		sys-apps/file
-		virtual/libiconv"
+		virtual/libiconv
+		dev-util/ragel"
 RDEPEND="${DEPEND}"
 CDEPEND="${DEPEND}"
 
