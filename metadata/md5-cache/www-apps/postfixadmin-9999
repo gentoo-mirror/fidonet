@@ -10,5 +10,5 @@ RDEPEND=vacation? ( dev-perl/DBI virtual/perl-MIME-Base64 dev-perl/MIME-EncWords
 REQUIRED_USE=|| ( mysql postgres )
 SLOT=9999
 _eclass_exported_funcs=pkg_prerm:webapp pkg_postrm:- pkg_postinst:- pkg_setup:- src_unpack:- src_install:-
-_eclasses_=git-2	672c3929a162f221a53b4ccb4d25d8a2	user	906f3c8eb3a2350a4f1191a89baa3e46	webapp	42c6ef7af496b228f9854b3c81e4b226
+_eclasses_=git-2	7af5d170bfc02983b4bcd3167dc5edd4	user	906f3c8eb3a2350a4f1191a89baa3e46	webapp	42c6ef7af496b228f9854b3c81e4b226
 _md5_=273c5fe730312062821653671c3508f0
