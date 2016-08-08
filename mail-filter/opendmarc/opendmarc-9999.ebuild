@@ -14,11 +14,12 @@ EGIT_REPO_URI="git://git.code.sf.net/u/pktomo/opendmarc"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~x86 ~x86-fbsd"
-IUSE="spf"
+IUSE="spf mysql"
 
 DEPEND="dev-perl/DBI
 	mail-filter/libmilter"
 RDEPEND="${DEPEND}
+	dev-perl/HTTP-Message
 	dev-perl/Switch
 	spf? ( mail-filter/libspf2 )"
 
