@@ -14,7 +14,7 @@ HOMEPAGE="https://github.com/vstakhov/rspamd"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+jit debug +static-libs"
+IUSE="-fann +jit -debug +static-libs logrotate"
 
 DEPEND="dev-libs/openssl:0
 		jit? (
@@ -31,7 +31,8 @@ DEPEND="dev-libs/openssl:0
 		dev-libs/gmime
 		sys-apps/file
 		virtual/libiconv
-		dev-util/ragel"
+		dev-util/ragel
+		fann? ( sci-mathematics/fann )"
 RDEPEND="${DEPEND}"
 CDEPEND="${DEPEND}"
 
@@ -46,17 +47,14 @@ pkg_setup() {
 
 src_configure() {
 	local mycmakeargs=(
-		-DCONFDIR=/etc/rspamd -DRUNDIR=/var/run/rspamd -DDBDIR=/var/lib/rspamd -DLOGDIR=/var/log/rspamd
+		-DCONFDIR=/etc/rspamd
+		-DRUNDIR=/var/run/rspamd
+		-DDBDIR=/var/lib/rspamd
+		-DLOGDIR=/var/log/rspamd
+		-DENABLE_FANN=$(usex fann ON OFF)
+		-DENABLE_LUAJIT=$(usex jit ON OFF)
+		-DNO_SHARED=$(usex static-libs ON OFF)
 	)
-	if ! use jit; then
-		mycmakeargs=${mycmakeargs} -DENABLE_LUAJIT=OFF
-	fi
-	if use debug; then
-		mycmakeargs=${mycmakeargs} -DDEBUG_MODE=ON
-	fi
-	if ! use static-libs; then
-		mycmakeargs=${mycmakeargs} -DNO_SHARED=ON
-	fi
 	cmake-utils_src_configure
 }
 
@@ -65,9 +63,14 @@ src_install() {
 	newinitd "${FILESDIR}/rspamd.initd" rspamd
 	newconfd "${FILESDIR}/rspamd.confd" rspamd
 	dodir /var/lib/rspamd
-	dodir /var/lib/rspamd/dynamic
 	dodir /var/log/rspamd
-	fowners rspamd:rspamd /var/lib/rspamd /var/lib/rspamd/dynamic /var/log/rspamd
-	insinto /etc/logrotate.d
-	newins "${FILESDIR}/rspamd.logrotate" rspamd
+	fowners rspamd:rspamd /var/lib/rspamd /var/log/rspamd
+	# dodir /var/lib/rspamd/dynamic
+	# fowners rspamd:rspamd /var/lib/rspamd/dynamic
+	# insinto /etc/logrotate.d
+	# newins "${FILESDIR}/rspamd.logrotate" rspamd
+	if use logrotate ; then
+		insinto /etc/logrotate.d
+		newins "${FILESDIR}"/rspamd.logrotate rspamd
+	fi
 }

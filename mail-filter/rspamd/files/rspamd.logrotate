@@ -1,4 +1,4 @@
-/var/log/rspamd/rspamd.log{
+/var/log/rspamd/rspamd.log {
        daily
        rotate 4
        delaycompress
@@ -6,7 +6,6 @@
        notifempty
        missingok
        postrotate
-          service rspamd reopenlog >/dev/null 2>&1 || true
+             service rspamd reload >/dev/null 2>&1 || true
        endscript
 }
-

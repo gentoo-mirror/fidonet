@@ -1,0 +1,22 @@
+|| ( virtual/httpd-cgi virtual/httpd-fastcgi ) >=app-admin/webapp-config-1.50.15 >=dev-vcs/git-1.8.2.1
+virtual/httpd-php mysql? ( || ( dev-lang/php:5.6[mysqli] dev-lang/php:5.6[mysql] ) ) >=app-admin/webapp-config-1.50.15
+9999
+
+
+http://github.com/mazay
+GPL-2
+Web Based Management tool for Pure-ftpd style virtual domains and users
+~amd64 ~ppc ~x86
+eutils git-r3 multilib toolchain-funcs user webapp
+mysql postgres sqlite vhosts
+|| ( mysql postgres )
+
+
+5
+
+install postinst prerm setup unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+net-mail/spf-tools >=dev-vcs/git-1.8.2.1
+
+0
+
+
+https://github.com/stevejenkins/postwhite.git
+BSD
+Postwhite whitelist script based on spf
+~amd64 ~x86
+eutils git-r3 multilib toolchain-funcs
+
+
+
+
+5
+
+unpack
+
+
+
+
+

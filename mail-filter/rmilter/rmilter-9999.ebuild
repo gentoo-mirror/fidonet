@@ -14,12 +14,12 @@ HOMEPAGE="https://github.com/vstakhov/rmilter"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="dkim memcached"
 
 DEPEND="dev-libs/libpcre
-	dev-libs/libmemcached
 	mail-filter/libmilter
-	mail-filter/opendkim"
+	dkim? ( mail-filter/opendkim )
+	memcached? ( dev-libs/libmemcached )"
 RDEPEND="${DEPEND}"
 
 src_unpack() {
@@ -29,6 +29,14 @@ src_unpack() {
 pkg_setup() {
 	enewgroup rmilter
 	enewuser rmilter -1 -1 /var/run/rmilter rmilter
+}
+
+src_configure() {
+	local mycmakeargs=(
+		-DENABLE_DKIM=$(usex dkim ON OFF)
+		-DENABLE_MEMCACHED=$(usex memcached ON OFF)
+	)
+	cmake-utils_src_configure
 }
 
 src_install() {

@@ -1,11 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-  <maintainer>
-    <email>me@junc.eu</email>
-    <name>Benny Pedersen</name>
-  </maintainer>
-  <upstream>
-    <remote-id type="github">vstakhov/rmilter</remote-id>
-  </upstream>
+	<maintainer>
+		<email>me@junc.eu</email>
+		<name>Benny Pedersen</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">vstakhov/rmilter</remote-id>
+	</upstream>
+	<use>
+		<flag name="dkim">Enable support for DomainKeys Identified Mail</flag>
+		<flag name="memcached">Enable support for memcached</flag>
+	</use>
 </pkgmetadata>

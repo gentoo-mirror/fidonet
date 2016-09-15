@@ -1,7 +1,7 @@
 # Config file for /etc/init.d/rspamd
 
 # run as this nice level
-RSPAMD_NICELEVEL=3
+RSPAMD_NICELEVEL=5
 
 # run as this io nice level
 RSPAMD_IONICE_LEVEL=2
