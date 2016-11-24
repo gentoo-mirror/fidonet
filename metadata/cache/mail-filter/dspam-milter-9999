@@ -12,7 +12,7 @@ python_targets_python2_7
 || ( python_targets_python2_7 )
 
 
-5
+6
 
 compile configure install prepare test unpack
 
