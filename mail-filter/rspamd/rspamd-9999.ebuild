@@ -32,7 +32,8 @@ DEPEND="dev-libs/openssl:0
 		sys-apps/file
 		virtual/libiconv
 		dev-util/ragel
-		fann? ( sci-mathematics/fann )"
+		fann? ( sci-mathematics/fann )
+		media-libs/gd[jpeg,png]"
 RDEPEND="${DEPEND}"
 CDEPEND="${DEPEND}"
 

@@ -1,13 +1,13 @@
 DEFINED_PHASES=compile configure install prepare setup test unpack
-DEPEND=dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) sys-devel/make >=dev-util/cmake-2.8.12 >=dev-vcs/git-1.8.2.1
+DEPEND=dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) media-libs/gd[jpeg,png] sys-devel/make >=dev-util/cmake-2.8.12 >=dev-vcs/git-1.8.2.1
 DESCRIPTION=Rapid spam filtering system
 EAPI=5
 HOMEPAGE=https://github.com/vstakhov/rspamd
 IUSE=-fann +jit -debug +static-libs logrotate
 KEYWORDS=~amd64 ~x86
 LICENSE=BSD-2
-RDEPEND=dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann )
+RDEPEND=dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) media-libs/gd[jpeg,png]
 SLOT=0
 _eclass_exported_funcs=pkg_setup:- src_unpack:- src_prepare:cmake-utils src_configure:- src_compile:cmake-utils src_test:cmake-utils src_install:-
 _eclasses_=cmake-utils	5e0b7e906a2e173540595bcd12cd2ae1	eutils	b83a2420b796f7c6eff682679d08fe25	flag-o-matic	7366202dd55cb8f018f5d450d54e7749	git-r3	e928b84a9f6f1d9076d1d27687876dc6	multilib	165fc17c38d1b11dac2008280dab6e80	toolchain-funcs	1b1da0c45c555989dc5d832b54880783	user	80aaa71614ced86f02ee1a513821dc87	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
-_md5_=532509eea0e23046bbb9619bda916659
+_md5_=8800a0c6382cdb2e4e9c2f439263c979
