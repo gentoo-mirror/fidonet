@@ -26,6 +26,10 @@ mail-filter/rspamd:fann - Enable fann for neural network plugin
 mail-filter/rspamd:jit - use just in time
 mail-filter/rspamd:logrotate - use app-admin/logrotate for rotating logs rather than custom cron scripts
 mail-filter/rspamd:static-libs - enable static libs
+net-fido/binkd:aso - Amiga Style Outbound
+net-fido/binkd:bwlim - Bandwidth Limit
+net-fido/binkd:ntlm - NTLM Auth
+net-fido/binkd:proxy - HTTPS proxy
 net-mail/dovecot:cydir - Add cydir storage support
 net-mail/dovecot:dbox - Add dbox storage support
 net-mail/dovecot:managesieve - Add managesieve protocol support

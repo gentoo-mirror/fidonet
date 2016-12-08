@@ -1,0 +1,22 @@
+dev-lang/perl
+dev-lang/perl
+0
+mirror://sourceforge/ftrack-as/1.26/rntrack-1_26-src.tgz
+
+http://ftrack-as.sourceforge.net/
+GPL-2
+A FTN Messages tracker
+amd64 x86
+eutils multilib toolchain-funcs versionator
+perl
+
+
+
+5
+
+compile install prepare unpack
+
+
+
+
+

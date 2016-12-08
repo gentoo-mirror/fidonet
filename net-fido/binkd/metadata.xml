@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@junc.org</email>
+		<name>Benny Pedersen</name>
+	</maintainer>
+	<use>
+		<flag name="aso">Amiga Style Outbound</flag>
+		<flag name="bwlim">Bandwidth Limit</flag>
+		<flag name="ntlm">NTLM Auth</flag>
+		<flag name="proxy">HTTPS proxy</flag>
+	</use>
+	<longdescription lang="en">
+		English manual for binkd 0.9.2
+		http://www.doe.carleton.ca/~nsoveiko/fido/binkd/man/ (c) Nick Soveiko nsoveiko@doe.carleton.ca
+		Russian manual for binkd 0.9.9
+		http://binkd.grumbler.org/binkd-ug-ru.htm.win.ru (c) Stas Degteff 2:5080/102@fidonet
+		FAQ http://binkd.grumbler.org/binkdfaq.shtml
+	</longdescription>
+</pkgmetadata>

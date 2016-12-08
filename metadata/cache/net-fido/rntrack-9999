@@ -1,0 +1,22 @@
+dev-lang/perl !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.15:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4 || ( dev-vcs/subversion[http] dev-vcs/subversion[webdav-neon] dev-vcs/subversion[webdav-serf] ) net-misc/rsync
+dev-lang/perl
+0
+
+
+http://ftrack-as.sourceforge.net/
+GPL-2
+A FTN Messages tracker
+~amd64 ~x86
+autotools eutils flag-o-matic libtool multilib subversion toolchain-funcs
+perl
+
+
+
+5
+
+compile install preinst prepare unpack
+
+
+
+
+

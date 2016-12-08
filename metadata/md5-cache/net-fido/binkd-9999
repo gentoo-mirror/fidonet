@@ -1,0 +1,13 @@
+DEFINED_PHASES=compile configure install unpack
+DEPEND=bzip2? ( >=app-arch/bzip2-1.0.6 ) zlib? ( >=sys-libs/zlib-1.2.3-r1 ) perl? ( dev-lang/perl ) dev-vcs/git
+DESCRIPTION=Binkd daemon for ftn over ip
+EAPI=5
+HOMEPAGE=http://www.corbina.net/~maloff/binkd/
+IUSE=aso bwlim +bzip2 doc ntlm perl proxy +zlib
+KEYWORDS=x86 amd64
+LICENSE=GPL-2
+RDEPEND=bzip2? ( >=app-arch/bzip2-1.0.6 ) zlib? ( >=sys-libs/zlib-1.2.3-r1 ) perl? ( dev-lang/perl )
+SLOT=0
+_eclass_exported_funcs=src_unpack:- src_configure:- src_compile:- src_install:-
+_eclasses_=eutils	b83a2420b796f7c6eff682679d08fe25	git-2	7af5d170bfc02983b4bcd3167dc5edd4	multilib	165fc17c38d1b11dac2008280dab6e80	toolchain-funcs	1b1da0c45c555989dc5d832b54880783
+_md5_=bb4627d747d038abccbf86d36835be0e

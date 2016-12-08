@@ -1,0 +1,22 @@
+sys-libs/ncurses:0 net-dialup/mgetty =sys-devel/automake-1.9.6-r4 !<sys-devel/gettext-0.18.1.1-r3 =sys-devel/automake-1.13.4* >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
+sys-libs/ncurses:0 net-dialup/mgetty
+0
+mirror://sourceforge/qico/qico-0.58.tar.bz2
+
+http://sourceforge.net/projects/qico
+BSD
+Qico is an FidoNet Technology Network (FTN) mailer
+~x86 ~amd64
+autotools eutils libtool multilib toolchain-funcs user
+
+
+
+
+5
+
+compile configure prepare unpack
+
+
+
+
+

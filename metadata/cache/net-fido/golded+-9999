@@ -1,0 +1,22 @@
+sys-libs/ncurses:0 doc? ( sys-apps/texinfo ) dev-vcs/cvs
+sys-libs/ncurses:0 doc? ( sys-apps/texinfo )
+0
+
+
+http://golded-plus.sourceforge.net
+LGPL-2
+FTN Editor golded+
+x86 amd64
+cvs eutils multilib toolchain-funcs versionator
+-doc
+
+
+
+5
+
+compile install prepare unpack
+
+
+
+
+

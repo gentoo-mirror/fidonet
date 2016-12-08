@@ -1,0 +1,22 @@
+sys-libs/ncurses:0 net-dialup/mgetty
+sys-libs/ncurses:0 net-dialup/mgetty
+0
+http://distfiles.overlay.junc.org/fidonet/qico-0.57.1xe.tar.bz2
+mirror
+http://sourceforge.net/projects/qico
+BSD
+Qico is an FidoNet Technology Network (FTN) mailer
+~x86 ~amd64
+eutils libtool multilib toolchain-funcs user
+
+
+
+
+5
+
+compile configure install setup unpack
+
+
+
+
+
