@@ -19,7 +19,7 @@ LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="x86 amd64"
 # IUSE="spell -hunspell -doc"
-IUSE="-doc"
+IUSE=""
 
 # DEPEND=">=sys-libs/ncurses-5.4
 # 	spell? (
@@ -29,8 +29,8 @@ IUSE="-doc"
 # 	)
 # 	doc? ( sys-apps/texinfo )"
 
-DEPEND="sys-libs/ncurses:0
-	doc? ( sys-apps/texinfo )"
+DEPEND="sys-libs/ncurses:0"
+# 	doc? ( sys-apps/texinfo )"
 RDEPEND="${DEPEND}"
 
 # pdep=""
@@ -84,17 +84,17 @@ src_prepare() {
 
 src_compile() {
 	emake PLATFORM=lnx || die "emake failed"
-	use doc && (emake docs || die "emake docs failed")
+	# use doc && (emake docs || die "emake docs failed")
 }
 
 src_install() {
 	dobin bin/gedlnx bin/gnlnx bin/rddtlnx
-	doman docs/*.1
-	if useq doc ; then
-		dodoc docs/*.txt docs/notework.rus
-		dodoc manuals/*.txt
-		dohtml docs/*.html
-	fi
+	#doman docs/*.1
+	#if useq doc ; then
+	# 	dodoc docs/*.txt docs/notework.rus
+	# 	dodoc manuals/*.txt
+	# 	dohtml docs/*.html
+	#fi
 	insinto /usr/share/golded-plus
 	doins bin/screenrc_koi8r
 	exeinto /etc/ftn/golded.sample

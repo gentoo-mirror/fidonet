@@ -1,13 +1,12 @@
 DEFINED_PHASES=compile install prepare unpack
-DEPEND=sys-libs/ncurses:0 doc? ( sys-apps/texinfo ) dev-vcs/cvs
+DEPEND=sys-libs/ncurses:0 dev-vcs/cvs
 DESCRIPTION=FTN Editor golded+
 EAPI=5
 HOMEPAGE=http://golded-plus.sourceforge.net
-IUSE=-doc
 KEYWORDS=x86 amd64
 LICENSE=LGPL-2
-RDEPEND=sys-libs/ncurses:0 doc? ( sys-apps/texinfo )
+RDEPEND=sys-libs/ncurses:0
 SLOT=0
 _eclass_exported_funcs=src_unpack:- src_prepare:- src_compile:- src_install:-
 _eclasses_=cvs	e94c89c58918dff87fa3db1e817c25be	eutils	b83a2420b796f7c6eff682679d08fe25	multilib	165fc17c38d1b11dac2008280dab6e80	toolchain-funcs	1b1da0c45c555989dc5d832b54880783	versionator	99ae9d758cbe7cfed19170e7d48f5a9c
-_md5_=b18e6e7202befd2d12d47e8e602a967f
+_md5_=f7581b13277f54dbb53bb9624d879f8c

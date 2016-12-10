@@ -8,7 +8,7 @@ GPL-2
 A FTN Messages tracker
 ~amd64 ~x86
 autotools eutils flag-o-matic libtool multilib subversion toolchain-funcs
-perl
+
 
 
 

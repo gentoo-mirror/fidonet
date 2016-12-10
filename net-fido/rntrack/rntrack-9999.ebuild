@@ -14,7 +14,7 @@ SLOT="0"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~x86"
 #IUSE="-perl -log_pid -syslog_log_format"
-IUSE="perl"
+IUSE=""
 
 #DEPEND="sys-devel/automake perl? ( dev-lang/perl )"
 DEPEND="dev-lang/perl"
@@ -43,10 +43,11 @@ src_prepare() {
 
 src_compile() {
 	cd MakeFiles/linux
-	emake $( useq perl && echo "ENABLE_SCRIPTS=1" || echo "ENABLE_SCRIPTS=0" ) \
-		$( useq log_pid && echo "ENABLE_LOG_PID=1" || echo "ENABLE_LOG_PID=0" ) \
-		$( useq syslog_log_format && echo "ENABLE_SYSLOG_LOG_FORMAT=1" || echo "ENABLE_SYSLOG_LOG_FORMAT=0" ) \
-		|| die "emake failed"
+	#emake $( useq perl && echo "ENABLE_SCRIPTS=1" || echo "ENABLE_SCRIPTS=0" ) \
+	# 	$( useq log_pid && echo "ENABLE_LOG_PID=1" || echo "ENABLE_LOG_PID=0" ) \
+	# 	$( useq syslog_log_format && echo "ENABLE_SYSLOG_LOG_FORMAT=1" || echo "ENABLE_SYSLOG_LOG_FORMAT=0" ) \
+	# 	|| die "emake failed"
+	emake || die "src compile failed"
 }
 
 src_install() {

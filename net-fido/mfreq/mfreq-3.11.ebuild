@@ -20,7 +20,6 @@ RDEPEND=""
 S=${WORKDIR}/mfreq-3.11
 
 src_compile() {
-		cd ${S}
 		emake -f Makefile || die
 }
 src_install() {
