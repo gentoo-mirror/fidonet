@@ -1,5 +1,5 @@
-dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) media-libs/gd[jpeg,png] sys-devel/make >=dev-util/cmake-2.8.12 >=dev-vcs/git-1.8.2.1
-dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 dev-libs/gmime sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) media-libs/gd[jpeg,png]
+dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) media-libs/gd[jpeg,png] sys-devel/make >=dev-util/cmake-3.5.2 >=dev-vcs/git-1.8.2.1
+dev-libs/openssl:0 jit? ( dev-libs/libpcre[jit] dev-lang/luajit:2 ) !jit? ( dev-libs/libpcre[-jit] >=dev-lang/lua-5.1:0 ) dev-libs/libevent dev-db/sqlite:3 dev-libs/glib:2 sys-apps/file virtual/libiconv dev-util/ragel fann? ( sci-mathematics/fann ) media-libs/gd[jpeg,png]
 0
 
 

@@ -16,6 +16,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="-fann +jit -debug +static-libs logrotate"
 
+#		dev-libs/gmime
+
 DEPEND="dev-libs/openssl:0
 		jit? (
 			dev-libs/libpcre[jit]
@@ -28,7 +30,6 @@ DEPEND="dev-libs/openssl:0
 		dev-libs/libevent
 		dev-db/sqlite:3
 		dev-libs/glib:2
-		dev-libs/gmime
 		sys-apps/file
 		virtual/libiconv
 		dev-util/ragel

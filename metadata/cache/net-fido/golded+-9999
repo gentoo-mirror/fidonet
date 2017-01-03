@@ -1,5 +1,5 @@
-sys-libs/ncurses:0 doc? ( sys-apps/texinfo ) dev-vcs/cvs
-sys-libs/ncurses:0 doc? ( sys-apps/texinfo )
+sys-libs/ncurses:0 dev-vcs/cvs
+sys-libs/ncurses:0
 0
 
 
@@ -8,7 +8,7 @@ LGPL-2
 FTN Editor golded+
 x86 amd64
 cvs eutils multilib toolchain-funcs versionator
--doc
+
 
 
 
