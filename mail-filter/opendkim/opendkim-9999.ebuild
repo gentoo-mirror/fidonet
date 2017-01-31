@@ -50,20 +50,10 @@ src_unpack() {
 }
 
 src_prepare() {
-	sed -i -e 's:/var/db/dkim:/etc/opendkim:g' \
-	       -e 's:/var/db/opendkim:/var/lib/opendkim:g' \
-	       -e 's:/etc/mail:/etc/opendkim:g' \
-	       -e 's:mailnull:milter:g' \
-	       -e 's:^#[[:space:]]*PidFile.*:PidFile /run/opendkim/opendkim.pid:' \
-		   opendkim/opendkim.conf.sample opendkim/opendkim.conf.simple.in \
-		   stats/opendkim-reportstats{,.in} || die
-
-	sed -i -e 's:dist_doc_DATA:dist_html_DATA:' libopendkim/docs/Makefile.am \
-		|| die
-
-	sed -i -e '/sock.*mt.getcwd/s:mt.getcwd():"/tmp":' opendkim/tests/*.lua
-	sed -i -e '/sock.*mt.getcwd/s:mt.getcwd():"/proc/self/cwd":' opendkim/tests/*.lua
-
+	# sed -i -e 's:/var/db/dkim:/etc/opendkim:g' -e 's:/var/db/opendkim:/var/lib/opendkim:g' -e 's:/etc/mail:/etc/opendkim:g' -e 's:mailnull:milter:g' -e 's:^#[[:space:]]*PidFile.*:PidFile /run/opendkim/opendkim.pid:' opendkim/opendkim.conf.sample opendkim/opendkim.conf.simple.in stats/opendkim-reportstats{,.in} || die "sed1"
+	# sed -i -e 's:dist_doc_DATA:dist_html_DATA:' libopendkim/docs/Makefile.am || die "sed2"
+	# sed -i -e '/sock.*mt.getcwd/s:mt.getcwd():"/tmp":' opendkim/tests/*.lua || die "sed3"
+	# sed -i -e '/sock.*mt.getcwd/s:mt.getcwd():"/proc/self/cwd":' opendkim/tests/*.lua || die "sed4"
 	eautoreconf
 }
 
