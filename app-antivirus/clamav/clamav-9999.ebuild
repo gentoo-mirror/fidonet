@@ -52,6 +52,7 @@ src_prepare() {
 
 src_configure() {
 	econf \
+		--disable-zlib-vcheck \
 		--disable-experimental \
 		--disable-fanotify \
 		--enable-id-check \
