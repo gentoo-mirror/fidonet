@@ -42,7 +42,7 @@ src_prepare() {
 #}
 
 src_compile() {
-	cd MakeFiles/linux
+	#cd MakeFiles/linux
 	#emake $( useq perl && echo "ENABLE_SCRIPTS=1" || echo "ENABLE_SCRIPTS=0" ) \
 	# 	$( useq log_pid && echo "ENABLE_LOG_PID=1" || echo "ENABLE_LOG_PID=0" ) \
 	# 	$( useq syslog_log_format && echo "ENABLE_SYSLOG_LOG_FORMAT=1" || echo "ENABLE_SYSLOG_LOG_FORMAT=0" ) \
