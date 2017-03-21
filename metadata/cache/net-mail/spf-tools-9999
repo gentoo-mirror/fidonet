@@ -7,7 +7,7 @@ https://github.com/jsarenik/spf-tools.git
 BSD
 spf-tools writed in bash to make life more fun
 ~amd64 ~x86
-eutils git-r3 multilib toolchain-funcs
+epatch estack eutils git-r3 ltprune multilib toolchain-funcs
 
 
 

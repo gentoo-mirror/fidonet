@@ -7,7 +7,7 @@ http://sourceforge.net/projects/opendmarc/ https://sourceforge.net/u/pktomo/open
 BSD
 Open source DMARC implementation
 ~alpha ~amd64 ~arm ~hppa ~ia64 ~x86 ~x86-fbsd
-autotools eutils git-r3 libtool multilib toolchain-funcs user
+autotools epatch estack eutils git-r3 libtool ltprune multilib toolchain-funcs user
 spf mysql
 
 

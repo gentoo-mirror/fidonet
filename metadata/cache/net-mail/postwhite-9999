@@ -7,7 +7,7 @@ https://github.com/stevejenkins/postwhite.git
 BSD
 Postwhite whitelist script based on spf
 ~amd64 ~x86
-eutils git-r3 multilib toolchain-funcs
+epatch estack eutils git-r3 ltprune multilib toolchain-funcs
 
 
 
