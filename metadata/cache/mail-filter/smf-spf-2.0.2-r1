@@ -7,7 +7,7 @@ http://smfs.sourceforge.net
 BSD
 spf milter
 ~x86 ~amd64
-epatch estack eutils ltprune multilib toolchain-funcs user
+epatch epunt-cxx estack eutils ltprune multilib toolchain-funcs user
 
 
 

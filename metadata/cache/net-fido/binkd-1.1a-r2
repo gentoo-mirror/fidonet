@@ -7,7 +7,7 @@ http://www.corbina.net/~maloff/binkd/
 GPL-2
 Binkd daemon for ftn over ip
 x86 amd64
-epatch estack eutils ltprune multilib toolchain-funcs
+epatch epunt-cxx estack eutils ltprune multilib toolchain-funcs
 aso bwlim +bzip2 doc ntlm perl proxy +zlib
 
 

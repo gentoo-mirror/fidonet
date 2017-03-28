@@ -7,7 +7,7 @@ https://github.com/vstakhov/rmilter
 BSD
 Another sendmail milter for different mail checks
 ~amd64 ~x86
-cmake-utils epatch estack eutils flag-o-matic git-r3 ltprune multilib multiprocessing toolchain-funcs user versionator
+cmake-utils epatch epunt-cxx estack eutils flag-o-matic git-r3 ltprune multilib multiprocessing toolchain-funcs user versionator
 dkim memcached
 
 

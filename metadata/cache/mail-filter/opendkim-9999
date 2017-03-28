@@ -1,4 +1,4 @@
-|| ( mail-filter/libmilter mail-mta/sendmail ) dev-libs/libbsd ssl? ( !libressl? ( dev-libs/openssl:0= ) libressl? ( dev-libs/libressl:0= ) ) berkdb? ( >=sys-libs/db-3.2:* ) opendbx? ( >=dev-db/opendbx-1.4.0 ) lua? ( dev-lang/lua:* ) ldap? ( net-nds/openldap ) lmdb? ( dev-db/lmdb ) memcached? ( dev-libs/libmemcached ) sasl? ( dev-libs/cyrus-sasl ) unbound? ( >=net-dns/unbound-1.4.1 net-dns/dnssec-root ) !unbound? ( net-libs/ldns ) gnutls? ( >=net-libs/gnutls-2.11.7 ) !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.15:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4 virtual/pkgconfig >=dev-vcs/git-1.8.2.1
+|| ( mail-filter/libmilter mail-mta/sendmail ) dev-libs/libbsd ssl? ( !libressl? ( dev-libs/openssl:0= ) libressl? ( dev-libs/libressl:0= ) ) berkdb? ( >=sys-libs/db-3.2:* ) opendbx? ( >=dev-db/opendbx-1.4.0 ) lua? ( dev-lang/lua:* ) ldap? ( net-nds/openldap ) lmdb? ( dev-db/lmdb ) memcached? ( dev-libs/libmemcached ) sasl? ( dev-libs/cyrus-sasl ) unbound? ( >=net-dns/unbound-1.4.1 net-dns/dnssec-root ) !unbound? ( net-libs/ldns ) gnutls? ( >=net-libs/gnutls-2.11.7 ) >=app-portage/elt-patches-20170317 !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.15:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4 virtual/pkgconfig >=dev-vcs/git-1.8.2.1
 || ( mail-filter/libmilter mail-mta/sendmail ) dev-libs/libbsd ssl? ( !libressl? ( dev-libs/openssl:0= ) libressl? ( dev-libs/libressl:0= ) ) berkdb? ( >=sys-libs/db-3.2:* ) opendbx? ( >=dev-db/opendbx-1.4.0 ) lua? ( dev-lang/lua:* ) ldap? ( net-nds/openldap ) lmdb? ( dev-db/lmdb ) memcached? ( dev-libs/libmemcached ) sasl? ( dev-libs/cyrus-sasl ) unbound? ( >=net-dns/unbound-1.4.1 net-dns/dnssec-root ) !unbound? ( net-libs/ldns ) gnutls? ( >=net-libs/gnutls-2.11.7 ) sys-process/psmisc selinux? ( sec-policy/selinux-dkim )
 0
 
@@ -7,7 +7,7 @@ http://opendkim.org https://sourceforge.net/u/pktomo/opendkim/ci/master/tree/
 Sendmail-Open-Source BSD
 A milter-based application to provide DKIM signing and verification
 ~amd64 ~arm ~x86
-autotools db-use epatch estack eutils git-r3 libtool ltprune multilib systemd toolchain-funcs user versionator
+autotools db-use epatch epunt-cxx estack eutils git-r3 libtool ltprune multilib systemd toolchain-funcs user versionator
 +berkdb gnutls ldap libressl lmdb lua memcached opendbx poll sasl selinux +ssl static-libs unbound
 sasl? ( ldap )
 

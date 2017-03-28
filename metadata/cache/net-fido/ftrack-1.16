@@ -1,4 +1,4 @@
-
+>=app-portage/elt-patches-20170317
 
 0
 ftp://fidonet.overlay.junc.org/pub/overlays/fidonet/ftrack-1.16.tar.lzma
@@ -7,7 +7,7 @@ http://ftrack-as.sourceforge.net
 GPL-2
 FIDO FTN Tracker
 x86 amd64
-autotools autotools-utils epatch estack eutils libtool ltprune multilib toolchain-funcs
+autotools autotools-utils epatch epunt-cxx estack eutils libtool ltprune multilib toolchain-funcs
 
 
 
