@@ -13,7 +13,8 @@ EGIT_REPO_URI="git://git.code.sf.net/u/pktomo/opendkim"
 
 LICENSE="Sendmail-Open-Source BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86"
+# ~arm
+KEYWORDS="~amd64 ~x86"
 IUSE="+berkdb gnutls ldap libressl lmdb lua memcached opendbx poll sasl selinux +ssl static-libs unbound"
 
 DEPEND="|| ( mail-filter/libmilter mail-mta/sendmail )

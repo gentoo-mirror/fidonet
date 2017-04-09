@@ -4,6 +4,9 @@
 
 app-antivirus/clamav:clamdtop - A Top like tool which shows what clamd is currently scanning amongst other things
 app-antivirus/clamav:metadata-analysis-api - Enables collection of file property metadata using ClamAV API for analysis by ClamAV bytecode programs.
+dev-db/clickhouse:client - Build command-line ClickHouse client
+dev-db/clickhouse:mongodb - Support external dictionaries in MongoDB
+dev-db/clickhouse:server - Build ClickHouse server
 mail-filter/dovecot-antispam:crm114 - Build CRM114 backend
 mail-filter/dovecot-antispam:dspam - Build mail-filter/dspam backend
 mail-filter/dovecot-antispam:mailtrain - Build mailtrain backend

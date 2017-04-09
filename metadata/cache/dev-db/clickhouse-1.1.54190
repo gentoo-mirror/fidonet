@@ -1,0 +1,22 @@
+dev-libs/libltdl[static-libs] sys-libs/zlib[static-libs] dev-libs/libpcre client? ( sys-libs/ncurses:0 sys-libs/readline:0 ) || ( dev-db/unixODBC[static-libs] dev-libs/poco[odbc] ) sys-libs/libtermcap-compat[static-libs] dev-libs/icu[static-libs] dev-libs/glib[static-libs] dev-libs/boost[static-libs] dev-libs/openssl[static-libs] dev-libs/zookeeper-c[static-libs] dev-util/patchelf virtual/libmysqlclient[static-libs] || ( >=sys-devel/gcc-5.0 >=sys-devel/clang-3.8 ) sys-devel/make >=dev-util/cmake-3.7.2
+dev-libs/libltdl[static-libs] sys-libs/zlib[static-libs] dev-libs/libpcre client? ( sys-libs/ncurses:0 sys-libs/readline:0 ) || ( dev-db/unixODBC[static-libs] dev-libs/poco[odbc] )
+0/stable
+https://github.com/yandex/ClickHouse/archive/v1.1.54190-stable.tar.gz -> clickhouse-1.1.54190.tar.gz
+
+https://clickhouse.yandex
+Apache-2.0
+An OSS column-oriented database management system for real-time data analysis
+~amd64
+check-reqs cmake-utils epatch epunt-cxx estack eutils flag-o-matic ltprune multilib multiprocessing toolchain-funcs user versionator
++server +client mongodb cpu_flags_x86_sse4_2
+server? ( cpu_flags_x86_sse4_2 )
+
+
+6
+
+compile configure install prepare pretend setup test
+
+
+
+
+

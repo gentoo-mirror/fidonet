@@ -1,7 +1,9 @@
 app-antivirus
+dev-db
 mail-filter
 net-fido
 net-mail
 net-www
 perl-gcpan
+sys-libs
 www-apps
