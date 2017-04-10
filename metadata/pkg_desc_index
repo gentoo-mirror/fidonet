@@ -17,6 +17,5 @@ net-mail/dovecot 1.2.17: An IMAP and POP3 server written with security primarily
 net-mail/postwhite 9999: Postwhite whitelist script based on spf
 net-mail/spf-tools 9999: spf-tools writed in bash to make life more fun
 net-www/modoboa 1.2.0 1.4.2: Mail hosting made simple
-sys-libs/libtermcap-compat 2.0.8-r4: Compatibility package for old termcap-based programs
 www-apps/postfixadmin 9999: Web Based Management tool for Postfix style virtual domains and users
 www-apps/pure-ftpd-webui 9999: Web Based Management tool for Pure-ftpd style virtual domains and users

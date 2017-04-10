@@ -23,34 +23,35 @@ else
 fi
 
 SLOT="0/${TYPE}"
-IUSE="+server +client mongodb cpu_flags_x86_sse4_2"
-KEYWORDS="~amd64"
+#IUSE="+server +client mongodb cpu_flags_x86_sse4_2"
+IUSE="+server +client mongodb"
+KEYWORDS="~x86 ~amd64"
 
+# server? ( cpu_flags_x86_sse4_2 )
 REQUIRED_USE="
-	server? ( cpu_flags_x86_sse4_2 )
 "
 
-RDEPEND="dev-libs/libltdl[static-libs]
-sys-libs/zlib[static-libs]
+RDEPEND="dev-libs/libltdl:0
+sys-libs/zlib
 dev-libs/libpcre
 client? (
 	sys-libs/ncurses:0
 	sys-libs/readline:0
 )
 || (
-	dev-db/unixODBC[static-libs]
+	dev-db/unixODBC
 	dev-libs/poco[odbc]
 )"
 
+# dev-libs/zookeeper-c
 DEPEND="${RDEPEND}
-sys-libs/libtermcap-compat[static-libs]
-dev-libs/icu[static-libs]
-dev-libs/glib[static-libs]
-dev-libs/boost[static-libs]
-dev-libs/openssl[static-libs]
-dev-libs/zookeeper-c[static-libs]
+sys-libs/libtermcap-compat
+dev-libs/icu
+dev-libs/glib
+dev-libs/boost
+dev-libs/openssl
 dev-util/patchelf
-virtual/libmysqlclient[static-libs]
+virtual/libmysqlclient
 || ( >=sys-devel/gcc-5.0 >=sys-devel/clang-3.8 )"
 
 pkg_pretend() {
