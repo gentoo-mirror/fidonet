@@ -4,9 +4,6 @@
 
 app-antivirus/clamav:clamdtop - A Top like tool which shows what clamd is currently scanning amongst other things
 app-antivirus/clamav:metadata-analysis-api - Enables collection of file property metadata using ClamAV API for analysis by ClamAV bytecode programs.
-dev-db/clickhouse:client - Build command-line ClickHouse client
-dev-db/clickhouse:mongodb - Support external dictionaries in MongoDB
-dev-db/clickhouse:server - Build ClickHouse server
 mail-filter/opendkim:ldap - Enable openldap as a dataset facilitator or keys, determining domains to sign for, and any other dataset that opendkim supports.
 mail-filter/opendkim:lmdb - Add support for using dev-db/lmdb
 mail-filter/opendkim:lua - Enables control over signature verification, filtering and policy to be controlled by user defined lua scripts.
@@ -21,9 +18,4 @@ net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
 net-fido/binkd:proxy - HTTPS proxy
-net-mail/dovecot:cydir - Add cydir storage support
-net-mail/dovecot:dbox - Add dbox storage support
-net-mail/dovecot:managesieve - Add managesieve protocol support
-net-mail/dovecot:sieve - Add sieve support
-net-mail/dovecot:vpopmail - Add vpopmail support
 www-apps/postfixadmin:vacation - Install vacation.pl script and dependencies
