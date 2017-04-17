@@ -7,7 +7,7 @@ http://github.com/mazay
 GPL-2
 Web Based Management tool for Pure-ftpd style virtual domains and users
 ~amd64 ~ppc ~x86
-epatch epunt-cxx estack eutils git-r3 ltprune multilib toolchain-funcs user webapp
+git-r3 user webapp
 mysql postgres sqlite vhosts
 || ( mysql postgres )
 

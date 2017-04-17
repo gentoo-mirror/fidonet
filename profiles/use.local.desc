@@ -7,11 +7,6 @@ app-antivirus/clamav:metadata-analysis-api - Enables collection of file property
 dev-db/clickhouse:client - Build command-line ClickHouse client
 dev-db/clickhouse:mongodb - Support external dictionaries in MongoDB
 dev-db/clickhouse:server - Build ClickHouse server
-mail-filter/dovecot-antispam:crm114 - Build CRM114 backend
-mail-filter/dovecot-antispam:dspam - Build mail-filter/dspam backend
-mail-filter/dovecot-antispam:mailtrain - Build mailtrain backend
-mail-filter/dovecot-antispam:signature-log - Build signature-log backend
-mail-filter/dovecot-antispam:spool2dir - Build spool directory backend
 mail-filter/opendkim:ldap - Enable openldap as a dataset facilitator or keys, determining domains to sign for, and any other dataset that opendkim supports.
 mail-filter/opendkim:lmdb - Add support for using dev-db/lmdb
 mail-filter/opendkim:lua - Enables control over signature verification, filtering and policy to be controlled by user defined lua scripts.
@@ -22,8 +17,6 @@ mail-filter/opendkim:sasl - Used to authenticate to a LDAP server in various way
 mail-filter/opendkim:unbound - Use the unbound dnssec library to perform DKIM DNS queries.
 mail-filter/opendmarc:mysql - Mysql Database Support
 mail-filter/opendmarc:spf - Sender Policy Framework
-mail-filter/rmilter:dkim - Enable support for DomainKeys Identified Mail
-mail-filter/rmilter:memcached - Enable support for memcached
 net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth

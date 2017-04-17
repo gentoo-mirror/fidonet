@@ -1,11 +1,8 @@
 app-antivirus/clamav 9999: Clam Anti-Virus Scanner
 dev-db/clickhouse 1.1.54190: An OSS column-oriented database management system for real-time data analysis
-mail-filter/dovecot-antispam 1.3: A dovecot antispam plugin supporting multiple backends
 mail-filter/fuglu 0.6.5 0.6.6: Fuglu Mail Content Scanner
 mail-filter/opendkim 9999: A milter-based application to provide DKIM signing and verification
 mail-filter/opendmarc 9999: Open source DMARC implementation
-mail-filter/rmilter 9999: Another sendmail milter for different mail checks
-mail-filter/smf-spf 2.0.2 2.0.2-r1: spf milter
 net-fido/binkd 1.1a-r2 9999: Binkd daemon for ftn over ip
 net-fido/ftrack 1.16: FIDO FTN Tracker
 net-fido/golded+ 9999: FTN Editor golded+

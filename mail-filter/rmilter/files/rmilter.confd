@@ -1,7 +1,0 @@
-# Config file for /etc/init.d/rmilter
-
-# run as this nice level
-RMILTER_NICELEVEL=10
-
-# run as this io nice level
-RMILTER_IONICE_LEVEL=2
