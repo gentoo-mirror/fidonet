@@ -7,7 +7,7 @@ http://ftrack-as.sourceforge.net
 GPL-2
 FIDO FTN Tracker
 x86 amd64
-autotools autotools-utils epatch epunt-cxx estack eutils libtool ltprune multilib toolchain-funcs
+autotools autotools-utils epatch estack eutils libtool ltprune multilib toolchain-funcs
 
 
 

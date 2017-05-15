@@ -7,7 +7,7 @@ http://ftrack-as.sourceforge.net/
 GPL-2
 A FTN Messages tracker
 ~amd64 ~x86
-autotools epatch epunt-cxx estack eutils flag-o-matic libtool ltprune multilib subversion toolchain-funcs
+autotools epatch estack eutils flag-o-matic libtool ltprune multilib subversion toolchain-funcs
 
 
 

@@ -7,7 +7,7 @@ http://sourceforge.net/projects/qico
 BSD
 Qico is an FidoNet Technology Network (FTN) mailer
 ~x86 ~amd64
-autotools epatch epunt-cxx estack eutils libtool ltprune multilib toolchain-funcs user
+autotools epatch estack eutils libtool ltprune multilib toolchain-funcs user
 
 
 
