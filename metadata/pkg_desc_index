@@ -1,5 +1,4 @@
 app-antivirus/clamav 9999: Clam Anti-Virus Scanner
-mail-filter/fuglu 0.6.5 0.6.6: Fuglu Mail Content Scanner
 mail-filter/opendkim 9999: A milter-based application to provide DKIM signing and verification
 net-fido/binkd 1.1a-r2 9999: Binkd daemon for ftn over ip
 net-fido/ftrack 1.16: FIDO FTN Tracker
