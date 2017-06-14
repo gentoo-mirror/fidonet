@@ -9,5 +9,5 @@ net-fido/mfreq 3.11: SRIF filerequest server / indexer
 net-fido/qico 0.57.1-r1 0.57.1-r2 0.58: Qico is an FidoNet Technology Network (FTN) mailer
 net-fido/rntrack 9999: A FTN Messages tracker
 net-www/modoboa 1.2.0 1.4.2: Mail hosting made simple
-www-apps/postfixadmin 9999: Web Based Management tool for Postfix style virtual domains and users
+www-apps/postfixadmin 2.3.8 9999: Web Based Management tool for Postfix style virtual domains and users
 www-apps/pure-ftpd-webui 9999: Web Based Management tool for Pure-ftpd style virtual domains and users

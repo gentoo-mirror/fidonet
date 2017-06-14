@@ -1,0 +1,22 @@
+vacation? ( dev-perl/DBI virtual/perl-MIME-Base64 dev-perl/MIME-EncWords dev-perl/Email-Valid dev-perl/Mail-Sender dev-perl/Log-Dispatch dev-perl/Log-Log4perl dev-perl/MIME-Charset mysql? ( dev-perl/DBD-mysql ) postgres? ( dev-perl/DBD-Pg ) ) xmlrpc? ( dev-php/ZendFramework[-minimal] ) dev-lang/php[unicode,imap,postgres?,xmlrpc?] || ( virtual/httpd-cgi virtual/httpd-fastcgi ) >=app-admin/webapp-config-1.50.15
+vacation? ( dev-perl/DBI virtual/perl-MIME-Base64 dev-perl/MIME-EncWords dev-perl/Email-Valid dev-perl/Mail-Sender dev-perl/Log-Dispatch dev-perl/Log-Log4perl dev-perl/MIME-Charset mysql? ( dev-perl/DBD-mysql ) postgres? ( dev-perl/DBD-Pg ) ) xmlrpc? ( dev-php/ZendFramework[-minimal] ) dev-lang/php[unicode,imap,postgres?,xmlrpc?] virtual/httpd-php mysql? ( || ( dev-lang/php[mysqli] dev-lang/php[mysql] ) ) >=app-admin/webapp-config-1.50.15
+2.3.8
+mirror://sourceforge/project/postfixadmin/postfixadmin/postfixadmin-2.3.8/postfixadmin-2.3.8.tar.gz
+
+http://postfixadmin.sourceforge.net
+GPL-2
+Web Based Management tool for Postfix style virtual domains and users
+amd64 ~ppc x86
+user webapp
++mysql postgres +vacation xmlrpc vhosts
+|| ( mysql postgres )
+
+
+4
+
+install postinst postrm prerm setup
+
+
+
+
+
