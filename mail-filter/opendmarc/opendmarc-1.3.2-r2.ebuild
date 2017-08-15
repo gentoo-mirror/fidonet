@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit user
+inherit user eutils
 
 DESCRIPTION="Open source DMARC implementation "
 HOMEPAGE="http://www.trusteddomain.org/opendmarc/"
@@ -30,6 +30,7 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}"/overrideMLM-${PV}.patch
 	default
 	if use !reports ; then
 		sed -i -e '/^SUBDIRS =/s/reports//' Makefile.in || die

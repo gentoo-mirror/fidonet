@@ -7,7 +7,7 @@ http://www.trusteddomain.org/opendmarc/
 BSD
 Open source DMARC implementation
 ~alpha ~amd64 ~arm ~hppa ~ia64 ~x86 ~x86-fbsd
-user
+epatch estack eutils ltprune multilib toolchain-funcs user
 spf reports
 
 
