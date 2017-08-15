@@ -1,0 +1,81 @@
+diff -Naur opendmarc/opendmarc.c opendmarc-new/opendmarc.c
+--- opendmarc/opendmarc.c	2015-02-23 21:31:51.000000000 +0100
++++ opendmarc-new/opendmarc.c	2015-02-24 14:28:44.352000000 +0100
+@@ -167,6 +167,7 @@
+ 	char *			conf_historyfile;
+ 	char *			conf_pslist;
+ 	char *			conf_ignorelist;
++	char *			conf_quarantinepolicy;
+ 	char **			conf_trustedauthservids;
+ 	char **			conf_ignoredomains;
+ };
+@@ -1289,6 +1290,10 @@
+ 		                  &conf->conf_ignoreauthclients,
+ 		                  sizeof conf->conf_ignoreauthclients);
+ 
++		(void) config_get(data, "QuarantinePolicy",
++		                  &conf->conf_quarantinepolicy,
++		                  sizeof conf->conf_quarantinepolicy);
++
+ 		(void) config_get(data, "ReportCommand",
+ 		                  &conf->conf_reportcmd,
+ 		                  sizeof conf->conf_reportcmd);
+@@ -2920,6 +2925,46 @@
+ 
+ 	result = DMARC_RESULT_ACCEPT;
+ 
++	/*
++	 * Policy may be overridden by QuarantinePolicy
++	 */
++
++	if (policy == DMARC_POLICY_QUARANTINE &&
++		conf->conf_quarantinepolicy != NULL)
++	{
++		if (strcmp("accept", conf->conf_quarantinepolicy) == 0)
++		{
++			if (conf->conf_dolog)
++			{
++				syslog(LOG_INFO, "%s: enforcing policy accept!",
++				       dfc->mctx_jobid);
++			}
++
++			policy = DMARC_POLICY_PASS;
++		}
++		else if (strcmp("reject", conf->conf_quarantinepolicy) == 0)
++		{
++			if (conf->conf_dolog)
++			{
++				syslog(LOG_INFO, "%s: enforcing policy reject!",
++				       dfc->mctx_jobid);
++			}
++
++			policy = DMARC_POLICY_REJECT;
++		}
++		/* Default action, nothing to do */
++		else if (strcmp("quarantine", conf->conf_quarantinepolicy) == 0)
++			;
++		else
++		{
++			if (conf->conf_dolog)
++			{
++				syslog(LOG_ERR, "%s: unknown policy option %s!",
++				       dfc->mctx_jobid, conf->conf_quarantinepolicy);
++			}
++		}
++	}
++
+ 	switch (policy)
+ 	{
+ 	  case DMARC_POLICY_ABSENT:		/* No DMARC record found */
+diff -Naur opendmarc/opendmarc-config.h opendmarc-new/opendmarc-config.h
+--- opendmarc/opendmarc-config.h	2015-02-23 21:31:51.000000000 +0100
++++ opendmarc-new/opendmarc-config.h	2015-02-24 12:18:24.920000000 +0100
+@@ -38,6 +38,7 @@
+ 	{ "MilterDebug",		CONFIG_TYPE_INTEGER,	FALSE },
+ 	{ "PidFile",			CONFIG_TYPE_STRING,	FALSE },
+ 	{ "PublicSuffixList",		CONFIG_TYPE_STRING,	FALSE },
++	{ "QuarantinePolicy",		CONFIG_TYPE_STRING,	FALSE },
+ 	{ "RecordAllMessages",		CONFIG_TYPE_BOOLEAN,	FALSE },
+ 	{ "RequiredHeaders",		CONFIG_TYPE_BOOLEAN,	FALSE },
+ 	{ "RejectFailures",		CONFIG_TYPE_BOOLEAN,	FALSE },
+
