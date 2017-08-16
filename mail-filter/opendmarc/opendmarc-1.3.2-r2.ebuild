@@ -33,6 +33,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/overrideMLM-${PV}.patch
 	epatch "${FILESDIR}"/mysql_strict_mode.patch
 	epatch "${FILESDIR}"/z03_reportDestVerificationV2.patch
+	eautoreconf
 	default
 	if use !reports ; then
 		sed -i -e '/^SUBDIRS =/s/reports//' Makefile.in || die
