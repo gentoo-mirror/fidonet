@@ -3,7 +3,7 @@ dev-perl/DBI mail-filter/libmilter dev-perl/HTTP-Message dev-perl/Switch spf? ( 
 0
 
 
-http://sourceforge.net/projects/opendmarc/ https://sourceforge.net/u/pktomo/opendmarc/ci/develop/tree/
+https://sourceforge.net/projects/opendmarc/ https://sourceforge.net/u/pktomo/opendmarc/ci/develop/tree/
 BSD
 Open source DMARC implementation
 ~alpha ~amd64 ~arm ~hppa ~ia64 ~x86 ~x86-fbsd

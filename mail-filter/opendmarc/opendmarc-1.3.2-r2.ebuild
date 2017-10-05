@@ -30,9 +30,16 @@ pkg_setup() {
 }
 
 src_prepare() {
+	# overridemlm works on gento :)
 	epatch "${FILESDIR}"/overrideMLM-${PV}.patch
-	epatch "${FILESDIR}"/mysql_strict_mode.patch
+	#
+	# strict mode needs older automake 1.13 slot :/
+	# epatch "${FILESDIR}"/mysql_strict_mode.patch
+	#
 	# epatch "${FILESDIR}"/z03_reportDestVerificationV2.patch
+	#
+	# please help me provide better patches
+	#
 	eautoreconf
 	default
 	if use !reports ; then

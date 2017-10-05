@@ -1,13 +1,12 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 
 inherit autotools eutils git-r3 user
 
 DESCRIPTION="Open source DMARC implementation"
-HOMEPAGE="http://sourceforge.net/projects/opendmarc/ https://sourceforge.net/u/pktomo/opendmarc/ci/develop/tree/"
+HOMEPAGE="https://sourceforge.net/projects/opendmarc/ https://sourceforge.net/u/pktomo/opendmarc/ci/develop/tree/"
 SRC_URI=""
 EGIT_REPO_URI="git://git.code.sf.net/u/pktomo/opendmarc"
 
