@@ -15,8 +15,4 @@ mail-filter/opendkim:unbound - Use the unbound dnssec library to perform DKIM DN
 mail-filter/opendmarc:mysql - Mysql Database Support
 mail-filter/opendmarc:reports - sending dmarc reports
 mail-filter/opendmarc:spf - Sender Policy Framework
-net-fido/binkd:aso - Amiga Style Outbound
-net-fido/binkd:bwlim - Bandwidth Limit
-net-fido/binkd:ntlm - NTLM Auth
-net-fido/binkd:proxy - HTTPS proxy
 www-apps/postfixadmin:vacation - Install vacation.pl script and dependencies

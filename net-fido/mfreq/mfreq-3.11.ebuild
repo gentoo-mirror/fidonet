@@ -1,13 +1,12 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 
 inherit eutils
 
 DESCRIPTION="SRIF filerequest server / indexer"
-HOMEPAGE="http://sourceforge.net/p/ftnapps/mfreq/ci/master/tree/"
+HOMEPAGE="https://sourceforge.net/p/ftnapps/mfreq/ci/master/tree/"
 SRC_URI="ftp://fidonet.overlay.junc.org/pub/base/mfreq311.tgz"
 
 LICENSE="EUPL-1.1"

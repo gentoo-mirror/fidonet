@@ -1,9 +1,7 @@
 app-antivirus/clamav 9999: Clam Anti-Virus Scanner
-dev-perl/Mail-DMARC 1.201.702.22: Perl implementation of DMARC
+dev-perl/Mail-DMARC 1.201.702.22 1.201.709.11: Perl implementation of DMARC
 mail-filter/opendkim 9999: A milter-based application to provide DKIM signing and verification
 mail-filter/opendmarc 1.3.2-r2 9999: Open source DMARC implementation
-net-fido/binkd 1.1a-r2 9999: Binkd daemon for ftn over ip
-net-fido/ftrack 1.16: FIDO FTN Tracker
 net-fido/golded+ 9999: FTN Editor golded+
 net-fido/makenl 3.4.1 3.4.5: MakeNL the Nodelist maker
 net-fido/mfreq 3.11: SRIF filerequest server / indexer

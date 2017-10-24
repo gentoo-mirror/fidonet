@@ -1,10 +1,10 @@
 DEFINED_PHASES=compile install
 DESCRIPTION=SRIF filerequest server / indexer
 EAPI=5
-HOMEPAGE=http://sourceforge.net/p/ftnapps/mfreq/ci/master/tree/
+HOMEPAGE=https://sourceforge.net/p/ftnapps/mfreq/ci/master/tree/
 KEYWORDS=~x86
 LICENSE=EUPL-1.1
 SLOT=0
 SRC_URI=ftp://fidonet.overlay.junc.org/pub/base/mfreq311.tgz
 _eclasses_=epatch	8233751dc5105a6ae8fcd86ce2bb0247	estack	43ddf5aaffa7a8d0482df54d25a66a1f	eutils	227b041a120d309fdefbebb3b8c1dfa9	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	toolchain-funcs	185a06792159ca143528e7010368e8af
-_md5_=3c0b3ec40061f72578602de7a6d42bd5
+_md5_=68efe3070751db4f232ec73ad2db49c5

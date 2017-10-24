@@ -1,6 +1,5 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 
@@ -10,7 +9,7 @@ inherit autotools eutils libtool toolchain-funcs user
 
 DESCRIPTION="Qico is an FidoNet Technology Network (FTN) mailer"
 SRC_URI="mirror://sourceforge/qico/${P}.tar.bz2"
-HOMEPAGE="http://sourceforge.net/projects/qico"
+HOMEPAGE="https://sourceforge.net/projects/qico"
 
 IUSE=""
 SLOT="0"
