@@ -7,5 +7,5 @@ net-fido/makenl 3.4.1 3.4.5: MakeNL the Nodelist maker
 net-fido/mfreq 3.11: SRIF filerequest server / indexer
 net-fido/qico 0.57.1-r1 0.57.1-r2 0.58: Qico is an FidoNet Technology Network (FTN) mailer
 net-fido/rntrack 9999: A FTN Messages tracker
-net-news/newsd 1.44_rc4: Simple NNTP news server
+net-news/newsd 1.44: Simple NNTP news server
 www-apps/postfixadmin 2.3.8: Web Based Management tool for Postfix style virtual domains and users

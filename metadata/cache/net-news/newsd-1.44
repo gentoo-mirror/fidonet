@@ -6,15 +6,15 @@ https://telefisk.org/newsd-1.44-source.tar.bz2
 http://www.google.com
 GPL-2
 Simple NNTP news server
-~x86
+~x86 ~amd64
+epatch estack eutils ltprune multilib toolchain-funcs user
 
 
 
 
+6
 
-0
-
-install
+compile configure install prepare setup unpack
 
 
 
