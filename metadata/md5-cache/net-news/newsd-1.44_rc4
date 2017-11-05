@@ -1,0 +1,10 @@
+DEFINED_PHASES=install
+DEPEND=sys-apps/groff
+DESCRIPTION=Simple NNTP news server
+EAPI=0
+HOMEPAGE=http://www.google.com
+KEYWORDS=~x86
+LICENSE=GPL-2
+RDEPEND=sys-apps/groff
+SLOT=0
+_md5_=22ba2f441c812b1cf3234a69907ca256
