@@ -7,7 +7,7 @@ http://golded-plus.sourceforge.net
 LGPL-2
 FTN Editor golded+
 x86 amd64
-cvs epatch estack eutils ltprune multilib toolchain-funcs versionator
+cvs desktop epatch estack eutils ltprune multilib toolchain-funcs versionator
 
 
 

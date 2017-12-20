@@ -50,9 +50,9 @@ src_compile() {
 }
 
 src_install() {
-	dobin MakeFiles/linux/rntrack
+	dobin src/rntrack
 	doman doc/rntrack.1
-	dodoc doc/MANUAL* doc/FAQ*
+	dodoc doc/*
 	insinto /etc/ftn
 	doins samples/rntrack.cfg
 	dodir /etc/ftn/rntrack.samples

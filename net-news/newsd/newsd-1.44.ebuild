@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit eutils user
+inherit autotools eutils user
 
 # MY_P=${PN}-${PV/_/}
 DESCRIPTION="Simple NNTP news server"
@@ -32,6 +32,7 @@ src_unpack() {
 
 src_prepare() {
 	# epatch "${FILESDIR}"/${P}xe-ipv6.patch
+	default
 	eautoreconf || die
 }
 
