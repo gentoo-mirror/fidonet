@@ -30,7 +30,7 @@ CDEPEND="bzip2? ( app-arch/bzip2 )
 # openssl is now *required* see this link as to why
 # http://blog.clamav.net/2014/02/introducing-openssl-as-dependency-to.html
 DEPEND="${CDEPEND}
-	=sys-devel/automake-1.14.1
+	=sys-devel/automake-1.14.1-r1
 	virtual/pkgconfig"
 RDEPEND="${CDEPEND}
 	selinux? ( sec-policy/selinux-clamav )"
