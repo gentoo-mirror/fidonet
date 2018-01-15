@@ -7,7 +7,7 @@ http://www.google.com
 GPL-2
 Simple NNTP news server
 ~x86 ~amd64
-autotools desktop epatch estack eutils libtool ltprune multilib toolchain-funcs user
+autotools desktop epatch estack eutils libtool ltprune multilib preserve-libs toolchain-funcs user
 
 
 

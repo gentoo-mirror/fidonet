@@ -7,7 +7,7 @@ https://sourceforge.net/p/ftnapps/mfreq/ci/master/tree/
 EUPL-1.1
 SRIF filerequest server / indexer
 ~x86
-desktop epatch estack eutils ltprune multilib toolchain-funcs
+desktop epatch estack eutils ltprune multilib preserve-libs toolchain-funcs
 
 
 

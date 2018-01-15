@@ -7,7 +7,7 @@ http://opendkim.org https://sourceforge.net/u/pktomo/opendkim/ci/master/tree/
 Sendmail-Open-Source BSD
 A milter-based application to provide DKIM signing and verification
 ~amd64 ~x86
-autotools db-use desktop epatch estack eutils git-r3 libtool ltprune multilib systemd toolchain-funcs user versionator
+autotools db-use desktop epatch estack eutils git-r3 libtool ltprune multilib preserve-libs systemd toolchain-funcs user versionator
 +berkdb gnutls ldap libressl lmdb lua memcached opendbx poll sasl selinux +ssl static-libs unbound
 sasl? ( ldap )
 
