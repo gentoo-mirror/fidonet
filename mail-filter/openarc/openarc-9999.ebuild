@@ -22,7 +22,8 @@ DEPEND="${CDEPEND}
 RDEPEND="${CDEPEND}
 	selinux? ( sec-policy/selinux-clamav )"
 
-DOCS=( AUTHORS BUGS ChangeLog FAQ INSTALL NEWS README UPGRADE )
+# DOCS=( AUTHORS BUGS ChangeLog FAQ INSTALL NEWS README UPGRADE )
+DOCS=( README )
 
 src_unpack() {
 	git-r3_src_unpack
