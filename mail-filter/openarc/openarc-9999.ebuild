@@ -3,7 +3,7 @@
 
 EAPI=5
 
-inherit eutils flag-o-matic user systemd git-r3
+inherit autotools eutils flag-o-matic user systemd git-r3
 
 DESCRIPTION="OpenARC milter"
 HOMEPAGE="https://github.com/trusteddomainproject/"
@@ -22,7 +22,6 @@ DEPEND="${CDEPEND}
 RDEPEND="${CDEPEND}
 	selinux? ( sec-policy/selinux-clamav )"
 
-# DOCS=( AUTHORS BUGS ChangeLog FAQ INSTALL NEWS README UPGRADE )
 DOCS=( README )
 
 src_unpack() {
@@ -34,26 +33,11 @@ pkg_setup() {
 	enewuser milter -1 -1 /dev/null milter
 }
 
-# src_prepare() {
-# 	use ppc64 && append-flags -mminimal-toc
-# 	use uclibc && export ac_cv_type_error_t=yes
-# }
-
-# src_configure() {
-# 	econf \
-# }
+src_prepare() {
+	eautoreconf || die
+}
 
 src_install() {
 	default
+	newinitd "${FILESDIR}/openarc.initrc" openarc
 }
-
-# pkg_postinst() {
-# 	if use milter ; then
-# 		elog "For simple instructions how to setup the clamav-milter read the"
-# 		elog "clamav-milter.README.gentoo in /usr/share/doc/${PF}"
-# 	fi
-# 	if test -z $(find "${ROOT}"var/lib/clamav -maxdepth 1 -name 'main.c*' -print -quit) ; then
-# 		ewarn "You must run freshclam manually to populate the virus database files"
-# 		ewarn "before starting clamav for the first time.\n"
-# 	fi
-# }
