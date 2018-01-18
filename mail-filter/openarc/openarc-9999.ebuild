@@ -10,17 +10,16 @@ HOMEPAGE="https://github.com/trusteddomainproject/"
 SRC_URI=""
 EGIT_REPO_URI="https://github.com/trusteddomainproject/OpenARC.git"
 
-LICENSE="GPL-2"
+LICENSE="BSD-2 Sendmail"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~sparc-solaris ~x86-solaris"
-IUSE="-selinux"
+IUSE=""
 
 CDEPEND=""
 DEPEND="${CDEPEND}
 	=sys-devel/automake-1.14.1-r1
 	virtual/pkgconfig"
-RDEPEND="${CDEPEND}
-	selinux? ( sec-policy/selinux-clamav )"
+RDEPEND="${CDEPEND}"
 
 DOCS=( README )
 
