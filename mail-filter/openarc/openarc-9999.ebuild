@@ -17,7 +17,7 @@ IUSE=""
 
 CDEPEND=""
 DEPEND="${CDEPEND}
-	=sys-devel/automake-1.14.1-r1
+	=sys-devel/automake-1.14.1-r2
 	virtual/pkgconfig"
 RDEPEND="${CDEPEND}"
 
