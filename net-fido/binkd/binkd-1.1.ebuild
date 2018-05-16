@@ -36,7 +36,7 @@ DEPEND="bzip2? ( >=app-arch/bzip2-1.0.6 ) zlib? ( >=sys-libs/zlib-1.2.3-r1 ) per
 RDEPEND="${DEPEND}"
 
 #S=${WORKDIR}/${P}
-S=${WORKDIR}/binkd-1.0
+S=${WORKDIR}/binkd-1.1
 
 src_configure() {
 	# we make the configure work
