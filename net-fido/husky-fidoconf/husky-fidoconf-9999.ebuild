@@ -20,23 +20,21 @@ KEYWORDS="x86 amd64"
 IUSE=""
 DEPEND="net-fido/husky-huskylib
 	net-fido/husky-smapi"
-
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"
 
+# sed -i "s|\.a$|\.so|; s|LIBDIR=\$(PREFIX)/lib|LIBDIR=\$(PREFIX)/lib/|" huskymak.cfg makefile.in2
+# cd "${S}/${HM}"
+
 src_unpack() {
-    cvs_src_unpack
-    cd "${S}/${HM}"
-    sed -i "s|\.a$|\.so|; s|LIBDIR=\$(PREFIX)/lib|LIBDIR=\$(PREFIX)/lib/|" huskymak.cfg makefile.in2
+cvs_src_unpack
 }
-
 src_compile() {
-    cd "${S}/${HM}"
-    emake -j2 RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
+cd "${S}/${HM}"
+emake -j2 RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
 }
-
 src_install() {
-    cd "${S}/${HM}"
-    emake RPM_BUILD_ROOT=1 DESTDIR="${D}" LDCONFIG="" DYNLIBS=1 install || die "Sorry! Do can not install"
+cd "${S}/${HM}"
+emake RPM_BUILD_ROOT=1 DESTDIR="${D}" LDCONFIG="" DYNLIBS=1 install || die "Sorry! Do can not install"
 }
