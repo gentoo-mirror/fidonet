@@ -17,11 +17,19 @@ LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="x86 amd64"
 IUSE=""
-DEPEND="net-fido/husky-huskylib"
+DEPEND="net-fido/husky-huskylib
+	net-fido/husky-smapi
+	net-fido/husky-fidoconf
+	net-fido/husky-areafix"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"
 
+# sed -i '/unused(my_perl);/d' "${S}/${HM}"/src/perl.c
+
+src_unpack() {
+cvs_src_unpack
+}
 src_compile() {
 cd "${S}/${HM}"
 emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
