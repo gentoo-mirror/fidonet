@@ -2,5 +2,7 @@ net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
 net-fido/husky-fidoconf 9999: FTN husky fidoconf library
 net-fido/husky-hpt 9999: FTN husky hpt library
+net-fido/husky-htick 9999: FTN husky htick library
 net-fido/husky-huskylib 9999: FTN husky huskylib library
+net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-smapi 9999: FTN husky smapi library
