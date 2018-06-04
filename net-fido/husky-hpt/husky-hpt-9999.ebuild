@@ -26,16 +26,14 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}/${ECVS_LOCALNAME}"
 
 src_unpack() {
-    cvs_src_unpack
-	sed -i '/unused(my_perl);/d' ${S}/${HM}/src/perl.c
+cvs_src_unpack
+sed -i '/unused(my_perl);/d' "${S}/${HM}"/src/perl.c
 }
-
 src_compile() {
-    cd "${S}/${HM}"
-    emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
+cd "${S}/${HM}"
+emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
 }
-
 src_install() {
-    cd "${S}/${HM}"
-  	emake RPM_BUILD_ROOT=1 DESTDIR="${D}" LDCONFIG="" install || die "Sorry! Do can not install"
+cd "${S}/${HM}"
+emake RPM_BUILD_ROOT=1 DESTDIR="${D}" LDCONFIG="" install || die "Sorry! Do can not install"
 }
