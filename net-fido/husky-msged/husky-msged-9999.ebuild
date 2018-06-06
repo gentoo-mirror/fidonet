@@ -37,7 +37,8 @@ cp "${S}/${HM}/debian/huskymak.cfg" "${S}/${HM}"
 }
 src_compile() {
 cd "${S}/${HM}"
-emake RPM_BUILD_ROOT=1 -DDebian || die "Sorry! Do can not compile"
+export DEBIAN="1"
+emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
 }
 src_install() {
 cd "${S}/${HM}"
