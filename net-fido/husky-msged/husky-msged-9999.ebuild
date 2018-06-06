@@ -1,6 +1,8 @@
 # Copyright 1999-2006 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
+EAPI=3
+
 inherit eutils gnuconfig cvs
 
 HM=${PN#husky-}
@@ -30,9 +32,12 @@ S="${WORKDIR}/${ECVS_LOCALNAME}"
 src_unpack() {
 cvs_src_unpack
 }
+src_configure() {
+cp "${S}/${HM}/debian/huskymak.cfg" "${S}/${HM}"
+}
 src_compile() {
 cd "${S}/${HM}"
-emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
+emake RPM_BUILD_ROOT=1 -DDebian || die "Sorry! Do can not compile"
 }
 src_install() {
 cd "${S}/${HM}"
