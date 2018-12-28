@@ -8,7 +8,7 @@
 	<use>
 		<flag name="spf">Sender Policy Framework</flag>
 		<flag name="reports">sending dmarc reports</flag>
-		<flag name="mysql">Mysql Database Support</flag>
+		<!-- <flag name="mysql">Mysql Database Support</flag> -->
 		<!-- <flag name="minimal">try to be more minimal</flag> -->
 	</use>
 </pkgmetadata>

@@ -1,63 +1,41 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-inherit autotools eutils git-r3 user
+inherit autotools eutils flag-o-matic user systemd git-r3
 
-DESCRIPTION="Open source DMARC implementation"
-HOMEPAGE="https://sourceforge.net/projects/opendmarc/ https://sourceforge.net/u/pktomo/opendmarc/ci/develop/tree/"
+DESCRIPTION="OpenDNARC milter"
+HOMEPAGE="https://github.com/trusteddomainproject/"
 SRC_URI=""
-EGIT_REPO_URI="git://git.code.sf.net/u/pktomo/opendmarc"
-
-LICENSE="BSD"
+EGIT_REPO_URI="https://github.com/trusteddomainproject/OpenDMARC.git"
+LICENSE="BSD-2 Sendmail"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~x86 ~x86-fbsd"
-IUSE="spf mysql"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~sparc-solaris ~x86-solaris"
+IUSE=""
 
-DEPEND="dev-perl/DBI
-	mail-filter/libmilter"
-RDEPEND="${DEPEND}
-	dev-perl/HTTP-Message
-	dev-perl/Switch
-	spf? ( mail-filter/libspf2 )"
+CDEPEND=""
+DEPEND="${CDEPEND}
+	=sys-devel/automake-1.14.1-r2
+	virtual/pkgconfig"
+RDEPEND="${CDEPEND}"
 
-pkg_setup() {
-	enewgroup milter
-	enewuser milter -1 -1 /var/lib/milter milter
-}
+DOCS=( README )
 
 src_unpack() {
 	git-r3_src_unpack
+}
+
+pkg_setup() {
+	enewgroup milter
+	enewuser milter -1 -1 /dev/null milter
 }
 
 src_prepare() {
 	eautoreconf || die
 }
 
-src_configure() {
-	econf \
-		--docdir="${EPREFIX}"/usr/share/doc/${PF} \
-		--htmldir="${EPREFIX}"/usr/share/doc/${PF}/html \
-		$(use_with spf)
-}
-
 src_install() {
 	default
-
-	newinitd "${FILESDIR}"/opendmarc.initd opendmarc
-	newconfd "${FILESDIR}"/opendmarc.confd opendmarc
-
-	dodir /etc/opendmarc
-	dodir /var/run/opendmarc
-	fowners milter:milter /var/run/opendmarc
-
-	# create config file
-	sed \
-		-e 's/^# UserID .*$/UserID milter/' \
-		-e 's/^# PidFile .*/PidFile \/var\/run\/opendmarc\/opendmarc.pid/' \
-		-e '/^# Socket /s/^# //' \
-		"${S}"/opendmarc/opendmarc.conf.sample \
-		> "${ED}"/etc/opendmarc/opendmarc.conf \
-		|| die
+	newinitd "${FILESDIR}/opendmarc.initrc" opendmarc
 }
