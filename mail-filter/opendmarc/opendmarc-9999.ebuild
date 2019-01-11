@@ -37,5 +37,18 @@ src_prepare() {
 
 src_install() {
 	default
-	newinitd "${FILESDIR}/opendmarc.initrc" opendmarc
+
+	newinitd "${FILESDIR}"/opendmarc.initd opendmarc
+	newconfd "${FILESDIR}"/opendmarc.confd opendmarc
+
+	dodir /etc/opendmarc
+
+	# create config file
+	sed \
+		-e 's:^# UserID .*$:UserID milter:' \
+		-e "s:^# PidFile .*:PidFile ${EPREFIX}/var/run/opendmarc/opendmarc.pid:" \
+		-e '/^# Socket /s:^# ::' \
+		"${S}"/opendmarc/opendmarc.conf.sample \
+		> "${ED}"/etc/opendmarc/opendmarc.conf \
+		|| die
 }

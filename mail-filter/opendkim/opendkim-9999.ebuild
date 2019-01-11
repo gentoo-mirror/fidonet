@@ -38,5 +38,5 @@ src_prepare() {
 
 src_install() {
 	default
-	newinitd "${FILESDIR}/opendkim.initrc" opendkim
+	newinitd "${FILESDIR}/opendkim.init.r3" opendkim
 }

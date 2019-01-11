@@ -21,7 +21,7 @@ DEPEND="${CDEPEND}
 	virtual/pkgconfig"
 RDEPEND="${CDEPEND}"
 
-DOCS=( README )
+# DOCS=( README )
 
 src_unpack() {
 	git-r3_src_unpack

@@ -3,7 +3,9 @@
 
 EAPI=5
 
-inherit autotools eutils flag-o-matic user systemd git-r3
+DIST_AUTHOR=foo
+DIST_VERSION=0.01
+inherit autotools eutils flag-o-matic user systemd git-r3 perl-module
 
 DESCRIPTION="authentication milter"
 HOMEPAGE="https://github.com/fastmail"
@@ -36,7 +38,7 @@ pkg_setup() {
 # 	eautoreconf || die
 # }
 
-src_install() {
-	default
-	# newinitd "${FILESDIR}/openarc.initrc" openarc
-}
+# src_install() {
+# 	default
+# 	# newinitd "${FILESDIR}/openarc.initrc" openarc
+# }
