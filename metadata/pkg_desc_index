@@ -6,11 +6,3 @@ net-fido/husky-htick 9999: FTN husky htick library
 net-fido/husky-huskylib 9999: FTN husky huskylib library
 net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-smapi 9999: FTN husky smapi library
-perl-gcpan/ClamAV-Client 0.11: A client class for the ClamAV C<clamd> virus scanner daemon
-perl-gcpan/Mail-AuthenticationResults 1.20180923: Object Oriented Authentication-Results Headers
-perl-gcpan/Mail-Milter-Authentication 2.20181212: A Perl Mail Authentication Milter
-perl-gcpan/Prometheus-Tiny 0.002: A tiny Prometheus client
-perl-gcpan/Prometheus-Tiny-Shared 0.001: Prometheus::Tiny - A tiny Prometheus client backed by a shared memory region
-perl-gcpan/TOML 0.97: Parser for Tom's Obvious, Minimal Language.
-perl-gcpan/TOML-Parser 0.91: simple toml parser
-perl-gcpan/Test-Deep-Fuzzy 0.01: fuzzy number comparison with Test::Deep
