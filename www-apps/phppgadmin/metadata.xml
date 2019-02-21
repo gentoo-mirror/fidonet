@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@junc.eu</email>
+		<name>Benny Pedersen</name>
+	</maintainer>
+	<use>
+		<!-- <flag name="spf">Sender Policy Framework</flag> -->
+		<!-- <flag name="reports">sending dmarc reports</flag> -->
+		<!-- <flag name="mysql">Mysql Database Support</flag> -->
+		<!-- <flag name="minimal">try to be more minimal</flag> -->
+	</use>
+</pkgmetadata>
