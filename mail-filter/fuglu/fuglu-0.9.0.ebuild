@@ -3,21 +3,19 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python2_7 python3_6 )
+PYTHON_COMPAT=( python2_7 python3_4 python3_5 python3_6 python3_7 )
 
 inherit distutils-r1 user
 
 DESCRIPTION="A mail content scanner for postfix written in python"
 HOMEPAGE="http://fuglu.org/"
 RESTRICT="mirror"
-# SRC_URI="https://github.com/gryphius/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 SRC_URI="http://distfiles.overlay.junc.org/fidonet/${PN}-${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-
-IUSE="clamav database spamassassin test"
+IUSE="clamav database spamassassin"
 
 CDEPEND="dev-python/beautifulsoup:4[${PYTHON_USEDEP}]
 		!dev-python/filemagic[${PYTHON_USEDEP}]
@@ -30,11 +28,7 @@ CDEPEND="dev-python/beautifulsoup:4[${PYTHON_USEDEP}]
 
 DEPEND="${CDEPEND}
 		dev-python/setuptools[${PYTHON_USEDEP}]
-		test? (
-			dev-python/nose[${PYTHON_USEDEP}]
-			dev-python/lxml[${PYTHON_USEDEP}]
-			dev-python/sqlalchemy[${PYTHON_USEDEP}]
-		)"
+"
 
 RDEPEND="${CDEPEND}
 	clamav? ( app-antivirus/clamav )
@@ -42,17 +36,15 @@ RDEPEND="${CDEPEND}
 
 S="${WORKDIR}/${PN}-0.9.0-1"
 
-python_test() {
-	nosetests tests/unit/ || die "Test failed with ${EPYTHON}"
-}
-
 src_install() {
 	distutils-r1_src_install
 
 	dodir /etc/fuglu
 	dodir /usr/share/${PN}
 	dodir /var/log/${PN}
+	keepdir /var/log/${PN}
 	dodir /var/tmp/${PN}
+	keepdir /var/tmp/${PN}
 
 	mv "${D}"/etc/fuglu/* "${D}"/usr/share/${PN} || die
 	sed -i -e "s#^tempdir=.*#tempdir=/var/tmp/${PN}#g" "${D}"/usr/share/${PN}/${PN}.conf.dist || die
