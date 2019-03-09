@@ -3,7 +3,7 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python2_7 python3_4 python3_5 python3_6 python3_7 )
+PYTHON_COMPAT=( python2_7 python3_4 python3_6 )
 
 inherit distutils-r1 user
 
@@ -34,7 +34,7 @@ RDEPEND="${CDEPEND}
 	clamav? ( app-antivirus/clamav )
 	spamassassin? ( mail-filter/spamassassin )"
 
-S="${WORKDIR}/${PN}-0.9.0-1"
+S="${WORKDIR}/${PN}-${PV}-1"
 
 src_install() {
 	distutils-r1_src_install

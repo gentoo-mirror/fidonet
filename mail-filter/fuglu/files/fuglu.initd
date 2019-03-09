@@ -4,7 +4,7 @@
 
 start() {
 	ebegin "Starting fuglu"
-	start-stop-daemon --start --exec /usr/bin/fuglu --background -- ${FUGLU_ARGS}
+	start-stop-daemon --start --exec /usr/bin/fuglu --background --pidfile "/run/fuglu.pid" -- ${FUGLU_ARGS}
 	eend $*
 }
 
