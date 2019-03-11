@@ -22,7 +22,6 @@ CDEPEND="dev-python/beautifulsoup:4[${PYTHON_USEDEP}]
 		dev-python/python-magic[${PYTHON_USEDEP}]
 		dev-python/rarfile[${PYTHON_USEDEP}]
 		$(python_gen_cond_dep 'dev-python/ipaddress[${PYTHON_USEDEP}]' python2_7)
-		$(python_gen_cond_dep 'dev-python/ipaddr[${PYTHON_USEDEP}]' python3_4)
 		$(python_gen_cond_dep 'dev-python/ipaddr[${PYTHON_USEDEP}]' python3_6)
 		>=dev-python/pyspf-2.0.12[${PYTHON_USEDEP}]
 		database? ( dev-python/sqlalchemy[${PYTHON_USEDEP}] )"
