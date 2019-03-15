@@ -1,0 +1,255 @@
+diff -urp opentracker.orig/Makefile opentracker/Makefile
+--- opentracker.orig/Makefile	2018-01-29 17:45:20.000000000 +0000
++++ opentracker/Makefile	2019-03-14 23:27:18.558485429 +0000
+@@ -19,24 +19,24 @@ LIBOWFAT_LIBRARY=$(PREFIX)/libowfat
+ 
+ BINDIR?=$(PREFIX)/bin
+ 
+-#FEATURES+=-DWANT_V6
++FEATURES+=-DWANT_V6
+ 
+ #FEATURES+=-DWANT_ACCESSLIST_BLACK
+-#FEATURES+=-DWANT_ACCESSLIST_WHITE
++FEATURES+=-DWANT_ACCESSLIST_WHITE
+ 
+-#FEATURES+=-DWANT_SYNC_LIVE
+-#FEATURES+=-DWANT_IP_FROM_QUERY_STRING
+-#FEATURES+=-DWANT_COMPRESSION_GZIP
+-#FEATURES+=-DWANT_COMPRESSION_GZIP_ALWAYS
+-#FEATURES+=-DWANT_LOG_NETWORKS
+-#FEATURES+=-DWANT_RESTRICT_STATS
+-#FEATURES+=-DWANT_IP_FROM_PROXY
+-#FEATURES+=-DWANT_FULLLOG_NETWORKS
+-#FEATURES+=-DWANT_LOG_NUMWANT
+-#FEATURES+=-DWANT_MODEST_FULLSCRAPES
+-#FEATURES+=-DWANT_SPOT_WOODPECKER
+-#FEATURES+=-DWANT_SYSLOGS
+-#FEATURES+=-DWANT_DEV_RANDOM
++FEATURES+=-DWANT_SYNC_LIVE
++FEATURES+=-DWANT_IP_FROM_QUERY_STRING
++FEATURES+=-DWANT_COMPRESSION_GZIP
++# FEATURES+=-DWANT_COMPRESSION_GZIP_ALWAYS
++# FEATURES+=-DWANT_LOG_NETWORKS
++FEATURES+=-DWANT_RESTRICT_STATS
++FEATURES+=-DWANT_IP_FROM_PROXY
++FEATURES+=-DWANT_FULLLOG_NETWORKS
++FEATURES+=-DWANT_LOG_NUMWANT
++FEATURES+=-DWANT_MODEST_FULLSCRAPES
++FEATURES+=-DWANT_SPOT_WOODPECKER
++FEATURES+=-DWANT_SYSLOGS
++# FEATURES+=-DWANT_DEV_RANDOM
+ FEATURES+=-DWANT_FULLSCRAPE
+ 
+ #FEATURES+=-D_DEBUG_HTTPERROR
+diff -urp opentracker.orig/opentracker.c opentracker/opentracker.c
+--- opentracker.orig/opentracker.c	2018-01-29 17:43:33.000000000 +0000
++++ opentracker/opentracker.c	2019-03-14 22:31:31.130374313 +0000
+@@ -21,12 +21,12 @@
+ #endif
+ 
+ /* Libowfat */
+-#include "socket.h"
+-#include "io.h"
+-#include "iob.h"
+-#include "byte.h"
+-#include "scan.h"
+-#include "ip6.h"
++#include <libowfat/socket.h>
++#include <libowfat/io.h>
++#include <libowfat/iob.h>
++#include <libowfat/byte.h>
++#include <libowfat/scan.h>
++#include <libowfat/ip6.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_accesslist.c opentracker/ot_accesslist.c
+--- opentracker.orig/ot_accesslist.c	2018-01-29 17:44:49.000000000 +0000
++++ opentracker/ot_accesslist.c	2019-03-14 22:41:44.161191348 +0000
+@@ -12,10 +12,10 @@
+ #include <unistd.h>
+ 
+ /* Libowfat */
+-#include "byte.h"
+-#include "scan.h"
+-#include "ip6.h"
+-#include "mmap.h"
++#include <libowfat/byte.h>
++#include <libowfat/scan.h>
++#include <libowfat/ip6.h>
++#include <libowfat/mmap.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_clean.c opentracker/ot_clean.c
+--- opentracker.orig/ot_clean.c	2018-01-29 17:44:41.000000000 +0000
++++ opentracker/ot_clean.c	2019-03-14 22:38:47.562876081 +0000
+@@ -9,7 +9,7 @@
+ #include <string.h>
+ 
+ /* Libowfat */
+-#include "io.h"
++#include <libowfat/io.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_fullscrape.c opentracker/ot_fullscrape.c
+--- opentracker.orig/ot_fullscrape.c	2018-01-29 17:43:51.000000000 +0000
++++ opentracker/ot_fullscrape.c	2019-03-14 22:40:36.401837732 +0000
+@@ -16,9 +16,9 @@
+ #endif
+ 
+ /* Libowfat */
+-#include "byte.h"
+-#include "io.h"
+-#include "textcode.h"
++#include <libowfat/byte.h>
++#include <libowfat/io.h>
++#include <libowfat/textcode.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_http.c opentracker/ot_http.c
+--- opentracker.orig/ot_http.c	2018-01-29 17:44:00.000000000 +0000
++++ opentracker/ot_http.c	2019-03-14 22:42:57.297160382 +0000
+@@ -13,12 +13,12 @@
+ #include <pthread.h>
+ 
+ /* Libowfat */
+-#include "byte.h"
+-#include "array.h"
+-#include "iob.h"
+-#include "ip6.h"
+-#include "scan.h"
+-#include "case.h"
++#include <libowfat/byte.h>
++#include <libowfat/array.h>
++#include <libowfat/iob.h>
++#include <libowfat/ip6.h>
++#include <libowfat/scan.h>
++#include <libowfat/case.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_livesync.c opentracker/ot_livesync.c
+--- opentracker.orig/ot_livesync.c	2018-01-29 17:45:20.000000000 +0000
++++ opentracker/ot_livesync.c	2019-03-14 22:43:51.453310530 +0000
+@@ -12,10 +12,10 @@
+ #include <stdlib.h>
+ 
+ /* Libowfat */
+-#include "socket.h"
+-#include "ndelay.h"
+-#include "byte.h"
+-#include "ip6.h"
++#include <libowfat/socket.h>
++#include <libowfat/ndelay.h>
++#include <libowfat/byte.h>
++#include <libowfat/ip6.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_livesync.h opentracker/ot_livesync.h
+--- opentracker.orig/ot_livesync.h	2018-01-29 17:46:25.000000000 +0000
++++ opentracker/ot_livesync.h	2019-03-14 22:32:56.986221501 +0000
+@@ -6,7 +6,7 @@
+ #ifndef OT_LIVESYNC_H__
+ #define OT_LIVESYNC_H__
+ 
+-#include "io.h"
++#include <libowfat/io.h>
+ #include "trackerlogic.h"
+ 
+ /*
+diff -urp opentracker.orig/ot_mutex.c opentracker/ot_mutex.c
+--- opentracker.orig/ot_mutex.c	2018-01-29 17:45:34.000000000 +0000
++++ opentracker/ot_mutex.c	2019-03-14 22:35:50.397899878 +0000
+@@ -11,9 +11,9 @@
+ #include <sys/uio.h>
+ 
+ /* Libowfat */
+-#include "byte.h"
+-#include "io.h"
+-#include "uint32.h"
++#include <libowfat/byte.h>
++#include <libowfat/io.h>
++#include <libowfat/uint32.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_stats.c opentracker/ot_stats.c
+--- opentracker.orig/ot_stats.c	2018-01-29 17:45:34.000000000 +0000
++++ opentracker/ot_stats.c	2019-03-14 22:36:56.693933931 +0000
+@@ -19,10 +19,10 @@
+ #endif
+ 
+ /* Libowfat */
+-#include "byte.h"
+-#include "io.h"
+-#include "ip4.h"
+-#include "ip6.h"
++#include <libowfat/byte.h>
++#include <libowfat/io.h>
++#include <libowfat/ip4.h>
++#include <libowfat/ip6.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_udp.c opentracker/ot_udp.c
+--- opentracker.orig/ot_udp.c	2018-01-29 17:45:47.000000000 +0000
++++ opentracker/ot_udp.c	2019-03-14 22:39:31.975785688 +0000
+@@ -11,8 +11,8 @@
+ #include <stdio.h>
+ 
+ /* Libowfat */
+-#include "socket.h"
+-#include "io.h"
++#include <libowfat/socket.h>
++#include <libowfat/io.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
+diff -urp opentracker.orig/ot_vector.c opentracker/ot_vector.c
+--- opentracker.orig/ot_vector.c	2018-01-29 17:46:00.000000000 +0000
++++ opentracker/ot_vector.c	2019-03-14 22:38:11.576552764 +0000
+@@ -14,8 +14,8 @@
+ #include "ot_vector.h"
+ 
+ /* Libowfat */
+-#include "uint32.h"
+-#include "uint16.h"
++#include <libowfat/uint32.h>
++#include <libowfat/uint16.h>
+ 
+ static int vector_compare_peer(const void *peer1, const void *peer2 ) {
+   return memcmp( peer1, peer2, OT_PEER_COMPARE_SIZE );
+diff -urp opentracker.orig/scan_urlencoded_query.c opentracker/scan_urlencoded_query.c
+--- opentracker.orig/scan_urlencoded_query.c	2018-01-29 17:46:15.000000000 +0000
++++ opentracker/scan_urlencoded_query.c	2019-03-14 22:34:52.258454700 +0000
+@@ -7,7 +7,7 @@
+ #include "scan_urlencoded_query.h"
+ 
+ /* Libwofat */
+-#include "scan.h"
++#include <libowfat/scan.h>
+ 
+ /* System */
+ #include <string.h>
+diff -urp opentracker.orig/trackerlogic.c opentracker/trackerlogic.c
+--- opentracker.orig/trackerlogic.c	2018-01-29 17:46:25.000000000 +0000
++++ opentracker/trackerlogic.c	2019-03-14 22:34:13.415492059 +0000
+@@ -13,10 +13,10 @@
+ #include <stdint.h>
+ 
+ /* Libowfat */
+-#include "byte.h"
+-#include "io.h"
+-#include "iob.h"
+-#include "array.h"
++#include <libowfat/byte.h>
++#include <libowfat/io.h>
++#include <libowfat/iob.h>
++#include <libowfat/array.h>
+ 
+ /* Opentracker */
+ #include "trackerlogic.h"
