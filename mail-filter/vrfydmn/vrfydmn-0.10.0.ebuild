@@ -15,8 +15,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
-DEPEND="mail-filter/libmilter
-        dev-python/pymilter"
+DEPEND="mail-filter/libmilter dev-python/pymilter"
 RDEPEND="${DEPEND}"
 
 src_unpack() {
