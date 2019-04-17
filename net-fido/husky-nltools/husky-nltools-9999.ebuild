@@ -28,5 +28,6 @@ emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
 }
 src_install() {
 cd "${S}/${HM}"
-emake RPM_BUILD_ROOT=1 DESTDIR="${D}" LDCONFIG="" install || die "Sorry! Do can not install"
+	dobin nlcrc nldiff nlupd ulc
+	dodoc sample.cfg sample.lnx
 }
