@@ -17,7 +17,7 @@ LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE=""
-DEPEND="net-fido/husky-huskylib"
+DEPEND="net-fido/husky-huskylib net-fido/husky-smapi net-fido/husky-fidoconf"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"
@@ -28,6 +28,6 @@ emake RPM_BUILD_ROOT=1 || die "Sorry! Do can not compile"
 }
 src_install() {
 cd "${S}/${HM}"
-	# dobin nlcrc nldiff nlupd ulc
-	# dodoc sample.cfg sample.lnx
+	dobin sqpack
+	doman sqpack.1
 }
