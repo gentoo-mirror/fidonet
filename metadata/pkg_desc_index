@@ -5,4 +5,5 @@ net-fido/husky-hpt 9999: FTN husky hpt library
 net-fido/husky-htick 9999: FTN husky htick library
 net-fido/husky-huskylib 9999: FTN husky huskylib library
 net-fido/husky-msged 9999: FTN husky msged library
+net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
