@@ -17,7 +17,9 @@ LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE=""
-DEPEND="net-fido/husky-huskylib"
+DEPEND="net-fido/husky-huskylib
+	net-fido/husky-fidoconf
+	net-fido/husky-smapi"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"
