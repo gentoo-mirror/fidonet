@@ -1,5 +1,7 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
+
+EAPI=6
 
 inherit eutils gnuconfig cvs
 
@@ -19,7 +21,8 @@ KEYWORDS="amd64 x86"
 IUSE=""
 DEPEND="net-fido/husky-huskylib
 	net-fido/husky-fidoconf
-	net-fido/husky-smapi"
+	net-fido/husky-smapi
+	net-fido/husky-hptzip"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"

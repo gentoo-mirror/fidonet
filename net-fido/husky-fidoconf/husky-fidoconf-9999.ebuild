@@ -1,7 +1,7 @@
-# Copyright 1999-2006 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-# epatch "${FILESDIR}/fix_cvs_date.patch"
+EAPI=6
 
 inherit eutils gnuconfig cvs
 
@@ -23,9 +23,6 @@ DEPEND="net-fido/husky-huskylib
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${ECVS_LOCALNAME}"
-
-# sed -i "s|\.a$|\.so|; s|LIBDIR=\$(PREFIX)/lib|LIBDIR=\$(PREFIX)/lib/|" huskymak.cfg makefile.in2
-# cd "${S}/${HM}"
 
 src_unpack() {
 cvs_src_unpack

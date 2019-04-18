@@ -20,7 +20,7 @@
 #    FAQ
 #      http://binkd.grumbler.org/binkdfaq.shtml
 
-EAPI=3
+EAPI=6
 
 inherit eutils
 
