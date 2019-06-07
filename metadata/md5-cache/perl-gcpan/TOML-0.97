@@ -1,12 +1,11 @@
-DEFINED_PHASES=compile configure install prepare test unpack
-DEPEND=perl-gcpan/TOML-Parser dev-perl/Module-Build-Tiny dev-perl/Module-Build dev-lang/perl dev-lang/perl:=[-build(-)]
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=perl-gcpan/TOML-Parser dev-perl/Module-Build-Tiny dev-perl/Module-Build dev-lang/perl dev-lang/perl:=
 DESCRIPTION=Parser for Tom's Obvious, Minimal Language.
-EAPI=5
+EAPI=6
 HOMEPAGE=https://metacpan.org/release/TOML
 KEYWORDS=~amd64
 LICENSE=|| ( Artistic GPL-1 GPL-2 GPL-3 )
-RDEPEND=dev-lang/perl:=[-build(-)]
+RDEPEND=dev-lang/perl:=
 SLOT=0
-SRC_URI=mirror://cpan/authors/id/K/KA/KARUPA/TOML-0.97.tar.gz
-_eclasses_=desktop	b1d22ac8bdd4679ab79c71aca235009d	epatch	a1bf4756dba418a7238f3be0cb010c54	estack	43ddf5aaffa7a8d0482df54d25a66a1f	eutils	6e6c2737b59a4b982de6fb3ecefd87f8	ltprune	2729691420b6deeda2a90b1f1183fb55	multilib	1d91b03d42ab6308b5f4f6b598ed110e	multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	f2e3420aed32cf1abe33b4129b842636	perl-module	71c828c354a4cddced2641dda2695de5	preserve-libs	ef207dc62baddfddfd39a164d9797648	toolchain-funcs	8c7f9d80beedd16f2e5a7f612c609529	unpacker	3cd8bad0d31e525cd26be1bfa4e61631	vcs-clean	2a0f74a496fa2b1552c4f3398258b7bf
-_md5_=60bdf4dc6499c1293a38161c1b67ed22
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	f2e3420aed32cf1abe33b4129b842636	perl-module	71c828c354a4cddced2641dda2695de5
+_md5_=9b6b66f914d6597e077cbcf7dd36d9ba
