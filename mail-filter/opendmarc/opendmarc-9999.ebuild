@@ -1,12 +1,12 @@
 # Copyright 1999-2018 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=6
 
 inherit autotools eutils flag-o-matic user systemd git-r3
 
 DESCRIPTION="OpenDNARC milter"
-HOMEPAGE="https://github.com/trusteddomainproject/"
+HOMEPAGE="https://github.com/trusteddomainproject/OpenDMARC"
 SRC_URI=""
 EGIT_REPO_URI="https://github.com/trusteddomainproject/OpenDMARC.git"
 LICENSE="BSD-2 Sendmail"
@@ -32,11 +32,11 @@ pkg_setup() {
 }
 
 src_prepare() {
+	default
 	eautoreconf || die
 }
 
 src_install() {
-	default
 
 	newinitd "${FILESDIR}"/opendmarc.initd opendmarc
 	newconfd "${FILESDIR}"/opendmarc.confd opendmarc

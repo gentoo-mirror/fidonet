@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>me@junc.eu</email>
+		<name>Benny Pedersen</name>
+	</maintainer>
+	<use>
+		<flag name="berkdb"></flag>
+		<flag name="gnutls"></flag>
+		<flag name="ldap"></flag>
+		<flag name="libressl"></flag>
+		<flag name="lmdb"></flag>
+		<flag name="lua"></flag>
+		<flag name="memcached"></flag>
+		<flag name="opendbx"></flag>
+		<flag name="poll"></flag>
+		<flag name="sasl"></flag>
+		<flag name="selinux"></flag>
+		<flag name="ssl"></flag>
+		<flag name="static-libs"></flag>
+		<flag name="unbound"></flag>
+	</use>
+</pkgmetadata>

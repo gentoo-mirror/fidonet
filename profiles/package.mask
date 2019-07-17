@@ -1,3 +1,0 @@
-# Roman Tsisyk <roman@tarantool.org> (15 May 2013)
-# Live ebuild branch.
-# >=dev-db/tarantool-9999
