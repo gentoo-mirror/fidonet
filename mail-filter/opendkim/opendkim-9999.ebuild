@@ -102,33 +102,79 @@ src_configure() {
 		#--disable-rpath
 }
 
+src_compile() {
+	emake runstatedir=/run
+}
+
 src_install() {
-	emake DESTDIR="${D}" install
+	default
+	find "${D}" -name '*.la' -type f -delete || die
 
 	dosbin stats/opendkim-reportstats
 
-	newinitd "${FILESDIR}/opendkim.init.r3" opendkim
-	systemd_dounit "${FILESDIR}/opendkim-r1.service"
+	newinitd "${S}/contrib/OpenRC/opendkim.openrc" "${PN}"
+	systemd_newtmpfilesd "${S}/contrib/systemd/opendkim.tmpfiles" "${PN}.conf"
+	systemd_newunit "contrib/systemd/opendkim.service" "${PN}.service"
 
-	dodir /etc/opendkim /var/lib/opendkim
-	fowners milter:milter /var/lib/opendkim
+	dodir /etc/opendkim
+	keepdir /var/lib/opendkim
 
-	# default configuration
-	if [ ! -f "${ROOT}"/etc/opendkim/opendkim.conf ]; then
-		grep ^[^#] "${S}"/opendkim/opendkim.conf.simple \
-			> "${D}"/etc/opendkim/opendkim.conf
-		if use unbound; then
-			echo TrustAnchorFile /etc/dnssec/root-anchors.txt >> "${D}"/etc/opendkim/opendkim.conf
-		fi
-		echo UserID milter >> "${D}"/etc/opendkim/opendkim.conf
-		if use berkdb; then
-			echo Statistics /var/lib/opendkim/stats.dat >> \
-				"${D}"/etc/opendkim/opendkim.conf
-		fi
-	fi
+	# The OpenDKIM data (particularly, your keys) should be read-only to
+	# the UserID that the daemon runs as.
+	fowners root:opendkim /var/lib/opendkim
+	fperms 750 /var/lib/opendkim
 
-	use static-libs || find "${D}" -name "*.la" -delete
+	# Tweak the "simple" example configuration a bit before installing
+	# it unconditionally.
+	local cf="${T}/opendkim.conf"
+	# Some MTAs are known to break DKIM signatures with "simple"
+	# canonicalization [1], so we choose the "relaxed" policy
+	# over OpenDKIM's current default settings.
+	# [1] https://wordtothewise.com/2016/12/dkim-canonicalization-or-why-microsoft-breaks-your-mail/
+	sed -E -e 's:^(Canonicalization)[[:space:]]+.*:\1\trelaxed/relaxed:' \
+		"${S}/opendkim/opendkim.conf.simple" >"${cf}" || die
+	cat >>"${cf}" <<EOT || die
+
+# The UMask is really only used for the PID file (root:root) and the
+# local UNIX socket, if you're using one. It should be 0117 for the
+# socket.
+UMask			0117
+UserID			opendkim
+
+# For use with unbound
+#TrustAnchorFile	/etc/dnssec/root-anchors.txt
+EOT
+	insinto /etc/opendkim
+	doins "${cf}"
 }
+
+# src_install() {
+# 	emake DESTDIR="${D}" install
+# 
+# 	dosbin stats/opendkim-reportstats
+# 
+# 	newinitd "${FILESDIR}/opendkim.init.r5" opendkim
+# 	systemd_dounit "${FILESDIR}/opendkim-r1.service"
+# 
+# 	dodir /etc/opendkim /var/lib/opendkim
+# 	fowners milter:milter /var/lib/opendkim
+# 
+# 	# default configuration
+# 	if [ ! -f "${ROOT}"/etc/opendkim/opendkim.conf ]; then
+# 		grep ^[^#] "${S}"/opendkim/opendkim.conf.simple \
+# 			> "${D}"/etc/opendkim/opendkim.conf
+# 		if use unbound; then
+# 			echo TrustAnchorFile /etc/dnssec/root-anchors.txt >> "${D}"/etc/opendkim/opendkim.conf
+# 		fi
+# 		echo UserID milter >> "${D}"/etc/opendkim/opendkim.conf
+# 		if use berkdb; then
+# 			echo Statistics /var/lib/opendkim/stats.dat >> \
+# 				"${D}"/etc/opendkim/opendkim.conf
+# 		fi
+# 	fi
+# 
+# 	use static-libs || find "${D}" -name "*.la" -delete
+# }
 
 pkg_postinst() {
 	if [[ -z ${REPLACING_VERSION} ]]; then
