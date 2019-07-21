@@ -112,9 +112,10 @@ src_install() {
 
 	dosbin stats/opendkim-reportstats
 
-	newinitd "${S}/contrib/OpenRC/opendkim.openrc" "${PN}"
-	systemd_newtmpfilesd "${S}/contrib/systemd/opendkim.tmpfiles" "${PN}.conf"
-	systemd_newunit "contrib/systemd/opendkim.service" "${PN}.service"
+	newinitd "${FILESDIR}/opendkim.openrc" "${PN}"
+	# seems removed in github
+	# systemd_newtmpfilesd "${S}/contrib/systemd/opendkim.tmpfiles" "${PN}.conf"
+	systemd_newunit "${FILESDIR}/opendkim.service" "${PN}.service"
 
 	dodir /etc/opendkim
 	keepdir /var/lib/opendkim

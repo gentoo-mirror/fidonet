@@ -37,6 +37,7 @@ src_prepare() {
 }
 
 src_install() {
+	default
 
 	newinitd "${FILESDIR}"/opendmarc.initd opendmarc
 	newconfd "${FILESDIR}"/opendmarc.confd opendmarc
