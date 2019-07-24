@@ -1,7 +1,7 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="4"
+EAPI="6"
 
 inherit user webapp
 
@@ -24,7 +24,7 @@ DEPEND="vacation? ( dev-perl/DBI
 	dev-perl/MIME-Charset
 	mysql? ( dev-perl/DBD-mysql )
 	postgres? ( dev-perl/DBD-Pg ) )
-	dev-lang/php[unicode,imap,postgres?]"
+	dev-lang/php:*[unicode,imap,postgres?]"
 
 RDEPEND="${DEPEND}
 	virtual/httpd-php
