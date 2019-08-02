@@ -1,3 +1,4 @@
+app-antivirus/clamav-unofficial-sigs 6.0.1: Download and install third-party clamav signatures
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
 net-fido/husky-fidoconf 9999: FTN husky fidoconf library
