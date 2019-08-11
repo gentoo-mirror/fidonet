@@ -1,4 +1,8 @@
 app-antivirus/clamav-unofficial-sigs 6.0.1: Download and install third-party clamav signatures
+dev-python/pymilter 0.9.7 1.0.2 1.0.3: The package of Python milters that wraps the C libmilter library.
+mail-filter/fuglu 0.9.0-r1 0.10.0: A mail content scanner for postfix written in python
+mail-filter/opendkim 9999: A milter-based application to provide DKIM signing and verification
+mail-filter/opendmarc 9999: OpenDNARC milter
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
 net-fido/husky-fidoconf 9999: FTN husky fidoconf library
@@ -10,3 +14,18 @@ net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
+net-p2p/opentracker 9999: An open and free bittorrent tracker
+perl-gcpan/ClamAV-Client 0.11: A client class for the ClamAV C<clamd> virus scanner daemon
+perl-gcpan/IP-Country-DB_File 3.03: Build an IP address to country code database
+perl-gcpan/Mail-Alias 1.12: Maniulates mail alias files of various formats.
+perl-gcpan/Mail-AuthenticationResults 1.20180923: Object Oriented Authentication-Results Headers
+perl-gcpan/Mail-Milter-Authentication 2.20181212 2.20190523: Load config files for Authentication Milter
+perl-gcpan/Mail-Milter-Authentication-Extra 2.20180611: Extra handlers for Authentication Milter
+perl-gcpan/Math-Int64 0.54: Manipulate 64 bits integers in Perl
+perl-gcpan/Prometheus-Tiny 0.002: A tiny Prometheus client
+perl-gcpan/Prometheus-Tiny-Shared 0.001: Prometheus::Tiny - A tiny Prometheus client backed by a shared memory region
+perl-gcpan/TOML 0.97: Parser for Tom's Obvious, Minimal Language.
+perl-gcpan/TOML-Parser 0.91: simple toml parser
+perl-gcpan/Test-Deep-Fuzzy 0.01: fuzzy number comparison with Test::Deep
+www-apps/phppgadmin 0.1: Web-based administration for Postgres database in php
+www-apps/postfixadmin 2.3.8: Web Based Management tool for Postfix style virtual domains and users
