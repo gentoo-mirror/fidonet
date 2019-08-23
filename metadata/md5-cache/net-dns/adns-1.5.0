@@ -1,0 +1,12 @@
+BDEPEND=>=app-portage/elt-patches-20170815 !<sys-devel/gettext-0.18.1.1-r3 || ( >=sys-devel/automake-1.16.1:1.16 >=sys-devel/automake-1.15.1:1.15 ) >=sys-devel/autoconf-2.69 >=sys-devel/libtool-2.4
+DEFINED_PHASES=prepare
+DESCRIPTION=Advanced, easy to use, asynchronous-capable DNS client library and utilities.
+EAPI=7
+HOMEPAGE=https://www.gnu.org/software/adns/
+KEYWORDS=~amd64 ~x86
+LICENSE=GPL-vs-LGPL
+RESTRICT=mirror
+SLOT=0
+SRC_URI=http://distfiles.overlay.junc.org/fidonet/adns-1.5.0.tar.gz -> adns-1.5.0.tar.gz
+_eclasses_=autotools	1bf086cdd7356f5c9a4acd9727bd2065	eutils	6e6c2737b59a4b982de6fb3ecefd87f8	libtool	f143db5a74ccd9ca28c1234deffede96	multilib	1d91b03d42ab6308b5f4f6b598ed110e	toolchain-funcs	a3a237ef6c0c58546bf23b2c382f9e56
+_md5_=27b1a2705d252c935cf3236742e94f58

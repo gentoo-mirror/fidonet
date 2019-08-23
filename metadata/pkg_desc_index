@@ -4,6 +4,7 @@ mail-filter/fuglu 0.9.0-r1 0.10.0: A mail content scanner for postfix written in
 mail-filter/isbg 2.1.5: scan an IMAP inbox for spam using SpamAssassin
 mail-filter/opendkim 9999: A milter-based application to provide DKIM signing and verification
 mail-filter/opendmarc 9999: OpenDNARC milter
+net-dns/adns 1.5.0: Advanced, easy to use, asynchronous-capable DNS client library and utilities.
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
 net-fido/husky-fidoconf 9999: FTN husky fidoconf library
