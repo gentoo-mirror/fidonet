@@ -1,12 +1,11 @@
-BDEPEND=dev-lang/perl
 DEFINED_PHASES=compile configure install prepare test
 DEPEND=perl-gcpan/Test-Bits dev-lang/perl dev-lang/perl
 DESCRIPTION=Pack and unpack big-endian IEEE754 floats and doubles
-EAPI=7
+EAPI=6
 HOMEPAGE=https://metacpan.org/release/Data-IEEE754
 KEYWORDS=~amd64
 LICENSE=|| ( Artistic GPL-1 GPL-2 GPL-3 )
 RDEPEND=dev-lang/perl:=
 SLOT=0
 _eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	6ec4c4d8fc8324200f1c14e8d158c59b	perl-module	20c90ae7e826995a597683580cdfcdcb
-_md5_=324f497610e6bc347ea38d0ddb0d1483
+_md5_=aed383a02ca2b217c88d3c5a20f5f789

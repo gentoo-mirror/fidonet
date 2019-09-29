@@ -1,12 +1,11 @@
-BDEPEND=dev-lang/perl
 DEFINED_PHASES=compile configure install prepare test
 DEPEND=dev-perl/Test-Fatal dev-perl/List-SomeUtils >=perl-gcpan/MaxMind-DB-Reader-1.000014 dev-perl/Test-Number-Delta dev-perl/libwww-perl dev-perl/JSON-MaybeXS dev-perl/Sub-Quote dev-perl/Throwable dev-perl/Params-Validate dev-perl/Try-Tiny dev-perl/Moo dev-perl/HTTP-Message >=dev-perl/Data-Validate-IP-0.270.0 dev-perl/URI dev-perl/LWP-Protocol-https perl-gcpan/MaxMind-DB-Common dev-perl/namespace-clean dev-perl/Path-Class dev-lang/perl dev-lang/perl
 DESCRIPTION=Perl API for GeoIP2 databases
-EAPI=7
+EAPI=6
 HOMEPAGE=https://metacpan.org/release/GeoIP2
 KEYWORDS=~amd64
 LICENSE=|| ( Artistic GPL-1 GPL-2 GPL-3 )
 RDEPEND=dev-lang/perl:=
 SLOT=0
 _eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	6ec4c4d8fc8324200f1c14e8d158c59b	perl-module	20c90ae7e826995a597683580cdfcdcb
-_md5_=10a477bebd633f55e271daa0c8ce8bd2
+_md5_=45ba26b8c6fa4c63e8b9868462f70706
