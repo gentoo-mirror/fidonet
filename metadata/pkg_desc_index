@@ -16,16 +16,24 @@ net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
 net-p2p/opentracker 9999: An open and free bittorrent tracker
 perl-gcpan/ClamAV-Client 0.11: A client class for the ClamAV C<clamd> virus scanner daemon
+perl-gcpan/Clone-PP 1.07: Recursively copy Perl datatypes
+perl-gcpan/Data-IEEE754 0.02: Pack and unpack big-endian IEEE754 floats and doubles
+perl-gcpan/Data-Printer 0.40: colored pretty-print of Perl data structures and objects
+perl-gcpan/GeoIP2 2.006002: Perl API for GeoIP2 databases
 perl-gcpan/IP-Country-DB_File 3.03: Build an IP address to country code database
 perl-gcpan/Mail-Alias 1.12: Maniulates mail alias files of various formats.
 perl-gcpan/Mail-AuthenticationResults 1.20180923: Object Oriented Authentication-Results Headers
 perl-gcpan/Mail-Milter-Authentication 2.20181212 2.20190523: Load config files for Authentication Milter
 perl-gcpan/Mail-Milter-Authentication-Extra 2.20180611: Extra handlers for Authentication Milter
 perl-gcpan/Math-Int64 0.54: Manipulate 64 bits integers in Perl
+perl-gcpan/MaxMind-DB-Common 0.040001: No description available
+perl-gcpan/MaxMind-DB-Reader 1.000014: Read MaxMind DB files and look up IP addresses
+perl-gcpan/MooX-StrictConstructor 0.010: Make your Moo-based object constructors blow up on unknown attributes.
 perl-gcpan/Prometheus-Tiny 0.002: A tiny Prometheus client
 perl-gcpan/Prometheus-Tiny-Shared 0.001: Prometheus::Tiny - A tiny Prometheus client backed by a shared memory region
 perl-gcpan/TOML 0.97: Parser for Tom's Obvious, Minimal Language.
 perl-gcpan/TOML-Parser 0.91: simple toml parser
+perl-gcpan/Test-Bits 0.02: Provides a bits_is() subroutine for testing binary data
 perl-gcpan/Test-Deep-Fuzzy 0.01: fuzzy number comparison with Test::Deep
 www-apps/phppgadmin 0.1: Web-based administration for Postgres database in php
 www-apps/postfixadmin 2.3.8: Web Based Management tool for Postfix style virtual domains and users
