@@ -15,7 +15,7 @@ SRC_URI="https://github.com/trusteddomainproject/OpenDKIM/archive/rel-opendkim-2
 LICENSE="BSD GPL-2 Sendmail-Open-Source"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="berkdb ldap libressl lmdb lua memcached opendbx poll sasl selinux +ssl static-libs stats querycache test unbound"
+IUSE="berkdb ldap libressl lmdb lua memcached opendbx sasl selinux +ssl static-libs stats querycache test unbound"
 
 BDEPEND="acct-user/opendkim
 	test? ( dev-lang/lua:* )"
@@ -91,7 +91,6 @@ src_configure() {
 		$(use_enable lua rbl) \
 		$(use_with ldap openldap) \
 		$(use_with lmdb) \
-		$(use_enable poll) \
 		$(use_enable querycache query_cache) \
 		$(use_enable static-libs static) \
 		$(use_enable stats) \
@@ -120,9 +119,11 @@ src_install() {
 
 	dosbin stats/opendkim-reportstats
 
-	newinitd "${S}/contrib/OpenRC/opendkim.openrc" "${PN}"
-	systemd_newtmpfilesd "${S}/contrib/systemd/opendkim.tmpfiles" "${PN}.conf"
-	systemd_newunit "contrib/systemd/opendkim.service" "${PN}.service"
+	# newinitd "${S}/contrib/OpenRC/opendkim.openrc" "${PN}"
+	newinitd "${FILESDIR}"/${PN}.initd ${PN}
+
+	# systemd_newtmpfilesd "${S}/contrib/systemd/opendkim.tmpfiles" "${PN}.conf"
+	# systemd_newunit "contrib/systemd/opendkim.service" "${PN}.service"
 
 	dodir /etc/opendkim
 	keepdir /var/lib/opendkim
