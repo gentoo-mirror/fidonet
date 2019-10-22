@@ -1,4 +1,5 @@
 app-antivirus/clamav-unofficial-sigs 6.0.1: Download and install third-party clamav signatures
+dev-python/authres 1.2.0: Authentication-Results Headers generation and parsing
 dev-python/python-libmilter 1.0.3: A pure python implementation of libmilter
 mail-filter/fuglu 0.9.0-r1 0.10.0 0.10.0-r1 0.10.0-r2: A mail content scanner for postfix written in python
 mail-filter/isbg 2.1.5: scan an IMAP inbox for spam using SpamAssassin
