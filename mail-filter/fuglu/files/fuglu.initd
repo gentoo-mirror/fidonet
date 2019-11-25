@@ -4,12 +4,12 @@
 
 start() {
 	ebegin "Starting fuglu"
-	start-stop-daemon --start --exec /usr/bin/fuglu --background --pidfile "/run/fuglu.pid" -- ${FUGLU_ARGS}
+	start-stop-daemon --start --exec /usr/bin/fuglu --background --pidfile "/var/run/fuglu.pid" -- ${FUGLU_ARGS}
 	eend $*
 }
 
 stop() {
 	ebegin "Stopping fuglu"
-	start-stop-daemon --stop --exec /usr/bin/fuglu --pidfile "/run/fuglu.pid"
+	start-stop-daemon --stop --exec /usr/bin/fuglu --pidfile "/var/run/fuglu.pid" --signal 2
 	eend $*
 }
