@@ -24,9 +24,9 @@ src_install() {
 	perl_set_version
 	default
 	insinto /etc/mail/spamassassin/plugins
-	doins Mail/SpamAssassin/Plugin/TesseractOcr.pm
+	doins lib/Mail/SpamAssassin/Plugin/TesseractOcr.pm || die "Mail/SpamAssassin/Plugin/TesseractOcr.pm"
 	insinto /etc/mail/spamassassin/
-	doins TesseractOcr..cf
+	doins TesseractOcr.cf || die "TesseractOcr.cf"
 }
 pkg_postinst() {
 	elog "You need to restart spamassassin (as root) before this plugin will work:"
