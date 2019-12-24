@@ -1,8 +1,9 @@
 app-antivirus/clamav-unofficial-sigs 6.0.1: Download and install third-party clamav signatures
 dev-perl/Mail-DKIM 0.58: Signs/verifies Internet mail using DKIM message signatures
 dev-python/authres 1.2.0: Authentication-Results Headers generation and parsing
+dev-python/pymilter 1.0.4: The package of Python milters that wraps the C libmilter library.
 dev-python/python-libmilter 1.0.3: A pure python implementation of libmilter
-mail-filter/fuglu 0.9.0-r1 0.10.0-r3 0.10.5-r2 0.10.6: A mail content scanner for postfix written in python
+mail-filter/fuglu 0.9.0-r1 0.10.0-r3 0.10.5-r2 0.10.6 0.10.6-r1: A mail content scanner for postfix written in python
 mail-filter/isbg 2.1.5 2.2.1: scan an IMAP inbox for spam using SpamAssassin
 mail-filter/opendkim 2.11.0 2.11.0-r1: A milter providing DKIM signing and verification
 net-dns/adns 1.5.0: Advanced, easy to use, asynchronous-capable DNS client library and utilities.
