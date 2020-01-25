@@ -1,4 +1,4 @@
-app-antivirus/clamav-unofficial-sigs 6.0.1 6.1.1: Download and install third-party clamav signatures
+app-antivirus/clamav-unofficial-sigs 6.0.1 6.1.1 7.0.1: Download and install third-party clamav signatures
 dev-perl/Mail-DKIM 0.58: Signs/verifies Internet mail using DKIM message signatures
 dev-python/authres 1.2.0: Authentication-Results Headers generation and parsing
 dev-python/pymilter 1.0.4: The package of Python milters that wraps the C libmilter library.
