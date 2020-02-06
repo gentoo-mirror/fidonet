@@ -6,6 +6,15 @@ mail-filter/fuglu:clamav - Adds support for ClamAV (runtime dep only)
 mail-filter/fuglu:database - Adds support for databases using sqlalchemy
 mail-filter/fuglu:dkim - Adds support for dkim sign and verify
 mail-filter/fuglu:spamassassin - Adds support for Spamassassin (runtime dep only)
+mail-filter/opendkim:ldap - Enable openldap as a dataset facilitator or keys, determining domains to sign for, and any other dataset that opendkim supports.
+mail-filter/opendkim:lmdb - Add support for using dev-db/lmdb
+mail-filter/opendkim:lua - Enables control over signature verification, filtering and policy to be controlled by user defined lua scripts.
+mail-filter/opendkim:memcached - Add support for using dev-libs/libmemcached
+mail-filter/opendkim:opendbx - Use opendbx backend to facilitate dataset driven OpenDKIM configuration options like stats, bodylengthdb, etc. against a wide variety of database types
+mail-filter/opendkim:querycache - Add support for query caching (requires 'berkdb' flag)
+mail-filter/opendkim:sasl - Used to authenticate to a LDAP server in various ways if required.
+mail-filter/opendkim:stats - Add support for statistics (requires 'opendbx' flag)
+mail-filter/opendkim:unbound - Use the unbound dnssec library to perform DKIM DNS queries.
 net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
