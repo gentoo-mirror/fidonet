@@ -2,6 +2,10 @@
 # Please add your descriptions to your package's metadata.xml ONLY.
 # * generated automatically using pmaint *
 
+mail-filter/fuglu:clamav - Adds support for ClamAV (runtime dep only)
+mail-filter/fuglu:database - Adds support for databases using sqlalchemy
+mail-filter/fuglu:dkim - Adds support for dkim sign and verify
+mail-filter/fuglu:spamassassin - Adds support for Spamassassin (runtime dep only)
 net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
