@@ -16,6 +16,7 @@
 		<flag name="database">Adds support for databases using sqlalchemy</flag>
 		<flag name="dkim">Adds support for dkim sign and verify</flag>
 		<flag name="clamav">Adds support for ClamAV (runtime dep only)</flag>
+		<flag name="redis">Adds support for redis based content filters</flag>
 		<flag name="spamassassin">Adds support for Spamassassin (runtime dep only)</flag>
 	</use>
 </pkgmetadata>
