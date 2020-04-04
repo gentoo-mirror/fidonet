@@ -1,7 +1,7 @@
 acct-group/fuglu 0: System group: fuglu
 acct-user/fuglu 0: System user: fuglu
 dev-python/pyspf 2.0.14: Python implementation of the Sender Policy Framework (SPF) protocol
-mail-filter/fuglu 0.10.6-r2 0.10.6-r3: A mail content scanner for postfix written in python
+mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4: A mail content scanner for postfix written in python
 mail-filter/opendkim 2.11.0-r1 9999: A milter-based application to provide DKIM signing and verification
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
