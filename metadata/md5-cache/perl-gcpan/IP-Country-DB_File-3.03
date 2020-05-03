@@ -1,0 +1,12 @@
+BDEPEND=dev-lang/perl
+DEFINED_PHASES=compile configure install prepare test
+DEPEND=dev-perl/Math-Int64 dev-lang/perl dev-lang/perl
+DESCRIPTION=IPv4 and IPv6 to country translation using DB_File
+EAPI=7
+HOMEPAGE=https://metacpan.org/release/IP-Country-DB_File
+KEYWORDS=~amd64
+LICENSE=|| ( Artistic GPL-1 GPL-2 GPL-3 )
+RDEPEND=dev-lang/perl:=
+SLOT=0
+_eclasses_=multiprocessing	cac3169468f893670dac3e7cb940e045	perl-functions	6ec4c4d8fc8324200f1c14e8d158c59b	perl-module	97206c028d9bdc9f248e022ac5c9fc83
+_md5_=bb4208e49a23ff728a78d3f9bbcc6988

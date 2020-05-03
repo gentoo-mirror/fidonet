@@ -14,4 +14,5 @@ net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
+perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
 www-apps/phppgadmin 0.1: Web-based administration for Postgres database in php
