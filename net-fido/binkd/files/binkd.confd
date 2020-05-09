@@ -13,4 +13,6 @@
 # BINKD_PID="/home/xpoint/fido/binkd.pid"
 
 # options to run as daemon
-BINKD_OPTIONS="-CDmr"
+# dont add mr here !
+
+BINKD_OPTIONS="-CD"

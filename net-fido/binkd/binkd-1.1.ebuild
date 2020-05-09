@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # now edited with nano 2.3.2 :)
@@ -20,7 +20,7 @@
 #    FAQ
 #      http://binkd.grumbler.org/binkdfaq.shtml
 
-EAPI=6
+EAPI=7
 
 inherit eutils
 
