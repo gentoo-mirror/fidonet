@@ -2,7 +2,6 @@ acct-group/fuglu 0: System group: fuglu
 acct-user/fuglu 0: System user: fuglu
 dev-python/pyspf 2.0.14: Python implementation of the Sender Policy Framework (SPF) protocol
 mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4 0.10.6-r5: A mail content scanner for postfix written in python
-mail-filter/opendkim 2.11.0-r1 9999: A milter-based application to provide DKIM signing and verification
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
 net-fido/husky-fidoconf 9999: FTN husky fidoconf library
@@ -14,7 +13,5 @@ net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
-perl-gcpan/Compress-Raw-Lzma 2.093: Low-Level Interface to lzma compression library
-perl-gcpan/IO-Compress-Lzma 2.093: No description available
 perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
 www-apps/phppgadmin 0.1: Web-based administration for Postgres database in php
