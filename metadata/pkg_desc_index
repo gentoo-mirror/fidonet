@@ -3,6 +3,7 @@ acct-user/fuglu 0: System user: fuglu
 dev-python/dkimpy 1.0.4 1.0.4-r1: DKIM and ARC email signing and verification library
 mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4 0.10.6-r5 0.10.6-r6: A mail content scanner for postfix written in python
 mail-filter/isbg 2.3.0: scan an IMAP inbox for spam using SpamAssassin
+mail-filter/spamassassin-olemacro 9999: SpamAssassin plugin that that searches attached documents for an OLE Macro
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
 net-fido/husky-areafix 9999: FTN husky areafix library
 net-fido/husky-fidoconf 9999: FTN husky fidoconf library
