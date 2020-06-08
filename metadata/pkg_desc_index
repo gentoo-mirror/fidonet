@@ -1,5 +1,7 @@
 acct-group/fuglu 0: System group: fuglu
+acct-group/radicale 0: System group: radicale
 acct-user/fuglu 0: System user: fuglu
+acct-user/radicale 0: System user: radicale
 dev-python/dkimpy 1.0.4 1.0.4-r1: DKIM and ARC email signing and verification library
 mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4 0.10.6-r5 0.10.6-r6: A mail content scanner for postfix written in python
 mail-filter/isbg 2.3.0: scan an IMAP inbox for spam using SpamAssassin
@@ -17,3 +19,4 @@ net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
 perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
 www-apps/phppgadmin 0.1: Web-based administration for Postgres database in php
+www-apps/radicale 3.0.3: A simple CalDAV CardDAV server
