@@ -21,6 +21,7 @@ IUSE="+bcrypt"
 
 RDEPEND="acct-user/radicale
 	sys-apps/util-linux
+	>=dev-python/defusedxml-0.6.0[${PYTHON_USEDEP}]
 	>=dev-python/vobject-0.9.6[${PYTHON_USEDEP}]
 	>=dev-python/python-dateutil-2.7.3[${PYTHON_USEDEP}]
 	bcrypt? ( dev-python/passlib[bcrypt,${PYTHON_USEDEP}] )"
@@ -70,7 +71,8 @@ python_install_all() {
 
 	# config file
 	insinto /etc/${PN}
-	doins config logging
+	# doins config logging
+	doins config
 
 	# fcgi and wsgi files
 	exeinto /usr/share/${PN}
