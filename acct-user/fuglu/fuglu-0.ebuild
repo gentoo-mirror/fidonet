@@ -5,7 +5,9 @@ EAPI=7
 
 inherit acct-user
 
+DESCRIPTION="User for fuglu"
 ACCT_USER_ID=121
+ACCT_USER_HOME="/var/lib/fuglu"
 ACCT_USER_GROUPS=( "${PN}" )
 
 acct-user_add_deps
