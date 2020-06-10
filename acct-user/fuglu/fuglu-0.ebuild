@@ -7,7 +7,9 @@ inherit acct-user
 
 DESCRIPTION="User for fuglu"
 ACCT_USER_ID=121
-ACCT_USER_HOME="/var/lib/fuglu"
+ACCT_USER_HOME=/var/lib/${PN}
+ACCT_USER_HOME_OWNER=${PN}:root
+ACCT_USER_HOME_PERMS=0750
 ACCT_USER_GROUPS=( "${PN}" )
 
 acct-user_add_deps
