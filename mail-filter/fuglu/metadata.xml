@@ -18,5 +18,6 @@
 		<flag name="clamav">Adds support for ClamAV (runtime dep only)</flag>
 		<flag name="redis">Adds support for redis based content filters</flag>
 		<flag name="spamassassin">Adds support for Spamassassin (runtime dep only)</flag>
+		<flag name="spf">Adds support for spf check in fuglu (runtime dep only)</flag>
 	</use>
 </pkgmetadata>
