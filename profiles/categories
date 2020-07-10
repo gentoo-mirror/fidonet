@@ -1,6 +1,11 @@
+acct-group
+acct-user
+app-backup
+dev-python
 mail-filter
 net-dns
 net-fido
 net-news
 net-www
 perl-gcpan
+www-apps

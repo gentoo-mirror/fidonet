@@ -2,6 +2,13 @@ acct-group/fuglu 0: System group: fuglu
 acct-group/radicale 0: System group: radicale
 acct-user/fuglu 0: User for fuglu
 acct-user/radicale 0: System user: radicale
+app-backup/holland 1.0.10: Holland Core Plugins
+app-backup/holland-backup-example 1.0.10: Holland Example Plugin
+app-backup/holland-backup-pgdump 1.0.10: Holland pgdump Plugin
+app-backup/holland-backup-random 1.0.10: Holland Random Plugin
+app-backup/holland-backup-sqlite 1.0.10: Holland sqlite Plugin
+app-backup/holland-lib-common 1.0.10: Holland Core Library
+app-backup/holland-lib-lvm 1.0.10: Holland LVM Library
 dev-python/dkimpy 1.0.4 1.0.4-r1: DKIM and ARC email signing and verification library
 mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4 0.10.6-r5 0.10.6-r6 0.10.6-r7 0.10.6-r8 0.10.7: A mail content scanner for postfix written in python
 mail-filter/isbg 2.3.0: scan an IMAP inbox for spam using SpamAssassin
