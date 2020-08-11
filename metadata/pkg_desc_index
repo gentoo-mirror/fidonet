@@ -10,6 +10,7 @@ app-backup/holland-backup-sqlite 1.0.10-r1: Holland sqlite Plugin
 app-backup/holland-lib-common 1.0.10-r1: Holland Core Library
 app-backup/holland-lib-lvm 1.0.10-r1: Holland LVM Library
 dev-python/dkimpy 1.0.4 1.0.4-r1: DKIM and ARC email signing and verification library
+dev-python/dmarc 1.0.2: verification library
 mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4 0.10.6-r5 0.10.6-r6 0.10.6-r7 0.10.6-r8 0.10.7: A mail content scanner for postfix written in python
 mail-filter/isbg 2.3.0: scan an IMAP inbox for spam using SpamAssassin
 mail-filter/spamassassin-olemacro 9999: SpamAssassin plugin that that searches attached documents for an OLE Macro
