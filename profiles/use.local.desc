@@ -12,4 +12,3 @@ net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
 net-fido/binkd:proxy - HTTPS proxy
-www-apps/radicale:bcrypt - Depend on passlib to enable bcrypt and md5 authentication methods
