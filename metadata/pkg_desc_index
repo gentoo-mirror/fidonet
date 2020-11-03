@@ -7,7 +7,7 @@ app-backup/holland-backup-example 1.0.10-r1: Holland Example Plugin
 app-backup/holland-backup-pgdump 1.0.10-r1: Holland pgdump Plugin
 app-backup/holland-backup-random 1.0.10-r1: Holland Random Plugin
 app-backup/holland-backup-sqlite 1.0.10-r1: Holland sqlite Plugin
-app-backup/holland-lib-common 1.0.10-r1: Holland Core Library
+app-backup/holland-lib-common 1.0.10-r1 1.2.1: Holland Core Library
 app-backup/holland-lib-lvm 1.0.10-r1: Holland LVM Library
 dev-python/dkimpy 1.0.4 1.0.4-r1: DKIM and ARC email signing and verification library
 dev-python/dmarc 1.0.2: verification library
