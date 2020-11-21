@@ -2,13 +2,6 @@ acct-group/fuglu 0: System group: fuglu
 acct-group/radicale 0: System group: radicale
 acct-user/fuglu 0: User for fuglu
 acct-user/radicale 0: System user: radicale
-app-backup/holland 1.0.10-r1: Holland Core Plugins
-app-backup/holland-backup-example 1.0.10-r1: Holland Example Plugin
-app-backup/holland-backup-pgdump 1.0.10-r1: Holland pgdump Plugin
-app-backup/holland-backup-random 1.0.10-r1: Holland Random Plugin
-app-backup/holland-backup-sqlite 1.0.10-r1: Holland sqlite Plugin
-app-backup/holland-lib-common 1.0.10-r1 1.2.1: Holland Core Library
-app-backup/holland-lib-lvm 1.0.10-r1: Holland LVM Library
 dev-python/dkimpy 1.0.4 1.0.4-r1: DKIM and ARC email signing and verification library
 dev-python/dmarc 1.0.2: verification library
 mail-filter/fuglu 0.10.6-r2 0.10.6-r3 0.10.6-r4 0.10.6-r5 0.10.6-r6 0.10.6-r7 0.10.6-r8 0.10.7: A mail content scanner for postfix written in python
@@ -26,5 +19,6 @@ net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
 perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
+perl-gcpan/Net-validMX 2.5.0: use DNS and/or regular expressions to verify if an email address could be valid.
 perl-gcpan/Regexp-Trie 0.02: builds trie-ized regexp
 virtual/spamassassin-meta 0: Virtual for optional spamassassin perl modules
