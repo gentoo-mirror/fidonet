@@ -1,6 +1,7 @@
 acct-group
 acct-user
 app-backup
+dev-perl
 dev-python
 mail-filter
 net-dns
