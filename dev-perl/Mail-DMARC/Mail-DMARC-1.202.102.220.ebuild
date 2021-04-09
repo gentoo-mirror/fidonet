@@ -4,7 +4,7 @@
 EAPI=6
 
 DIST_AUTHOR=MBRADSHAW
-DIST_VERSION=1.20170911
+DIST_VERSION=1.20210220
 inherit perl-module
 
 DESCRIPTION="Perl implementation of DMARC"
@@ -16,9 +16,10 @@ RESTRICT="!test? ( test )"
 PERL_RM_FILES=(
 	'bin/install_deps.pl'
 )
-PATCHES=(
-	"${FILESDIR}/no-installdeps-script.patch"
-)
+# patches is not needed in this version ?
+# PATCHES=(
+# 	"${FILESDIR}/no-installdeps-script.patch"
+# )
 RDEPEND="
 	!minimal? (
 		dev-perl/Net-IMAP-Simple
