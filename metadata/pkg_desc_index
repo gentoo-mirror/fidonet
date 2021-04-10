@@ -19,7 +19,23 @@ net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
+perl-gcpan/Crypt-OpenSSL-Verify 0.28: OpenSSL Verify certificate verification in XS.
+perl-gcpan/Crypt-OpenSSL-X509 1.903: Perl extension to OpenSSL's X509 API.
+perl-gcpan/HTTP-Tiny-Paranoid 0.07: A safer HTTP::Tiny
+perl-gcpan/Hash-SharedMem 0.005: efficient shared mutable hash
 perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
+perl-gcpan/Lock-File 1.03: file locker with an automatic out-of-scope unlocking mechanism
+perl-gcpan/Mail-AuthenticationResults 2.20210112: Class modelling Sub Entry parts of the Authentication Results Header
+perl-gcpan/Mail-BIMI 3.20210301: BIMI object
+perl-gcpan/Mail-DataFeed-Abusix 2.20210112: Send SMTP transaction data to the Abusix transaction feed
+perl-gcpan/Mail-Milter-Authentication 3.20210324: A Perl Mail Authentication Milter
+perl-gcpan/Net-DNS-Paranoid 0.08: paranoid dns resolver
 perl-gcpan/Net-validMX 2.5.0: use DNS and/or regular expressions to verify if an email address could be valid.
+perl-gcpan/Prometheus-Tiny 0.005: A tiny Prometheus client
+perl-gcpan/Prometheus-Tiny-Shared 0.020: A tiny Prometheus client with a shared database behind it
 perl-gcpan/Regexp-Trie 0.02: builds trie-ized regexp
+perl-gcpan/Scalar-String 0.003: string aspects of scalars
+perl-gcpan/TOML 0.97: Parser for Tom's Obvious, Minimal Language.
+perl-gcpan/TOML-Parser 0.91: simple toml parser
+perl-gcpan/Test-Deep-Fuzzy 0.01: fuzzy number comparison with Test::Deep
 virtual/spamassassin-meta 0: Virtual for optional spamassassin perl modules

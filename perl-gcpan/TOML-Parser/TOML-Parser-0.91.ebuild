@@ -3,19 +3,21 @@
 
 EAPI=5
 
-MODULE_AUTHOR="KMCGRAIL"
-MODULE_VERSION="2.5.0"
-
-MODULE_SECTION="validMX"
+MODULE_AUTHOR="KARUPA"
+MODULE_VERSION="0.91"
 
 inherit perl-module
 
-DESCRIPTION="use DNS and/or regular expressions to verify if an email address could be valid."
+DESCRIPTION="simple toml parser"
 
 LICENSE="|| ( Artistic GPL-1 GPL-2 GPL-3 )"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND=">=dev-perl/Net-DNS-1.130.0
+DEPEND="dev-perl/Types-Serialiser
+	dev-perl/Test-Deep
+	dev-perl/Module-Build
+	>=dev-perl/Module-Build-Tiny-0.39.0
+	perl-gcpan/Test-Deep-Fuzzy
 	dev-lang/perl"
