@@ -3,31 +3,20 @@
 
 EAPI=7
 
-# git-r3 perl-module
 inherit perl-functions systemd toolchain-funcs
 
-# EGIT_REPO_URI="https://github.com/apache/spamassassin.git"
-# EGIT_BRANCH="master"
-
-# MY_P="Mail-SpamAssassin-${PV//_/-}"
-# S="${WORKDIR}/${MY_P}"
-S="${WORKDIR}/spamassassin-trunk"
+MY_P="Mail-SpamAssassin-${PV//_/-}"
+S="${WORKDIR}/${MY_P}"
 DESCRIPTION="An extensible mail filter which can identify and tag spam"
 HOMEPAGE="https://spamassassin.apache.org/"
-# SRC_URI="mirror://apache/spamassassin/source/${MY_P}.tar.bz2"
 RESTRICT="mirror !test? ( test )"
-SRC_URI="http://distfiles.overlay.junc.org/fidonet/${PN}-trunk.zip -> ${P}.zip"
+SRC_URI="http://distfiles.overlay.junc.org/fidonet/${MY_P}.tar.bz2"
 
 LICENSE="Apache-2.0 GPL-2"
 SLOT="0"
-# KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux"
 KEYWORDS="~amd64"
-IUSE="berkdb cron ipv6 ldap libressl mysql postgres qmail sqlite ssl test"
-# RESTRICT="!test? ( test )"
+IUSE="berkdb cron ipv6 ldap mysql postgres qmail sqlite ssl test"
 
-# The Makefile.PL script checks for dependencies, but only fails if a
-# required (i.e. not optional) dependency is missing. We therefore
-# require most of the optional modules only at runtime.
 REQDEPEND="dev-lang/perl:=
 	dev-perl/HTML-Parser
 	dev-perl/Net-DNS
@@ -37,14 +26,6 @@ REQDEPEND="dev-lang/perl:=
 	virtual/perl-IO-Zlib
 	virtual/perl-Time-HiRes"
 
-# SpamAssassin doesn't use libwww-perl except as a fallback for when
-# curl/wget are missing, so we depend on one of those instead. Some
-# mirrors use https, so we need those utilities to support SSL.
-#
-# re2c is needed to compile the rules (sa-compile).
-#
-# We still need the old Digest-SHA1 because razor2 has not been ported
-# to Digest-SHA.
 OPTDEPEND="app-crypt/gnupg
 	dev-perl/BSD-Resource
 	dev-perl/Digest-SHA1
@@ -76,21 +57,16 @@ OPTDEPEND="app-crypt/gnupg
 	)
 	ssl? ( dev-perl/IO-Socket-SSL )"
 
-DEPEND="
-	ssl? (
-		!libressl? ( dev-libs/openssl:0= )
-		libressl? ( dev-libs/libressl )
-	)"
-BDEPEND="${REQDEPEND}
-	${DEPEND}
+DEPEND="${REQDEPEND}
 	test? (
 		${OPTDEPEND}
 		virtual/perl-Test-Harness
 	)"
+BDEPEND="${REQDEPEND}
+	${DEPEND}"
 RDEPEND="acct-user/spamd
 	acct-group/spamd
 	${REQDEPEND}
-	${DEPEND}
 	${OPTDEPEND}"
 
 PATCHES=(
