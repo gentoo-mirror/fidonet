@@ -5,7 +5,7 @@ acct-user/radicale 0: System user: radicale
 dev-perl/Mail-DMARC 1.202.102.220: Perl implementation of DMARC
 dev-python/dmarc 1.0.2: verification library
 mail-filter/fuglu 0.10.6-r8 0.10.7 0.10.8: A mail content scanner for postfix written in python
-mail-filter/isbg 2.3.0: scan an IMAP inbox for spam using SpamAssassin
+mail-filter/isbg 2.3.0 2.3.1: scan an IMAP inbox for spam using SpamAssassin
 mail-filter/spamassassin 4.0.0: An extensible mail filter which can identify and tag spam
 mail-filter/spamassassin-olemacro 9999: SpamAssassin plugin that that searches attached documents for an OLE Macro
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
