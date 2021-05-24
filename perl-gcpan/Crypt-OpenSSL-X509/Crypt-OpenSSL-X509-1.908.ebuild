@@ -3,18 +3,16 @@
 
 EAPI=5
 
-MODULE_AUTHOR="ROBN"
-MODULE_VERSION="0.005"
+MODULE_AUTHOR="JONASBN"
+MODULE_VERSION="1.908"
 
 inherit perl-module
 
-DESCRIPTION="A tiny Prometheus client"
+DESCRIPTION="Perl extension to OpenSSL's X509 API."
 
 LICENSE="|| ( Artistic GPL-1 GPL-2 GPL-3 )"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/HTTP-Message
-	dev-perl/Plack
-	dev-lang/perl"
+DEPEND="dev-lang/perl"
