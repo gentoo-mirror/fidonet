@@ -26,6 +26,7 @@ IUSE="clamav database dkim redis spamassassin spf"
 # dev-python/rarfile[${PYTHON_USEDEP}]
 # >=dev-python/pyspf-2.0.12[${PYTHON_USEDEP}]
 # $(python_gen_cond_dep 'dev-python/ipaddress[${PYTHON_USEDEP}]' python2_7)
+# >=dev-python/pydns-3.2.1[${PYTHON_USEDEP}]
 
 CDEPEND="acct-user/fuglu
 		dev-python/beautifulsoup:4[${PYTHON_USEDEP}]
@@ -41,7 +42,6 @@ DEPEND="${CDEPEND}
 		>=dev-python/packaging-19.2[${PYTHON_USEDEP}]
 		>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
 		>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
-		>=dev-python/pydns-3.2.1[${PYTHON_USEDEP}]
 		dev-python/setuptools[${PYTHON_USEDEP}]
 "
 
