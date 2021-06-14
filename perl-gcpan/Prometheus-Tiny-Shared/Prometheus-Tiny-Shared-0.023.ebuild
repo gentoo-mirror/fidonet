@@ -4,7 +4,7 @@
 EAPI=5
 
 MODULE_AUTHOR="ROBN"
-MODULE_VERSION="0.021"
+MODULE_VERSION="0.023"
 
 inherit perl-module
 
@@ -15,12 +15,12 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Plack
-	dev-perl/HTTP-Message
-	dev-perl/Test-Exception
-	dev-perl/Data-Random
-	perl-gcpan/Hash-SharedMem
-	dev-perl/JSON-XS
+DEPEND="dev-perl/HTTP-Message
 	dev-perl/Test-Differences
-	>=perl-gcpan/Prometheus-Tiny-0.006
+	dev-perl/Plack
+	>=perl-gcpan/Prometheus-Tiny-0.007
+	perl-gcpan/Hash-SharedMem
+	dev-perl/Test-Exception
+	dev-perl/JSON-XS
+	dev-perl/Data-Random
 	dev-lang/perl"

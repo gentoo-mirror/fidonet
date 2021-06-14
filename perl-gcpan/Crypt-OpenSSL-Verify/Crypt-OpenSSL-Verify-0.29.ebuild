@@ -3,18 +3,19 @@
 
 EAPI=5
 
-MODULE_AUTHOR="ROBN"
-MODULE_VERSION="0.006"
+MODULE_AUTHOR="TIMLEGGE"
+MODULE_VERSION="0.29"
 
 inherit perl-module
 
-DESCRIPTION="A tiny Prometheus client"
+DESCRIPTION="OpenSSL Verify certificate verification in XS."
 
 LICENSE="|| ( Artistic GPL-1 GPL-2 GPL-3 )"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/HTTP-Message
-	dev-perl/Plack
+DEPEND="dev-perl/Test-Exception
+	dev-perl/File-Slurp
+	>=perl-gcpan/Crypt-OpenSSL-X509-1.908
 	dev-lang/perl"
