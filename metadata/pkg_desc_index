@@ -21,11 +21,11 @@ net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
 perl-gcpan/Crypt-OpenSSL-Verify 0.29: OpenSSL Verify certificate verification in XS.
 perl-gcpan/Crypt-OpenSSL-X509 1.908: Perl extension to OpenSSL's X509 API.
+perl-gcpan/DB_File 1.856: Perl5 access to Berkeley DB version 1.x
 perl-gcpan/HTTP-Tiny-Paranoid 0.07: A safer HTTP::Tiny
 perl-gcpan/Hash-SharedMem 0.005: efficient shared mutable hash
 perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
 perl-gcpan/Lock-File 1.03: file locker with an automatic out-of-scope unlocking mechanism
-perl-gcpan/Mail-AuthenticationResults 2.20210112: Class modelling Sub Entry parts of the Authentication Results Header
 perl-gcpan/Mail-BIMI 3.20210512: BIMI object
 perl-gcpan/Mail-DataFeed-Abusix 2.20210112: Send SMTP transaction data to the Abusix transaction feed
 perl-gcpan/Mail-Milter-Authentication 3.20210514: A Perl Mail Authentication Milter

@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND=">=perl-gcpan/TOML-Parser-0.91
+DEPEND=">=dev-perl/Module-Build-Tiny-0.39.0
+	>=perl-gcpan/TOML-Parser-0.91
 	dev-perl/Module-Build
-	>=dev-perl/Module-Build-Tiny-0.39.0
 	dev-lang/perl"

@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/HTTP-Message
-	dev-perl/Test-Exception
+DEPEND="dev-perl/Test-Exception
 	dev-perl/Plack
+	dev-perl/HTTP-Message
 	dev-lang/perl"

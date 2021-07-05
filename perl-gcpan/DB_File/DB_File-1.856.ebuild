@@ -3,18 +3,16 @@
 
 EAPI=5
 
-MODULE_AUTHOR="MBRADSHAW"
-MODULE_VERSION="2.20210112"
+MODULE_AUTHOR="PMQS"
+MODULE_VERSION="1.856"
 
 inherit perl-module
 
-DESCRIPTION="Class modelling Sub Entry parts of the Authentication Results Header"
+DESCRIPTION="Perl5 access to Berkeley DB version 1.x"
 
 LICENSE="|| ( Artistic GPL-1 GPL-2 GPL-3 )"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/JSON
-	dev-perl/Test-Exception
-	dev-lang/perl"
+DEPEND="dev-lang/perl"

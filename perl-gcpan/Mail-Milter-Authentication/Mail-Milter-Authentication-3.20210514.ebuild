@@ -15,37 +15,38 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Proc-ProcessTable
-	perl-gcpan/Mail-AuthenticationResults
-	>=dev-perl/File-ShareDir-Install-0.110.0
-	dev-perl/Sereal
-	dev-perl/Crypt-OpenSSL-RSA
-	dev-perl/Email-Simple
-	dev-perl/List-MoreUtils
-	dev-perl/Net-DNS
-	dev-perl/Net-Server
-	dev-perl/Test-File-Contents
-	dev-perl/Mail-DKIM
-	dev-perl/Log-Dispatchouli
-	>=dev-perl/Net-DNS-Resolver-Mock-1.201.710.310
-	dev-perl/Import-Into
-	>=dev-perl/Mail-DMARC-1.201.709.110
-	>=perl-gcpan/Mail-DataFeed-Abusix-2.20210112
-	dev-perl/Email-Sender
-	dev-perl/App-Cmd
-	dev-perl/Clone
-	dev-perl/Mail-SPF
-	dev-perl/Text-Table
-	dev-perl/JSON-XS
+DEPEND="dev-perl/Mail-DKIM
 	perl-gcpan/Lock-File
-	dev-perl/File-Slurp
-	dev-perl/Test-Exception
-	dev-perl/Date-Manip
-	>=perl-gcpan/Mail-BIMI-3.20210512
-	>=perl-gcpan/Prometheus-Tiny-Shared-0.021
+	dev-perl/List-MoreUtils
+	>=perl-gcpan/Prometheus-Tiny-Shared-0.023
 	dev-perl/TimeDate
-	dev-perl/SUPER
-	dev-perl/Email-Date-Format
-	dev-perl/Net-IP
+	dev-perl/File-Slurp
 	dev-perl/Test-Perl-Critic
+	dev-perl/Text-Table
+	dev-perl/Mail-AuthenticationResults
+	dev-perl/Net-DNS
+	dev-perl/Net-IP
+	dev-perl/Net-Server
+	dev-perl/Import-Into
+	perl-gcpan/TOML
+	dev-perl/Mail-SPF
+	dev-perl/Test-File-Contents
+	>=perl-gcpan/Mail-DataFeed-Abusix-2.20210112
+	>=dev-perl/Mail-DMARC-1.202.104.270
+	dev-perl/Clone
+	dev-perl/Log-Dispatchouli
+	dev-perl/Test-Exception
+	dev-perl/JSON-XS
+	dev-perl/Email-Date-Format
+	dev-perl/Crypt-OpenSSL-RSA
+	dev-perl/Sereal
+	>=dev-perl/Net-DNS-Resolver-Mock-1.201.710.310
+	dev-perl/App-Cmd
+	dev-perl/SUPER
+	dev-perl/Email-Sender
+	>=perl-gcpan/Mail-BIMI-3.20210512
+	dev-perl/Date-Manip
+	dev-perl/Proc-ProcessTable
+	>=dev-perl/File-ShareDir-Install-0.110.0
+	dev-perl/Email-Simple
 	dev-lang/perl"
