@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND=">=dev-perl/Module-Build-0.422.400
+DEPEND=">=dev-perl/Class-Accessor-Lite-0.80.0
 	>=dev-perl/Net-DNS-1.130.0
-	>=dev-perl/Class-Accessor-Lite-0.80.0
+	>=dev-perl/Module-Build-0.422.400
 	dev-lang/perl"

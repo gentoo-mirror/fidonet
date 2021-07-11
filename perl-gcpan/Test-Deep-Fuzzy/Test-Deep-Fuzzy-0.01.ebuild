@@ -15,8 +15,8 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Test-Deep
-	>=dev-perl/Module-Build-Tiny-0.39.0
-	dev-perl/Math-Round
+DEPEND="dev-perl/Math-Round
+	dev-perl/Test-Deep
 	dev-perl/Module-Build
+	>=dev-perl/Module-Build-Tiny-0.39.0
 	dev-lang/perl"

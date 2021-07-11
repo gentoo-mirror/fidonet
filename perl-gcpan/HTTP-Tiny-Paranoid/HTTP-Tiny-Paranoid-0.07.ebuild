@@ -15,6 +15,6 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Class-Method-Modifiers
-	perl-gcpan/Net-DNS-Paranoid
+DEPEND="perl-gcpan/Net-DNS-Paranoid
+	dev-perl/Class-Method-Modifiers
 	dev-lang/perl"

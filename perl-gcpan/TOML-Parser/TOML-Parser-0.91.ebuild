@@ -15,9 +15,9 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="perl-gcpan/Test-Deep-Fuzzy
-	>=dev-perl/Module-Build-Tiny-0.39.0
-	dev-perl/Module-Build
-	dev-perl/Types-Serialiser
+DEPEND="dev-perl/Types-Serialiser
 	dev-perl/Test-Deep
+	dev-perl/Module-Build
+	>=dev-perl/Module-Build-Tiny-0.39.0
+	perl-gcpan/Test-Deep-Fuzzy
 	dev-lang/perl"

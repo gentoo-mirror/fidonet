@@ -15,33 +15,33 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Pod-Elemental
-	dev-perl/Test-RequiresInternet
-	dev-perl/Test-Class
-	perl-gcpan/HTTP-Tiny-Paranoid
-	>=perl-gcpan/Crypt-OpenSSL-Verify-0.29
+DEPEND="dev-perl/Mozilla-CA
 	dev-perl/Moose
-	dev-perl/Mail-AuthenticationResults
+	dev-perl/Pod-Weaver
+	dev-perl/Pod-Elemental
+	perl-gcpan/Mail-AuthenticationResults
+	dev-perl/Test-Differences
+	dev-perl/Convert-ASN1
+	dev-perl/Class-Load
 	dev-perl/Try-Tiny
-	dev-perl/Cache-FastMmap
 	dev-perl/Net-DNS
-	dev-perl/Mail-DMARC
 	dev-perl/Test-Exception
+	dev-perl/Test-Class
+	dev-perl/JSON
+	>=perl-gcpan/Crypt-OpenSSL-Verify-0.28
+	dev-perl/Test-RequiresInternet
+	dev-perl/File-Slurp
+	dev-perl/App-Cmd
+	perl-gcpan/HTTP-Tiny-Paranoid
+	dev-perl/Mail-DMARC
+	>=perl-gcpan/Crypt-OpenSSL-X509-1.908
+	dev-perl/Sub-Install
+	dev-perl/Capture-Tiny
 	>=dev-perl/XML-LibXML-2.13.200
 	dev-perl/Mail-SPF
 	>=dev-perl/Net-DNS-Resolver-Mock-1.201.710.310
-	dev-perl/App-Cmd
-	dev-perl/Sereal
-	dev-perl/Import-Into
 	dev-perl/Moo
-	>=perl-gcpan/Crypt-OpenSSL-X509-1.908
-	dev-perl/Test-Differences
-	dev-perl/File-Slurp
-	dev-perl/JSON
-	dev-perl/Sub-Install
-	dev-perl/Convert-ASN1
-	dev-perl/Pod-Weaver
-	dev-perl/Class-Load
-	dev-perl/Mozilla-CA
-	dev-perl/Capture-Tiny
+	dev-perl/Import-Into
+	dev-perl/Sereal
+	dev-perl/Cache-FastMmap
 	dev-lang/perl"

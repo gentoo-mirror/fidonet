@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND=">=perl-gcpan/Crypt-OpenSSL-X509-1.908
+DEPEND="dev-perl/Test-Exception
 	dev-perl/File-Slurp
-	dev-perl/Test-Exception
+	>=perl-gcpan/Crypt-OpenSSL-X509-1.908
 	dev-lang/perl"

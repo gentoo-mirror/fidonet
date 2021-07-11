@@ -15,9 +15,9 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Test-Class
-	dev-perl/IPC-System-Simple
-	dev-perl/Log-Any
-	dev-perl/Test-Fatal
+DEPEND="dev-perl/Test-Fatal
+	dev-perl/Test-Class
 	dev-perl/Test-Warn
+	dev-perl/Log-Any
+	dev-perl/IPC-System-Simple
 	dev-lang/perl"

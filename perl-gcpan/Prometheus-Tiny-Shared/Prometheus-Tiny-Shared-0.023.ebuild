@@ -15,12 +15,12 @@ SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Data-Random
-	perl-gcpan/Hash-SharedMem
-	dev-perl/JSON-XS
+DEPEND="dev-perl/HTTP-Message
 	dev-perl/Test-Differences
-	dev-perl/HTTP-Message
-	>=perl-gcpan/Prometheus-Tiny-0.007
-	dev-perl/Test-Exception
 	dev-perl/Plack
+	>=perl-gcpan/Prometheus-Tiny-0.007
+	perl-gcpan/Hash-SharedMem
+	dev-perl/Test-Exception
+	dev-perl/JSON-XS
+	dev-perl/Data-Random
 	dev-lang/perl"
