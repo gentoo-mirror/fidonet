@@ -43,7 +43,7 @@ DEPEND="${CDEPEND}
 
 RDEPEND="${CDEPEND}
 	dev-python/python-magic[${PYTHON_USEDEP}]
-	>=dev-python/beautifulsoup-4.0[${PYTHON_USEDEP}]
+	>=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
 	clamav? ( app-antivirus/clamav )
 	spamassassin? ( mail-filter/spamassassin )
 	spf? ( dev-python/pyspf )
