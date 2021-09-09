@@ -28,26 +28,29 @@ IUSE="clamav database dkim redis spamassassin spf"
 # $(python_gen_cond_dep 'dev-python/ipaddress[${PYTHON_USEDEP}]' python2_7)
 # >=dev-python/pydns-3.2.1[${PYTHON_USEDEP}]
 # !dev-python/filemagic[${PYTHON_USEDEP}]
+# dev-python/beautifulsoup[${PYTHON_USEDEP}]
 
 CDEPEND="acct-user/fuglu
-		dev-python/beautifulsoup[${PYTHON_USEDEP}]
-		dev-python/python-magic[${PYTHON_USEDEP}]
-		$(python_gen_cond_dep 'dev-python/ipaddr[${PYTHON_USEDEP}]' python3_8)
-		spf? ( dev-python/pyspf[${PYTHON_USEDEP}] )
-		database? ( dev-python/sqlalchemy[${PYTHON_USEDEP}] )
-		dkim? ( dev-python/dkimpy[${PYTHON_USEDEP}] )
-		redis? ( dev-python/redis-py[${PYTHON_USEDEP}] )"
+	$(python_gen_cond_dep 'dev-python/ipaddr[${PYTHON_USEDEP}]' python3_8)
+"
 
 DEPEND="${CDEPEND}
-		>=dev-python/packaging-19.2[${PYTHON_USEDEP}]
-		>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
-		>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
-		dev-python/setuptools[${PYTHON_USEDEP}]
+	>=dev-python/packaging-19.2[${PYTHON_USEDEP}]
+	>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
+	>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
+	dev-python/setuptools[${PYTHON_USEDEP}]
 "
 
 RDEPEND="${CDEPEND}
+	dev-python/python-magic[${PYTHON_USEDEP}]
+	>=dev-python/beautifulsoup-4.0[${PYTHON_USEDEP}]
 	clamav? ( app-antivirus/clamav )
-	spamassassin? ( mail-filter/spamassassin )"
+	spamassassin? ( mail-filter/spamassassin )
+	spf? ( dev-python/pyspf )
+	database? ( dev-python/sqlalchemy )
+	dkim? ( dev-python/dkimpy )
+	redis? ( dev-python/redis-py )
+"
 
 S="${WORKDIR}/${PN}-${PV}"
 
