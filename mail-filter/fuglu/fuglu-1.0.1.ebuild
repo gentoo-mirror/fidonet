@@ -14,23 +14,21 @@ SRC_URI="http://distfiles.overlay.junc.org/fidonet/${PN}-${PV}.tar.gz -> ${P}.ta
 
 LICENSE="Apache-2.0"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64"
 
 # milter
 IUSE="clamav database dkim redis spamassassin spf"
 
-DEPEND="dev-python/ipaddr[${PYTHON_USEDEP}]
+DEPEND=">=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
 	>=dev-python/packaging-21.0[${PYTHON_USEDEP}]
 	>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
 	>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
-	dev-python/setuptools[${PYTHON_USEDEP}]
-	dev-python/dnspython[${PYTHON_USEDEP}]
-"
-
-RDEPEND="${CDEPEND}
+	>=dev-python/domainmagic-0.0.12[${PYTHON_USEDEP}]
+	dev-python/ipaddr[${PYTHON_USEDEP}]
 	dev-python/python-magic[${PYTHON_USEDEP}]
-	>=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
-	clamav? ( app-antivirus/clamav )
+	dev-python/setuptools[${PYTHON_USEDEP}]"
+
+RDEPEND="clamav? ( app-antivirus/clamav )
 	spamassassin? ( mail-filter/spamassassin )
 	spf? ( dev-python/pyspf )
 	database? ( dev-python/sqlalchemy )
