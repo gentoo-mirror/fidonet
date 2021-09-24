@@ -20,10 +20,11 @@ KEYWORDS="~amd64 ~x86"
 IUSE="clamav database dkim redis spamassassin spf"
 
 DEPEND="dev-python/ipaddr[${PYTHON_USEDEP}]
-	>=dev-python/packaging-19.2[${PYTHON_USEDEP}]
+	>=dev-python/packaging-21.0[${PYTHON_USEDEP}]
 	>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
 	>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]
+	dev-python/dnspython[${PYTHON_USEDEP}]
 "
 
 RDEPEND="${CDEPEND}
