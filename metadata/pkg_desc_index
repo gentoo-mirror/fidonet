@@ -3,7 +3,7 @@ acct-group/radicale 0: System group: radicale
 acct-user/fuglu 0: User for fuglu
 acct-user/radicale 0: System user: radicale
 dev-perl/Mail-DMARC 1.202.102.220: Perl implementation of DMARC
-dev-python/dmarc 1.0.2: verification library
+dev-python/dmarc 1.0.2: Parse and evaluate DMARC email authentication policy
 dev-python/domainmagic 0.0.12: Python library for all sorts of domain lookup related stuff
 dev-python/pygeoip 0.3.2: Pure Python GeoIP API
 mail-filter/fuglu 0.10.8-r2 1.0.1: A mail content scanner for postfix written in python

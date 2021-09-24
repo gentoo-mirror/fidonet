@@ -3,16 +3,16 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_8 python3_9 )
+PYTHON_COMPAT=( python3_9 )
 
 inherit distutils-r1
 
-DESCRIPTION="verification library"
-HOMEPAGE="https://launchpad.net/dkimpy"
-# SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
-SRC_URI="http://distfiles.overlay.junc.org/fidonet/dmarc-1.0.2-py3-none-any.whl"
+DESCRIPTION="Parse and evaluate DMARC email authentication policy"
+HOMEPAGE="https://gitlab.com/duobradovic/pydmarc"
+SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
+# SRC_URI="http://distfiles.overlay.junc.org/fidonet/dmarc-1.0.2-py3-none-any.whl"
 
-LICENSE="BSD"
+LICENSE="MIT"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE=""
