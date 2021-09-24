@@ -9,15 +9,17 @@ inherit distutils-r1
 
 DESCRIPTION="A mail content scanner for postfix written in python"
 HOMEPAGE="http://fuglu.org/"
-RESTRICT="mirror"
-SRC_URI="http://distfiles.overlay.junc.org/fidonet/${PN}-${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
+
+# RESTRICT="mirror"
+# SRC_URI="http://distfiles.overlay.junc.org/fidonet/${PN}-${PV}.tar.gz -> ${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64"
 
 # milter
-IUSE="clamav database dkim redis spamassassin spf"
+IUSE="clamav database dkim dmarc redis spamassassin spf"
 
 DEPEND=">=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
 	>=dev-python/packaging-21.0[${PYTHON_USEDEP}]
@@ -29,11 +31,12 @@ DEPEND=">=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]"
 
 RDEPEND="clamav? ( app-antivirus/clamav )
-	spamassassin? ( mail-filter/spamassassin )
-	spf? ( dev-python/pyspf )
 	database? ( dev-python/sqlalchemy )
 	dkim? ( dev-python/dkimpy )
+	dmarc? ( dev-python/dmarc )
 	redis? ( dev-python/redis-py )
+	spamassassin? ( mail-filter/spamassassin )
+	spf? ( dev-python/pyspf )
 "
 
 S="${WORKDIR}/${PN}-${PV}"

@@ -2,10 +2,6 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>johann@j-schmitz.net</email>
-		<name>Johann Schmitz (ercpe)</name>
-	</maintainer>
-	<maintainer type="person">
 		<email>me@junc.eu</email>
 		<name>Benny Pedersen</name>
 	</maintainer>
@@ -13,9 +9,10 @@
 		<remote-id type="github">gryphius/fuglu</remote-id>
 	</upstream>
 	<use>
+		<flag name="clamav">Adds support for ClamAV (runtime dep only)</flag>
 		<flag name="database">Adds support for databases using sqlalchemy</flag>
 		<flag name="dkim">Adds support for dkim sign and verify</flag>
-		<flag name="clamav">Adds support for ClamAV (runtime dep only)</flag>
+		<flag name="dmarc">Adds support for Parse and evaluate DMARC email authentication policy</flag>
 		<flag name="redis">Adds support for redis based content filters</flag>
 		<flag name="spamassassin">Adds support for Spamassassin (runtime dep only)</flag>
 		<flag name="spf">Adds support for spf check in fuglu (runtime dep only)</flag>
