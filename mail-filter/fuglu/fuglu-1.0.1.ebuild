@@ -21,7 +21,8 @@ KEYWORDS="~amd64"
 # milter
 IUSE="clamav database dkim dmarc redis spamassassin spf"
 
-DEPEND=">=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
+DEPEND="acct-user/fuglu
+	>=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
 	>=dev-python/packaging-21.0[${PYTHON_USEDEP}]
 	>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
 	>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
