@@ -9,16 +9,6 @@ mail-filter/spamassassin 4.0.0: An extensible mail filter which can identify and
 mail-filter/spamassassin-olemacro 9999: SpamAssassin plugin that that searches attached documents for an OLE Macro
 net-analyzer/weakforced 9999: 
 net-fido/binkd 1.1: Binkd daemon for ftn over ip
-net-fido/husky-areafix 9999: FTN husky areafix library
-net-fido/husky-fidoconf 9999: FTN husky fidoconf library
-net-fido/husky-hpt 9999: FTN husky hpt library
-net-fido/husky-hptzip 9999: FTN husky hptzip library
-net-fido/husky-htick 9999: FTN husky htick library
-net-fido/husky-huskylib 9999: FTN husky huskylib library
-net-fido/husky-msged 9999: FTN husky msged library
-net-fido/husky-nltools 9999: FTN husky nltools library
-net-fido/husky-smapi 9999: FTN husky smapi library
-net-fido/husky-sqpack 9999: FTN husky sqpack library
 perl-gcpan/Crypt-OpenSSL-Verify 0.29: OpenSSL Verify certificate verification in XS.
 perl-gcpan/Crypt-OpenSSL-X509 1.908: Perl extension to OpenSSL's X509 API.
 perl-gcpan/DB_File 1.856: Perl5 access to Berkeley DB version 1.x
