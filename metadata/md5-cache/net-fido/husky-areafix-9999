@@ -1,0 +1,14 @@
+BDEPEND=sys-devel/gnuconfig dev-vcs/cvs
+DEFINED_PHASES=compile install unpack
+DEPEND=net-fido/husky-huskylib net-fido/husky-smapi net-fido/husky-fidoconf
+DESCRIPTION=FTN husky areafix library
+EAPI=7
+HOMEPAGE=http://husky.sf.net
+INHERIT=eutils gnuconfig cvs
+KEYWORDS=amd64 x86
+LICENSE=LGPL-2
+PROPERTIES=live
+RDEPEND=net-fido/husky-huskylib net-fido/husky-smapi net-fido/husky-fidoconf
+SLOT=0
+_eclasses_=edos2unix	33e347e171066657f91f8b0c72ec8773	strip-linguas	ac3ee41ee2d31d8c41a77c0838320cc7	wrapper	4251d4c84c25f59094fd557e0063a974	eutils	dab5d8ec471d025b79c9e6906bcf3bff	gnuconfig	262062cef0ba4f22b397193da514a350	cvs	28fe561510cbf2a95dbbe4215a527855
+_md5_=c5024a9f6e91f35e0075b1db031398d9
