@@ -10,7 +10,7 @@ S="${WORKDIR}/${MY_P}"
 DESCRIPTION="An extensible mail filter which can identify and tag spam"
 HOMEPAGE="https://spamassassin.apache.org/"
 RESTRICT="mirror !test? ( test )"
-SRC_URI="http://distfiles.overlay.junc.org/fidonet/${MY_P}.tar.bz2"
+SRC_URI="http://fido.junc.eu/fidonet/${MY_P}.tar.bz2"
 
 LICENSE="Apache-2.0 GPL-2"
 SLOT="0"
@@ -39,7 +39,6 @@ OPTDEPEND="app-crypt/gnupg
 	dev-util/re2c
 	|| ( net-misc/wget[ssl] net-misc/curl[ssl] )
 	virtual/perl-MIME-Base64
-	virtual/perl-Pod-Parser
 	berkdb? ( virtual/perl-DB_File )
 	ipv6? ( dev-perl/IO-Socket-INET6 )
 	ldap? ( dev-perl/perl-ldap )
