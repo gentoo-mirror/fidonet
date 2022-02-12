@@ -3,7 +3,7 @@ acct-user/fuglu 0: User for fuglu
 dev-python/dmarc 1.0.2: Parse and evaluate DMARC email authentication policy
 dev-python/domainmagic 0.0.12: Python library for all sorts of domain lookup related stuff
 dev-python/pygeoip 0.3.2: Pure Python GeoIP API
-mail-filter/fuglu 0.10.8-r2 1.0.1: A mail content scanner for postfix written in python
+mail-filter/fuglu 0.10.8-r2 1.0.1 1.0.2: A mail content scanner for postfix written in python
 mail-filter/isbg 2.3.1-r1: scan an IMAP inbox for spam using SpamAssassin
 mail-filter/spamassassin 4.0.0: An extensible mail filter which can identify and tag spam
 mail-filter/spamassassin-olemacro 9999: SpamAssassin plugin that that searches attached documents for an OLE Macro
