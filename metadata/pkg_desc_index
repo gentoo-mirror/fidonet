@@ -18,32 +18,4 @@ net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
-perl-gcpan/Crypt-OpenSSL-Verify 0.29: OpenSSL Verify certificate verification in XS.
-perl-gcpan/Crypt-OpenSSL-X509 1.908: Perl extension to OpenSSL's X509 API.
-perl-gcpan/DB_File 1.856: Perl5 access to Berkeley DB version 1.x
-perl-gcpan/Digest-BubbleBabble 0.02: Create bubble-babble fingerprints
-perl-gcpan/ExtUtils-Config 0.008: A wrapper for perl's configuration
-perl-gcpan/ExtUtils-Helpers 0.026: Various portability utilities for module builders
-perl-gcpan/ExtUtils-InstallPaths 0.012: Build.PL install path logic made easy
-perl-gcpan/HTTP-Tiny-Paranoid 0.07: A safer HTTP::Tiny
-perl-gcpan/Hash-SharedMem 0.005: efficient shared mutable hash
-perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
-perl-gcpan/Lock-File 1.03: file locker with an automatic out-of-scope unlocking mechanism
-perl-gcpan/Mail-AuthenticationResults 2.20210112: Class modelling Sub Entry parts of the Authentication Results Header
-perl-gcpan/Mail-BIMI 3.20210512: BIMI object
-perl-gcpan/Mail-DataFeed-Abusix 2.20210112: Send SMTP transaction data to the Abusix transaction feed
-perl-gcpan/Mail-Milter-Authentication 3.20210514: A Perl Mail Authentication Milter
-perl-gcpan/Net-DNS-Paranoid 0.08: paranoid dns resolver
-perl-gcpan/Net-validMX 2.5.0: use DNS and/or regular expressions to verify if an email address could be valid.
-perl-gcpan/Prometheus-Tiny 0.007: A tiny Prometheus client
-perl-gcpan/Prometheus-Tiny-Shared 0.023: A tiny Prometheus client with a shared database behind it
-perl-gcpan/Regexp-Trie 0.02: builds trie-ized regexp
-perl-gcpan/Scalar-String 0.003: string aspects of scalars
-perl-gcpan/TOML 0.97: Parser for Tom's Obvious, Minimal Language.
-perl-gcpan/TOML-Parser 0.91: simple toml parser
-perl-gcpan/Test-Deep 1.130: Extremely flexible deep comparison
-perl-gcpan/Test-Deep-Fuzzy 0.01: fuzzy number comparison with Test::Deep
-perl-gcpan/Types-Serialiser 1.01: simple data types for common serialisation formats
-perl-gcpan/common-sense 3.75: No description available
-perl-gcpan/inc-latest 0.500: use modules bundled in inc/ if they are newer than installed ones
 virtual/spamassassin-meta 0: Virtual for optional spamassassin perl modules
