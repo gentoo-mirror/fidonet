@@ -9,8 +9,6 @@ mail-filter/fuglu:dmarc - Adds support for Parse and evaluate DMARC email authen
 mail-filter/fuglu:redis - Adds support for redis based content filters
 mail-filter/fuglu:spamassassin - Adds support for Spamassassin (runtime dep only)
 mail-filter/fuglu:spf - Adds support for spf check in fuglu (runtime dep only)
-mail-filter/spamassassin:cron - Install a cron job to update SpamAssassin's rules daily.
-mail-filter/spamassassin:qmail - Build qmail functionality and docs
 net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
