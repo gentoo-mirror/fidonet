@@ -17,4 +17,7 @@ net-fido/husky-msged 9999: FTN husky msged library
 net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
+perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
+perl-gcpan/Net-validMX 2.5.0: use DNS and/or regular expressions to verify if an email address could be valid.
+perl-gcpan/Regexp-Trie 0.02: builds trie-ized regexp
 virtual/spamassassin-meta 0: Virtual for optional spamassassin perl modules
