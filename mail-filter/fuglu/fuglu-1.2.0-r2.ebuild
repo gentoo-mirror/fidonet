@@ -1,4 +1,4 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2022 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -19,7 +19,7 @@ SLOT="0"
 KEYWORDS="~amd64"
 
 # milter
-IUSE="clamav database dkim dmarc rar redis spamassassin spf"
+IUSE="clamav database dkim dmarc lzma rar redis spamassassin spf"
 
 DEPEND="acct-user/fuglu
 	>=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
@@ -35,6 +35,7 @@ RDEPEND="clamav? ( app-antivirus/clamav )
 	database? ( dev-python/sqlalchemy )
 	dkim? ( dev-python/dkimpy )
 	dmarc? ( dev-python/dmarc )
+	lzma? ( dev-python/pylzma )
 	rar? ( dev-python/rarfile )
 	redis? ( dev-python/redis-py )
 	spamassassin? ( mail-filter/spamassassin )

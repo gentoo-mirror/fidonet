@@ -13,7 +13,8 @@
 		<flag name="database">Adds support for databases using sqlalchemy</flag>
 		<flag name="dkim">Adds support for dkim sign and verify</flag>
 		<flag name="dmarc">Adds support for Parse and evaluate DMARC email authentication policy</flag>
-		<flag name="rar">Adds support for rarfiles based content filters</flag>
+		<flag name="lzma">Adds support for lzma compressed files</flag>
+		<flag name="rar">Adds support for rar compressed files</flag>
 		<flag name="redis">Adds support for redis based content filters</flag>
 		<flag name="spamassassin">Adds support for Spamassassin (runtime dep only)</flag>
 		<flag name="spf">Adds support for spf check in fuglu (runtime dep only)</flag>
