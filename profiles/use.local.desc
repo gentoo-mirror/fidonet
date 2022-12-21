@@ -11,6 +11,8 @@ mail-filter/fuglu:rar - Adds support for rar compressed files
 mail-filter/fuglu:redis - Adds support for redis based content filters
 mail-filter/fuglu:spamassassin - Adds support for Spamassassin (runtime dep only)
 mail-filter/fuglu:spf - Adds support for spf check in fuglu (runtime dep only)
+net-dns/pdns-recursor:dnstap - Enable support for dnstap
+net-dns/pdns-recursor:sodium - Use dev-libs/libsodium for cryptography
 net-fido/binkd:aso - Amiga Style Outbound
 net-fido/binkd:bwlim - Bandwidth Limit
 net-fido/binkd:ntlm - NTLM Auth
