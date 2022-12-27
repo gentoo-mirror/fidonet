@@ -6,7 +6,7 @@ EAPI=7
 DESCRIPTION="Virtual for optional spamassassin perl modules"
 
 SLOT="0"
-KEYWORDS="amd64"
+KEYWORDS="amd64 arm arm64 ppc ppc64 ~riscv sparc x86 ~x86-linux"
 IUSE=""
 
 # GeoIP2::Database::Reader ('require' failed)

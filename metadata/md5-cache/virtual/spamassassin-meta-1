@@ -1,0 +1,7 @@
+DEFINED_PHASES=-
+DESCRIPTION=Virtual for optional spamassassin perl modules
+EAPI=7
+KEYWORDS=amd64 arm arm64 ppc ppc64 ~riscv sparc x86 ~x86-linux
+RDEPEND=dev-perl/Data-IEEE754 dev-perl/Data-Printer dev-perl/IP-Country dev-perl/IP-Country-DB_File dev-perl/MaxMind-DB-Common dev-perl/MaxMind-DB-Reader dev-perl/MaxMind-DB-Reader-XS dev-perl/MooX-StrictConstructor
+SLOT=1
+_md5_=c079664760f5e3959d0827d06864d73b
