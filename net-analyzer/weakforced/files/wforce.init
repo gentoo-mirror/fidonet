@@ -1,0 +1,9 @@
+#!/sbin/openrc-run
+# Copyright 2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="wforce daemon"
+description=""
+command=/usr/bin/wforce
+command_args="${WFORCE_OPTIONS}"
+command_user="${WFORCE_USER}:${WFORCE_GROUP}"

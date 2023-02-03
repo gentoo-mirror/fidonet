@@ -1,0 +1,10 @@
+# /etc/conf.d/wforce
+
+# Options to pass on to trackalert during the start
+TRACKALERT_OPTIONS=""
+
+# Run trackalert as this user
+TRACKALERT_USER="wforce"
+
+# Run trackalert in this group
+TRACKALERT_GROUP="wforce"

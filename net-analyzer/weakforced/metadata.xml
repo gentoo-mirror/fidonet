@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="person">
+	<email>stijn@linux-ipv6.be</email>
+	<name>Stijn Tintel</name>
+</maintainer>
+<maintainer type="person">
+	<email>me@junc.eu</email>
+	<name>Benny Pedersen</name>
+</maintainer>
+<upstream>
+	<remote-id type="github">PowerDNS/weakforced</remote-id>
+</upstream>
+<use>
+	<flag name="dns">Enable DNS resolver via <pkg>net-dns/getdns</pkg></flag>
+	<flag name="sodium">Use <pkg>dev-libs/libsodium</pkg> for cryptography</flag>
+	<flag name="trackalert">Build Trackalert service</flag>
+</use>
+</pkgmetadata>

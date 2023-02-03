@@ -1,0 +1,10 @@
+# /etc/conf.d/wforce
+
+# Options to pass on to wforce during the start
+WFORCE_OPTIONS=""
+
+# Run wforce as this user
+WFORCE_USER="wforce"
+
+# Run wforce in this group
+WFORCE_GROUP="wforce"

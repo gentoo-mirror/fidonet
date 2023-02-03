@@ -1,0 +1,9 @@
+#!/sbin/openrc-run
+# Copyright 2023 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+name="trackalert daemon"
+description=""
+command=/usr/bin/trackalert
+command_args="${TRACKALERT_OPTIONS}"
+command_user="${TRACKALERT_USER}:${TRACKALERT_GROUP}"
