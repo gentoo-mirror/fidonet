@@ -12,5 +12,5 @@ RDEPEND=acct-group/wforce acct-user/wforce dev-cpp/drogon dev-cpp/prometheus-cpp
 REQUIRED_USE=^^ ( lua_single_target_luajit lua_single_target_lua5-1 lua_single_target_lua5-3 lua_single_target_lua5-4 )
 SLOT=0
 SRC_URI=https://github.com/PowerDNS/weakforced/archive/refs/tags/v2.8.0.tar.gz -> weakforced-2.8.0.tar.gz https://raw.githubusercontent.com/ua-parser/uap-core/dc85ab2628798538a2874dea4a9563f40a31f55a/regexes.yaml
-_eclasses_=gnuconfig	b6b3e92f8b8c996400074b5f61a59256	toolchain-funcs	cf009a3ed4e5bef503e7a9f215791a78	multilib	5ca4e49abed8e3a2f7b56920eadee157	libtool	241a8f577b9781a42a7421e53448a44e	autotools	6dcd6b6a486e79928e1243ff9ba41fcc	flag-o-matic	69394e25812406faa1f90edaf4969395	lua-utils	e69ff116248d78546ae1a234c086fe80	lua-single	aee383a0de35701b9eb0b27077a1c143	systemd	5f4bb0758df2e483babf68cd517078ca
+_eclasses_=gnuconfig	b6b3e92f8b8c996400074b5f61a59256	toolchain-funcs	6001248ef162a5fa2a21ce132a212f6b	multilib	5ca4e49abed8e3a2f7b56920eadee157	libtool	241a8f577b9781a42a7421e53448a44e	autotools	6dcd6b6a486e79928e1243ff9ba41fcc	flag-o-matic	69394e25812406faa1f90edaf4969395	lua-utils	e69ff116248d78546ae1a234c086fe80	lua-single	aee383a0de35701b9eb0b27077a1c143	systemd	5f4bb0758df2e483babf68cd517078ca
 _md5_=ff2df0f5b3f9ec967c1d2e211b43865f
