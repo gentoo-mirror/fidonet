@@ -1,16 +1,16 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_10 )
+DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=( python3_{10..11} )
 
 inherit distutils-r1
 
 DESCRIPTION="Parse and evaluate DMARC email authentication policy"
 HOMEPAGE="https://gitlab.com/duobradovic/pydmarc"
 SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
-# SRC_URI="http://distfiles.overlay.junc.org/fidonet/dmarc-1.0.2-py3-none-any.whl"
 
 LICENSE="MIT"
 SLOT="0"
@@ -18,4 +18,3 @@ KEYWORDS="~amd64"
 IUSE=""
 
 DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]"
-RDEPEND=""

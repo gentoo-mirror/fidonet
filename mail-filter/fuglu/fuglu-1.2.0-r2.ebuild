@@ -1,9 +1,10 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_10 )
+DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=( python3_{10..11} )
 
 inherit distutils-r1
 
@@ -23,21 +24,20 @@ IUSE="clamav database dkim dmarc lzma rar redis spamassassin spf"
 
 DEPEND="acct-user/fuglu
 	>=dev-python/beautifulsoup4-4.9.3[${PYTHON_USEDEP}]
+	>=dev-python/domainmagic-0.0.12[${PYTHON_USEDEP}]
 	>=dev-python/packaging-21.0[${PYTHON_USEDEP}]
 	>=dev-python/pyparsing-2.4.0[${PYTHON_USEDEP}]
 	>=dev-python/six-1.13.0[${PYTHON_USEDEP}]
-	>=dev-python/domainmagic-0.0.12[${PYTHON_USEDEP}]
+	clamav? ( app-antivirus/clamav )
+	database? ( dev-python/sqlalchemy )
 	dev-python/ipaddr[${PYTHON_USEDEP}]
 	dev-python/python-magic[${PYTHON_USEDEP}]
-	dev-python/setuptools[${PYTHON_USEDEP}]"
-
-RDEPEND="clamav? ( app-antivirus/clamav )
-	database? ( dev-python/sqlalchemy )
+	dev-python/setuptools[${PYTHON_USEDEP}]
 	dkim? ( dev-python/dkimpy )
 	dmarc? ( dev-python/dmarc )
 	lzma? ( dev-python/pylzma )
 	rar? ( dev-python/rarfile )
-	redis? ( dev-python/redis-py )
+	redis? ( dev-python/redis )
 	spamassassin? ( mail-filter/spamassassin )
 	spf? ( dev-python/pyspf )
 "
