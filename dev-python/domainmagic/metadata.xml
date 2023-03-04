@@ -5,4 +5,8 @@
     <email>me@junc.eu</email>
     <name>Benny Pedersen</name>
   </maintainer>
+  <upstream>
+    <remote-id type="gitlab">fumail/domainmagic</remote-id>
+    <remote-id type="pypi">domainmagic</remote-id>
+  </upstream>
 </pkgmetadata>
