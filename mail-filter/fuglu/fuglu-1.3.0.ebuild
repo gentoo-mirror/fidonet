@@ -10,10 +10,10 @@ inherit distutils-r1
 
 DESCRIPTION="A mail content scanner for postfix written in python"
 HOMEPAGE="http://fuglu.org/"
-# SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
+SRC_URI="mirror://pypi/${PN:0:1}/${PN}/${P}.tar.gz"
 
-RESTRICT="mirror"
-SRC_URI="http://fido.junc.eu/fidonet/${PN}-${PV}.tar.gz -> ${P}.tar.gz"
+# RESTRICT="mirror"
+# SRC_URI="http://fido.junc.eu/fidonet/${PN}-${PV}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -55,10 +55,10 @@ src_install() {
 	dodir /var/tmp/${PN}
 	keepdir /var/tmp/${PN}
 
-	mv "${D}"/etc/fuglu/* "${D}"/usr/share/${PN} || die
-	sed -i -e "s#^tempdir=.*#tempdir=/var/tmp/${PN}#g" "${D}"/usr/share/${PN}/${PN}.conf.dist || die
-	sed -i -e "s#^debugfile=.*#debugfile=/var/log/${PN}/debug.log#g" "${D}"/usr/share/${PN}/${PN}.conf.dist || die
-	sed -i -r 's/(user|group)=.*/\1=fuglu/g' "${D}"/usr/share/${PN}/${PN}.conf.dist || die
+	# mv "${D}"/etc/fuglu/* "${D}"/usr/share/${PN} || die
+	# sed -i -e "s#^tempdir=.*#tempdir=/var/tmp/${PN}#g" "${D}"/usr/share/${PN}/${PN}.conf.dist || die
+	# sed -i -e "s#^debugfile=.*#debugfile=/var/log/${PN}/debug.log#g" "${D}"/usr/share/${PN}/${PN}.conf.dist || die
+	# sed -i -r 's/(user|group)=.*/\1=fuglu/g' "${D}"/usr/share/${PN}/${PN}.conf.dist || die
 
 	fperms 0700 /var/tmp/${PN}
 	fowners ${PN}:${PN} /var/log/${PN}
@@ -68,7 +68,7 @@ src_install() {
 	newconfd "${FILESDIR}"/${PN}.confd ${PN}
 }
 
-pkg_postinst() {
-	einfo "Upstreams default configuration has been installed into /usr/share/${PN}."
-	einfo "Before you can use ${PN}, you have to copy it to /etc/${PN} and remove the .dist extension"
-}
+# pkg_postinst() {
+# 	einfo "Upstreams default configuration has been installed into /usr/share/${PN}."
+# 	einfo "Before you can use ${PN}, you have to copy it to /etc/${PN} and remove the .dist extension"
+# }

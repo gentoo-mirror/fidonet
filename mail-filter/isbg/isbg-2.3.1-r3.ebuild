@@ -11,15 +11,14 @@ inherit distutils-r1
 DESCRIPTION="scan an IMAP inbox for spam using SpamAssassin"
 HOMEPAGE="https://gitlab.com/isbg/isbg/"
 RESTRICT="mirror"
-SRC_URI="https://gitlab.com/${PN}/${PN}/-/archive/${PV}/${PN}-${PV}.tar.bz2 -> ${P}.tar.bz2"
+SRC_URI="https://gitlab.com/${PN}/${PN}/-/archive/${PV}/${PN}-${PV}.tar.bz2"
 
 LICENSE="GPLv3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE=""
 
-DEPEND="${RDEPEND}
-	dev-python/setuptools[${PYTHON_USEDEP}]
+DEPEND="dev-python/setuptools[${PYTHON_USEDEP}]
 	dev-python/docopt
 "
 src_install() {

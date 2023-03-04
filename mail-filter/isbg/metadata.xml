@@ -9,5 +9,8 @@
 		<email>isbg@python.org</email>
 		<name>ISBG contributors</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="gitlab">isbg/isbg</remote-id>
+	</upstream>
 </pkgmetadata>
 
