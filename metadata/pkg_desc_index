@@ -6,7 +6,7 @@ dev-python/dmarc 1.0.2-r1: Parse and evaluate DMARC email authentication policy
 dev-python/domainmagic 0.0.13: Python library for all sorts of domain lookup related stuff
 dev-python/pygeoip 0.3.2-r1: Pure Python GeoIP API
 dev-python/pylzma 0.5.0: Python bindings for the LZMA library by Igor Pavlov
-mail-filter/fuglu 1.2.0-r3 1.3.0 1.3.0-r1: A mail content scanner for postfix written in python
+mail-filter/fuglu 1.2.0-r2 1.2.0-r3 1.3.0 1.3.0-r1: A mail content scanner for postfix written in python
 mail-filter/isbg 2.3.1-r3: scan an IMAP inbox for spam using SpamAssassin
 net-analyzer/weakforced 2.8.0: Anti-Abuse for servers at authentication time
 net-dns/pdns-recursor 4.8.2: The PowerDNS Recursor
@@ -22,4 +22,4 @@ net-fido/husky-nltools 9999: FTN husky nltools library
 net-fido/husky-smapi 9999: FTN husky smapi library
 net-fido/husky-sqpack 9999: FTN husky sqpack library
 perl-gcpan/IP-Country-DB_File 3.03: IPv4 and IPv6 to country translation using DB_File
-virtual/spamassassin-meta 0 1: Virtual for optional spamassassin perl modules
+virtual/spamassassin-meta 0-r1 1-r1: Virtual for optional spamassassin perl modules

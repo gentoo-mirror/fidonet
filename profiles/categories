@@ -1,12 +1,9 @@
 acct-group
 acct-user
-app-backup
-dev-perl
 dev-python
 mail-filter
+net-analyzer
 net-dns
 net-fido
-net-news
-net-www
 perl-gcpan
 virtual

@@ -1,7 +1,7 @@
 DEFINED_PHASES=-
 DESCRIPTION=Virtual for optional spamassassin perl modules
 EAPI=7
-KEYWORDS=amd64 arm arm64 ppc ppc64 ~riscv sparc x86 ~x86-linux
+KEYWORDS=amd64 arm arm64 ppc ppc64 ~riscv sparc x86
 RDEPEND=dev-perl/IO-Socket-SSL dev-perl/LWP-UserAgent-Determined dev-perl/Archive-Zip dev-perl/IO-String
 SLOT=0
-_md5_=b8f81edd09dc96bfe65917f6353c63f9
+_md5_=b8f3e29c6e81277af9449e5531296e84
