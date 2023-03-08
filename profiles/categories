@@ -3,7 +3,6 @@ acct-user
 dev-python
 mail-filter
 net-analyzer
-net-dns
 net-fido
 perl-gcpan
 virtual
