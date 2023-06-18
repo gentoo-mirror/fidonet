@@ -1,4 +1,4 @@
-BDEPEND=dev-lang/perl test? ( virtual/perl-Test-Simple )
+BDEPEND=dev-lang/perl test? ( >=virtual/perl-Test-Simple-1 )
 DEFINED_PHASES=compile configure install prepare test
 DEPEND=dev-perl/List-MoreUtils >=perl-gcpan/Mail-DataFeed-Abusix-2.20210112 dev-perl/Test-File-Contents >=perl-gcpan/Mail-BIMI-3.20210512 dev-perl/Text-Table dev-perl/Test-Exception dev-perl/Mail-DKIM dev-perl/Mail-AuthenticationResults dev-perl/Net-IP dev-perl/Net-DNS dev-perl/Test-Perl-Critic >=dev-perl/Mail-DMARC-1.202.109.270 dev-perl/File-Slurp dev-perl/TimeDate dev-perl/Import-Into dev-perl/SUPER dev-perl/Sereal >=dev-perl/File-ShareDir-Install-0.140.0 >=perl-gcpan/Prometheus-Tiny-Shared-0.026 dev-perl/Proc-ProcessTable dev-perl/Email-Sender dev-perl/Email-Simple dev-perl/Crypt-OpenSSL-RSA perl-gcpan/TOML dev-perl/Log-Dispatchouli dev-perl/Mail-SPF dev-perl/Clone perl-gcpan/Lock-File dev-perl/JSON-XS dev-perl/Net-Server dev-perl/Date-Manip dev-perl/App-Cmd dev-perl/Email-Date-Format dev-perl/Net-DNS-Resolver-Mock dev-lang/perl dev-lang/perl
 DESCRIPTION=A Perl Mail Authentication Milter
@@ -12,5 +12,5 @@ RDEPEND=dev-lang/perl:=
 RESTRICT=!test? ( test )
 SLOT=0
 SRC_URI=mirror://cpan/authors/id/M/MB/MBRADSHAW/Mail-Milter-Authentication-3.20230214.tar.gz
-_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	perl-functions	c3fca037246e877693badea0df3b0ef8	readme.gentoo-r1	204091a2cde6179cd9d3db26d09412d3	toolchain-funcs	513c31b3346458ed1f3878b57da6d61c	multilib	c19072c3cd7ac5cb21de013f7e9832e0	perl-module	8c55459fea879ccdec282839a3b22f78
+_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	perl-functions	c3fca037246e877693badea0df3b0ef8	readme.gentoo-r1	204091a2cde6179cd9d3db26d09412d3	toolchain-funcs	513c31b3346458ed1f3878b57da6d61c	multilib	c19072c3cd7ac5cb21de013f7e9832e0	perl-module	dd4003d3308d7cad2b2d4e2b8298ffb2
 _md5_=a2db55466a7e6199319b7b309dc610ac
