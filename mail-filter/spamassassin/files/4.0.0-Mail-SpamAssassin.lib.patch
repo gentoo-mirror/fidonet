@@ -1,0 +1,2687 @@
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/AutoWelcomelist.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/AutoWelcomelist.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/AutoWelcomelist.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/AutoWelcomelist.pm	2023-05-19 12:09:00.209999612 +0000
+@@ -46,8 +46,6 @@ use warnings;
+ # use bytes;
+ use re 'taint';
+ 
+-use NetAddr::IP 4.000;
+-
+ use Mail::SpamAssassin;
+ use Mail::SpamAssassin::Logger;
+ use Mail::SpamAssassin::Util qw(untaint_var);
+@@ -309,7 +307,7 @@ sub ip_to_awl_key {
+     my $origip_obj = NetAddr::IP->new6($origip . '/' . $mask_len);
+     if (!defined $origip_obj) {  # invalid IPv6 address
+       dbg("auto-welcomelist: bad IPv6 address $origip");
+-    } elsif (NetAddr::IP->can('full6')) {  # since NetAddr::IP 4.010
++    } else {
+       $result = $origip_obj->network->full6;  # string in a canonical form
+       $result =~ s/(:0000){1,7}\z/::/;        # compress zero tail
+     }
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Client.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Client.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Client.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Client.pm	2023-04-04 18:20:21.306666614 +0000
+@@ -594,7 +594,7 @@ sub _filter {
+   if(defined $self->{max_size}) {
+     $msg = substr($msg,0,$self->{max_size});
+   }
+-  $msgsize = length($msg.$EOL);
++  $msgsize = length($msg);
+ 
+   print $remote "$command $PROTOVERSION$EOL";
+   print $remote "Content-length: $msgsize$EOL";
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Conf.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Conf.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Conf.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Conf.pm	2023-04-04 18:20:21.386666614 +0000
+@@ -1544,7 +1544,7 @@ Empty the list of msa networks.
+     }
+   });
+ 
+-=item originating_ip_headers header ...   (default: X-Yahoo-Post-IP X-Originating-IP X-Apparently-From X-SenderIP)
++=item originating_ip_headers header ...   (default: none)
+ 
+ A list of header field names from which an originating IP address can
+ be obtained. For example, webmail servers may record a client IP address
+@@ -1556,6 +1556,10 @@ are used in RBL checks where appropriate
+ Currently the IP addresses are not added into X-Spam-Relays-* header fields,
+ but they may be in the future.
+ 
++A default list may be supplied via sa-update, use
++C<clear_originating_ip_headers> to clear and override the settings if
++needed.
++
+ =cut
+ 
+   push (@cmds, {
+@@ -1577,7 +1581,8 @@ but they may be in the future.
+ 
+ =item clear_originating_ip_headers
+ 
+-Empty the list of 'originating IP address' header field names.
++Empty the list of 'originating IP address' header field names. Useful if
++you want to override the standard list supplied by sa-update.
+ 
+ =cut
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Dns.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Dns.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Dns.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Dns.pm	2023-05-19 12:09:00.206666279 +0000
+@@ -65,29 +65,6 @@ our $IS_DNS_AVAILABLE = undef;
+ 
+ ###########################################################################
+ 
+-BEGIN {
+-  # some trickery. Load these modules right here, if possible; that way, if
+-  # the module exists, we'll get it loaded now.  Very useful to avoid attempted
+-  # loads later (which will happen).  If we do a fork(), we could wind up
+-  # attempting to load these modules in *every* subprocess.
+-  #
+-# # We turn off strict and warnings, because Net::DNS and Razor both contain
+-# # crud that -w complains about (perl 5.6.0).  Not that this seems to work,
+-# # mind ;)
+-# no strict;
+-# local ($^W) = 0;
+-
+-  no warnings;
+-  eval {
+-    require MIME::Base64;
+-  };
+-  eval {
+-    require IO::Socket::UNIX;
+-  };
+-};
+-
+-###########################################################################
+-
+ sub do_rbl_lookup {
+   my ($self, $rule, $set, $type, $host, $subtest) = @_;
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/DnsResolver.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/DnsResolver.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/DnsResolver.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/DnsResolver.pm	2023-05-19 12:09:00.206666279 +0000
+@@ -599,7 +599,11 @@ sub new_dns_packet {
+     my $udp_payload_size = $self->{conf}->{dns_options}->{edns};
+     if ($udp_payload_size && $udp_payload_size > 512) {
+       # dbg("dns: adding EDNS ext, UDP payload size %d", $udp_payload_size);
+-      $packet->edns->size($udp_payload_size);
++      if ($packet->edns->can('udpsize')) { # since Net::DNS 1.38
++        $packet->edns->udpsize($udp_payload_size);
++      } else {
++        $packet->edns->size($udp_payload_size);
++      }
+     }
+   }
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Logger.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Logger.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Logger.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Logger.pm	2023-06-08 07:46:14.503333016 +0000
+@@ -293,6 +293,7 @@ sub _log {
+   my ($level, $message, @args) = @_;
+ 
+   utf8::encode($message)  if utf8::is_utf8($message); # handle as octets
++  foreach (@args) { utf8::encode($_)  if utf8::is_utf8($_); } # Bug 8138
+ 
+   $message =~ s/^(?:[a-z0-9_-]*):\s*//i;
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Message/Node.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Message/Node.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Message/Node.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Message/Node.pm	2023-04-04 18:20:21.429999948 +0000
+@@ -686,6 +686,19 @@ sub _normalize {
+   return $rv;
+ }
+ 
++# Parse effective content type (Bug 6260, 6439)
++sub effective_type {
++  my ($self) = @_;
++  if (!exists $self->{'effective_type'}) {
++    if (($self->{'name'}||'') =~ /\.s?html?$/i) {
++      $self->{'effective_type'} = 'text/html';
++    } else {
++      $self->{'effective_type'} = $self->{'type'};
++    }
++  }
++  return $self->{'effective_type'};
++}
++
+ =item rendered()
+ 
+ rendered() takes the given text/* type MIME part, and attempts to
+@@ -708,7 +721,7 @@ sub rendered {
+   # Note: for bug 4843, make sure to skip text/calendar parts
+   # we also want to skip things like text/x-vcard
+   # text/x-aol is ignored here, but looks like text/html ...
+-  my $type = lc $self->{'type'};
++  my $type = $self->effective_type();
+   unless ($type eq 'text/plain' || $type eq 'text/html') {
+     return (undef,undef);
+   }
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Message.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Message.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Message.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Message.pm	2023-05-12 06:12:51.119999108 +0000
+@@ -759,6 +759,7 @@ sub finish {
+     delete $part->{'invisible_rendered'};
+     delete $part->{'type'};
+     delete $part->{'rendered_type'};
++    delete $part->{'effective_type'};
+ 
+     # if there are children nodes, add them to the queue of nodes to clean up
+     if (exists $part->{'body_parts'}) {
+@@ -1261,10 +1262,11 @@ sub get_body_text_array_common {
+   # already been done.
+   my $html_needs_setting = !exists $self->{metadata}->{html};
+ 
+-  my $text = $method_name eq 'invisible_rendered' ? ''
++  my $subject = $method_name eq 'invisible_rendered' ? ''
+                : ($self->get_header('subject') || "\n");
+ 
+   # Go through each part
++  my $text = '';
+   for (my $pt = 0 ; $pt <= $#parts ; $pt++ ) {
+     my $p = $parts[$pt];
+ 
+@@ -1316,7 +1318,8 @@ sub get_body_text_array_common {
+   $text =~ tr/\x00/\n/;			# null => newline
+ 
+   utf8::encode($text) if utf8::is_utf8($text);
+-  my @textary = split_into_array_of_short_lines($text);
++  utf8::encode($subject) if utf8::is_utf8($subject);
++  my @textary = split_into_array_of_short_lines($subject.$text);
+   $self->{$key} = \@textary;
+ 
+   return $self->{$key};
+@@ -1350,11 +1353,13 @@ sub get_decoded_body_text_array {
+   my $scansize = $self->{rawbody_part_scan_size};
+ 
+   # Find all parts which are leaves
+-  my @parts = $self->find_parts(qr/^(?:text|message)\b/,1);
++  my @parts = $self->find_parts(qr/./,1);
+   return $self->{text_decoded} unless @parts;
+ 
+   # Go through each part
+   for(my $pt = 0 ; $pt <= $#parts ; $pt++ ) {
++    # skip non-text parts (Bug 6439)
++    next unless $parts[$pt]->effective_type() =~ /^(?:text|message)\b/;
+     # bug 4843: skip text/calendar parts since they're usually an attachment
+     # and not displayed
+     next if ($parts[$pt]->{'type'} eq 'text/calendar');
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/NetSet.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/NetSet.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/NetSet.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/NetSet.pm	2023-05-19 12:09:00.209999612 +0000
+@@ -23,7 +23,6 @@ use warnings;
+ # use bytes;
+ use re 'taint';
+ use Time::HiRes qw(time);
+-use NetAddr::IP 4.000;
+ 
+ use Mail::SpamAssassin::Util;
+ use Mail::SpamAssassin::Logger;
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/PerMsgStatus.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/PerMsgStatus.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/PerMsgStatus.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/PerMsgStatus.pm	2023-04-04 18:20:21.306666614 +0000
+@@ -332,8 +332,8 @@ sub new {
+   # in some circumstances
+   my $tag_data_ref = $self->{tag_data};
+   foreach (qw(SUMMARY REPORT SUBJPREFIX RBL)) { $tag_data_ref->{$_} = '' }
+-  foreach (qw(AWL AWLMEAN AWLCOUNT AWLPRESCORE
+-              DCCB DCCR DCCREP PYZOR DKIMIDENTITY DKIMDOMAIN DKIMSELECTOR
++  foreach (qw(ASN ASNCIDR AWL AWLMEAN AWLCOUNT AWLPRESCORE
++              DCCB DCCR EXTRACTTEXTFLAGS DCCREP PYZOR DKIMIDENTITY DKIMDOMAIN DKIMSELECTOR
+               BAYESTC BAYESTCLEARNED BAYESTCSPAMMY BAYESTCHAMMY
+               HAMMYTOKENS SPAMMYTOKENS TOKENSUMMARY)) {
+     $tag_data_ref->{$_} = undef;  # exist, but undefined
+@@ -2091,12 +2091,16 @@ sub get_decoded_stripped_body_text_array
+ 
+ =item $status->get (header_name [, default_value])
+ 
+-Returns a message header, pseudo-header or a real name, email-address or
+-some other parsed value set by modifiers.  C<header_name> is the name of a
+-mail header, such as 'Subject', 'To', etc.
++Returns message headers, pseudo-headers, names, email-addresses or some
++other parsed values set by modifiers.  C<header_name> is the name of a mail
++header such as 'Subject', 'To' etc, or a pseudo/metadata-header like 'ALL',
++'X-Spam-Relays-Untrusted' etc.
+ 
+-Should be called in list context since 4.0.  Will return list of headers
+-content, or other values when modifiers used.
++Should be called in list context since SpamAssassin 4.0.  This supports
++returning multiple values for all header and modifier types.
++
++If called in scalar context (pre-4.0 style), only first value is returned
++for modifiers like C<:addr> or C<:name>.
+ 
+ If C<default_value> is given, it will be used if the requested
+ C<header_name> does not exist.  This is mainly useful when called in scalar
+@@ -2204,10 +2208,11 @@ headers.
+ transaction that delivered this message, if this data has been made available
+ by the SMTP server.
+ 
+-=item C<MESSAGEID> is a symbol meaning all Message-Id's found in the message;
+-some mailing list software moves the real 'Message-Id' to 'Resent-Message-Id'
+-or 'X-Message-Id', then uses its own one in the 'Message-Id' header.  The value
+-returned for this symbol is the text from all 3 headers, separated by newlines.
++=item C<MESSAGEID> is a symbol meaning all Message-Id's found in the
++message; some mailing list software moves the real 'Message-Id' to
++'Resent-Message-Id' or 'X-Message-Id' or 'X-Original-Message-ID', then uses
++its own one in the 'Message-Id' header.  The value returned for this symbol
++is the text from all 4 headers.
+ 
+ =item C<X-Spam-Relays-Untrusted> is the generated metadata of untrusted relays
+ the message has passed through
+@@ -2490,7 +2495,7 @@ sub get {
+     if ($_[1] =~ /:(?:addr|name|host|domain|ip|revip)\b/ ||
+         $_[1] eq 'EnvelopeFrom') {
+       my $res = $found->[0];
+-      $res =~ s/\n\z$//;
++      $res =~ s/\n\z//;
+       return $res;
+     } else {
+       return join('', @$found);
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/ASN.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/ASN.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/ASN.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/ASN.pm	2023-04-30 13:05:28.963330458 +0000
+@@ -78,7 +78,7 @@ Autonomous System Number (ASN) of the co
+ =head1 DESCRIPTION
+ 
+ This plugin uses DNS lookups to the services of an external DNS zone such
+-as at C<http://www.routeviews.org/> to do the actual work. Please make
++as at C<https://www.routeviews.org/> to do the actual work. Please make
+ sure that your use of the plugin does not overload their infrastructure -
+ this generally means that B<you should not use this plugin in a
+ high-volume environment> or that you should use a local mirror of the
+@@ -111,55 +111,26 @@ through the I<asn_prefix> directive and
+ 
+ C<_ASNCIDR_> is not available with local GeoDB ASN lookups.
+ 
+-=head1 BAYES
+-
+-The bayes tokenizer will use ASN data for bayes calculations, and thus
+-affect which BAYES_* rule will trigger for a particular message.  No
+-in-depth analysis of the usefulness of bayes tokenization of ASN data has
+-been performed.
+-
+-=head1 SEE ALSO
+-
+-http://www.routeviews.org/ - all data regarding routing, ASNs, etc....
+-
+-=cut
++=head1 USER SETTINGS
+ 
+-package Mail::SpamAssassin::Plugin::ASN;
+-
+-use strict;
+-use warnings;
+-use re 'taint';
+-
+-use Mail::SpamAssassin::Plugin;
+-use Mail::SpamAssassin::Logger;
+-use Mail::SpamAssassin::Util qw(reverse_ip_address compile_regexp);
+-use Mail::SpamAssassin::Constants qw(:ip);
+-
+-our @ISA = qw(Mail::SpamAssassin::Plugin);
+-
+-sub new {
+-  my ($class, $mailsa) = @_;
+-  $class = ref($class) || $class;
+-  my $self = $class->SUPER::new($mailsa);
+-  bless ($self, $class);
++=over 4
+ 
+-  $self->register_eval_rule("check_asn", $Mail::SpamAssassin::Conf::TYPE_HEAD_EVALS);
++=item clear_asn_lookups
+ 
+-  $self->set_config($mailsa->{conf});
++Removes all previously declared I<asn_lookup> or I<asn_lookup_ipv6> entries
++from the list of queries.
+ 
+-  # we need GeoDB ASN
+-  $self->{main}->{geodb_wanted}->{asn} = 1;
+-
+-  return $self;
+-}
++=item asn_prefix 'prefix_string'       (default: 'AS')
+ 
+-###########################################################################
++The string specified in the argument is prepended to each ASN when storing
++it as a tag. This prefix is rather redundant, but its default value 'AS'
++is kept for backward compatibility with versions of SpamAssassin earlier
++than 3.4.0. A sensible setting is an empty string. The argument may be (but
++need not be) enclosed in single or double quotes for clarity.
+ 
+-sub set_config {
+-  my ($self, $conf) = @_;
+-  my @cmds;
++=back
+ 
+-=head1 ADMINISTRATOR SETTINGS
++=head1 RULE DEFINITIONS AND PRIVILEGED SETTINGS
+ 
+ =over 4
+ 
+@@ -197,17 +168,11 @@ Use specified zone for lookups of IPv6 a
+ IPv4 and IPv6 queries, use both asn_lookup and asn_lookup_ipv6 for the same
+ zone.
+ 
+-=item clear_asn_lookups
+-
+-Removes any previously declared I<asn_lookup> entries from a list of queries.
++=back
+ 
+-=item asn_prefix 'prefix_string'       (default: 'AS')
++=head1 ADMINISTRATOR SETTINGS
+ 
+-The string specified in the argument is prepended to each ASN when storing
+-it as a tag. This prefix is rather redundant, but its default value 'AS'
+-is kept for backward compatibility with versions of SpamAssassin earlier
+-than 3.4.0. A sensible setting is an empty string. The argument may be (but
+-need not be) enclosed in single or double quotes for clarity.
++=over 4
+ 
+ =item asn_use_geodb ( 0 / 1 )          (default: 1)
+ 
+@@ -230,11 +195,57 @@ Set to 0 to never allow DNS queries.
+ 
+ =back
+ 
++=head1 BAYES
++
++The bayes tokenizer will use ASN data for bayes calculations, and thus
++affect which BAYES_* rule will trigger for a particular message.  No
++in-depth analysis of the usefulness of bayes tokenization of ASN data has
++been performed.
++
++=head1 SEE ALSO
++
++https://www.routeviews.org/ - all data regarding routing, ASNs, etc....
++
+ =cut
+ 
++package Mail::SpamAssassin::Plugin::ASN;
++
++use strict;
++use warnings;
++use re 'taint';
++
++use Mail::SpamAssassin::Plugin;
++use Mail::SpamAssassin::Logger;
++use Mail::SpamAssassin::Util qw(reverse_ip_address compile_regexp);
++use Mail::SpamAssassin::Constants qw(:ip);
++
++our @ISA = qw(Mail::SpamAssassin::Plugin);
++
++sub new {
++  my ($class, $mailsa) = @_;
++  $class = ref($class) || $class;
++  my $self = $class->SUPER::new($mailsa);
++  bless ($self, $class);
++
++  $self->register_eval_rule("check_asn", $Mail::SpamAssassin::Conf::TYPE_HEAD_EVALS);
++
++  $self->set_config($mailsa->{conf});
++
++  # we need GeoDB ASN
++  $self->{main}->{geodb_wanted}->{asn} = 1;
++
++  return $self;
++}
++
++###########################################################################
++
++sub set_config {
++  my ($self, $conf) = @_;
++  my @cmds;
++
+   push (@cmds, {
+     setting => 'asn_lookup',
+-    is_admin => 1,
++    is_priv => 1,
+     code => sub {
+       my ($conf, $key, $value, $line) = @_;
+       unless (defined $value && $value !~ /^$/) {
+@@ -254,7 +265,7 @@ Set to 0 to never allow DNS queries.
+ 
+   push (@cmds, {
+     setting => 'asn_lookup_ipv6',
+-    is_admin => 1,
++    is_priv => 1,
+     code => sub {
+       my ($conf, $key, $value, $line) = @_;
+       unless (defined $value && $value !~ /^$/) {
+@@ -274,7 +285,6 @@ Set to 0 to never allow DNS queries.
+ 
+   push (@cmds, {
+     setting => 'clear_asn_lookups',
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NOARGS,
+     code => sub {
+       my ($conf, $key, $value, $line) = @_;
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/AskDNS.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/AskDNS.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/AskDNS.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/AskDNS.pm	2023-04-30 13:05:28.963330458 +0000
+@@ -33,21 +33,7 @@ responses trickle in, filters them accor
+ record type and optional subrule filtering expression, yielding a rule hit
+ if a response meets filtering conditions.
+ 
+-=head1 USER SETTINGS
+-
+-=over 4
+-
+-=item rbl_timeout t [t_min] [zone]		(default: 15 3)
+-
+-The rbl_timeout setting is common to all DNS querying rules (as implemented
+-by other plugins). It can specify a DNS query timeout globally, or individually
+-for each zone. When the zone parameter is specified, the settings affects DNS
+-queries when their query domain equals the specified zone, or is its subdomain.
+-See the C<Mail::SpamAssassin::Conf> POD for details on C<rbl_timeout>.
+-
+-=back
+-
+-=head1 RULE DEFINITIONS
++=head1 RULE DEFINITIONS AND PRIVILEGED SETTINGS
+ 
+ =over 4
+ 
+@@ -193,6 +179,11 @@ rcode indicates an error.  Example: [NXD
+ 
+ =back
+ 
++=head1 NOTES
++
++DNS timeout can be set with C<rbl_timeout> option.  See the
++C<Mail::SpamAssassin::Conf> POD for details on C<rbl_timeout>.
++
+ =cut
+ 
+ package Mail::SpamAssassin::Plugin::AskDNS;
+@@ -309,7 +300,7 @@ sub set_config {
+ 
+   push(@cmds, {
+     setting => 'askdns',
+-    is_admin => 1,
++    is_priv => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_HASH_KEY_VALUE,
+     code => sub {
+       my($self, $key, $value, $line) = @_;
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/AuthRes.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/AuthRes.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/AuthRes.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/AuthRes.pm	2023-06-05 11:28:35.789999638 +0000
+@@ -51,12 +51,15 @@ our @ISA = qw(Mail::SpamAssassin::Plugin
+ # https://www.iana.org/assignments/email-auth/email-auth.xhtml
+ # some others not in that list:
+ #   dkim-atps=neutral
++#   dmarc=bestguesspass  (some microsoft stuff)
+ my %method_result = (
++  'arc' => {'fail'=>1,'none'=>1,'pass'=>1},
+   'auth' => {'fail'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1},
+   'dkim' => {'fail'=>1,'neutral'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'policy'=>1,'temperror'=>1},
+   'dkim-adsp' => {'discard'=>1,'fail'=>1,'none'=>1,'nxdomain'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1,'unknown'=>1},
+   'dkim-atps' => {'fail'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1,'neutral'=>1},
+-  'dmarc' => {'fail'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1},
++  'dmarc' => {'bestguesspass'=>1,'fail'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1},
++  'dnswl' => {'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1},
+   'domainkeys' => {'fail'=>1,'neutral'=>1,'none'=>1,'permerror'=>1,'policy'=>1,'pass'=>1,'temperror'=>1},
+   'iprev' => {'fail'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1},
+   'rrvs' => {'fail'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1,'unknown'=>1},
+@@ -66,17 +69,19 @@ my %method_result = (
+   'vbr' => {'fail'=>1,'none'=>1,'pass'=>1,'permerror'=>1,'temperror'=>1},
+ );
+ my %method_ptype_prop = (
++  'arc' => {'smtp' => {'remote-ip'=>1}, 'header' => {'oldest-pass'=>1}, 'arc' => {'chain'=>1}},
+   'auth' => {'smtp' => {'auth'=>1,'mailfrom'=>1}},
+-  'dkim' => {'header' => {'d'=>1,'i'=>1,'b'=>1}},
++  'dkim' => {'header' => {'d'=>1,'i'=>1,'b'=>1,'a'=>1,'s'=>1}},
+   'dkim-adsp' => {'header' => {'from'=>1}},
+   'dkim-atps' => {'header' => {'from'=>1}},
+-  'dmarc' => {'header' => {'from'=>1}},
++  'dmarc' => {'header' => {'from'=>1}, 'policy' => {'dmarc'=>1}},
++  'dnswl' => {'dns' => {'zone'=>1,'sec'=>1}, 'policy' => {'ip'=>1,'txt'=>1}},
+   'domainkeys' => {'header' => {'d'=>1,'from'=>1,'sender'=>1}},
+   'iprev' => {'policy' => {'iprev'=>1}},
+   'rrvs' => {'smtp' => {'rcptto'=>1}},
+   'sender-id' => {'header' => {'*'=>1}},
+   'smime' => {'body' => {'smime-part'=>1,'smime-identifer'=>1,'smime-serial'=>1,'smime-issuer'=>1}},
+-  'spf' => {'smtp' => {'mailfrom'=>1,'helo'=>1}},
++  'spf' => {'smtp' => {'mailfrom'=>1,'mfrom'=>1,'helo'=>1,'rcpttodomain'=>1}},
+   'vbr' => {'header' => {'md'=>1,'mv'=>1}},
+ );
+       
+@@ -107,7 +112,7 @@ sub set_config {
+   my ($self, $conf) = @_;
+   my @cmds;
+ 
+-=head1 ADMINISTRATOR OPTIONS
++=head1 ADMINISTRATOR SETTINGS
+ 
+ =over
+ 
+@@ -272,6 +277,12 @@ For checking result of methods, $pms-E<g
+ 
+ Can be used to check results.
+ 
++Reference of valid result methods and values:
++C<https://www.iana.org/assignments/email-auth/email-auth.xhtml>
++
++Additionally the result value of 'missing' can be used to check if there is
++no result at all.
++
+   ifplugin Mail::SpamAssassin::Plugin::AuthRes
+   ifplugin !(Mail::SpamAssassin::Plugin::SPF)
+     header  SPF_PASS      eval:check_authres_result('spf', 'pass')
+@@ -299,7 +310,8 @@ sub check_authres_result {
+     return !defined($result) ? 1 : 0;
+   }
+ 
+-  return ($wanted_result eq $result);
++  return 0 unless defined $result;
++  return ($wanted_result eq $result) ? 1 : 0;
+ }
+ 
+ sub parsed_metadata {
+@@ -319,8 +331,8 @@ sub parsed_metadata {
+   }
+ 
+   foreach my $hdr (split(/^/m, $pms->get($nethdr))) {
+-    if ($hdr =~ /^(?:Arc\-)?Authentication-Results:\s*(.+)/i) {
+-      push @authres, $1;
++    if ($hdr =~ /^((?:Arc\-)?Authentication-Results):\s*(.+)/i) {
++      push @authres, [$1,$2];
+     }
+   }
+ 
+@@ -332,7 +344,7 @@ sub parsed_metadata {
+ 
+   foreach (@authres) {
+     eval {
+-      $self->parse_authres($pms, $_);
++      $self->parse_authres($pms, $_->[0], $_->[1]);
+     } or do {
+       dbg("authres: skipping header, $@");
+     }
+@@ -363,22 +375,51 @@ sub parsed_metadata {
+ }
+ 
+ sub parse_authres {
+-  my ($self, $pms, $hdr) = @_;
++  my ($self, $pms, $hdrname, $hdr) = @_;
+ 
+-  dbg("authres: parsing Authentication-Results: $hdr");
++  dbg("authres: parsing $hdrname: $hdr");
+ 
+   my $authserv;
+   my $version = 1;
+   my @methods;
++  my $arc_index;
+ 
+   local $_ = $hdr;
+ 
++  if ($hdrname =~ /^ARC-/i) {
++    if (!/\Gi\b/gcs) {
++      die("missing arc index: $hdr");
++    }
++    skip_cfws();
++    if (!/\G=/gcs) {
++      die("invalid arc index: ".substr($_, pos())."\n");
++    }
++    skip_cfws();
++    if (!/\G(\d+)/gcs) {
++      die("invalid arc index: ".substr($_, pos())."\n");
++    }
++    $arc_index = $1;
++    if ($arc_index < 1 || $arc_index > 50) {
++      die("invalid arc index: $arc_index\n");
++    }
++    skip_cfws();
++    if (!/\G;/gcs) {
++      die("missing delimiter: ".substr($_, pos())."\n");
++    }
++    skip_cfws();
++  }
++
+   # authserv-id
+   if (!/\G($TOKEN)/gcs) {
+-    die("invalid authserv\n");
++    die("invalid authserv: ".substr($_, pos())."\n");
+   }
+   $authserv = lc($1);
+ 
++  # some invalid headers start with spf=foo etc, missing authserv-id
++  if (/\G=/gcs) {
++    die("missing authserv: $hdr\n");
++  }
++
+   if (%{$pms->{conf}->{authres_trusted_authserv}}) {
+     if (!$pms->{conf}->{authres_trusted_authserv}->{$authserv}) {
+       die("authserv not trusted: $authserv\n");
+@@ -388,12 +429,14 @@ sub parse_authres {
+     die("ignored authserv: $authserv\n");
+   }
+ 
++  # skip authserv version
+   skip_cfws();
+-  if (/\G\d+/gcs) { # skip authserv version
++  if (/\G\d+/gcs) {
+     skip_cfws();
+   }
++
+   if (!/\G;/gcs) {
+-    die("missing delimiter\n");
++    die("missing delimiter: ".substr($_, pos())."\n");
+   }
+   skip_cfws();
+ 
+@@ -402,6 +445,11 @@ sub parse_authres {
+     my $reason = '';
+     my $props = {};
+ 
++    # some silly generators add duplicate authserv-id; here
++    if (/\G\Q${authserv}\E\s*;/gcs) {
++      skip_cfws();
++    }
++
+     # skip none method
+     if (/\Gnone\b/igcs) {
+       die("method none\n");
+@@ -409,17 +457,17 @@ sub parse_authres {
+ 
+     # method / version = result
+     if (!/\G([\w-]+)/gcs) {
+-      die("invalid method\n");
++      die("invalid method: ".substr($_, pos())."\n");
+     }
+     $method = lc($1);
+     if (!exists $method_result{$method}) {
+-      die("unknown method: $method\n");
++      die("unknown method: $method: $hdr\n");
+     }
+     skip_cfws();
+     if (/\G\//gcs) {
+       skip_cfws();
+       if (!/\G\d+/gcs) {
+-        die("invalid $method version\n");
++        die("invalid $method version: ".substr($_, pos())."\n");
+       }
+       $version = $1;
+       skip_cfws();
+@@ -429,7 +477,7 @@ sub parse_authres {
+     }
+     skip_cfws();
+     if (!/\G(\w+)/gcs) {
+-      die("invalid result for $method\n");
++      die("invalid result for $method: ".substr($_, pos())."\n");
+     }
+     $result = $1;
+     if (!exists $method_result{$method}{$result}) {
+@@ -441,50 +489,69 @@ sub parse_authres {
+     if (/\Greason\b/igcs) {
+       skip_cfws();
+       if (!/\G=/gcs) {
+-        die("invalid reason\n");
++        die("invalid reason: ".substr($_, pos())."\n");
+       }
+       skip_cfws();
+       if (!/\G$QUOTED_STRING|($TOKEN)/gcs) {
+-        die("invalid reason\n");
++        die("invalid reason: ".substr($_, pos())."\n");
+       }
+       $reason = defined $1 ? $1 : $2;
+       skip_cfws();
+     }
+ 
++    # action = value (some microsoft ARC stuff?)
++    if (/\Gaction\b/igcs) {
++      skip_cfws();
++      if (!/\G=/gcs) {
++        die("invalid action: ".substr($_, pos())."\n");
++      }
++      skip_cfws();
++      if (!/\G$QUOTED_STRING|$TOKEN/gcs) {
++        die("invalid action: ".substr($_, pos())."\n");
++      }
++      skip_cfws();
++    }
++
+     # ptype.property = value
+     while (pos() < length()) {
+       my ($ptype, $property, $value);
+ 
++      # no props?
++      if (/\G(?:;|$)/gcs) {
++        skip_cfws();
++        last;
++      }
++
+       # ptype
+-      if (!/\G(\w+)/gcs) {
++      if (!/\G([\w-]+)/gcs) {
+         die("invalid ptype: ".substr($_,pos())."\n");
+       }
+       $ptype = lc($1);
+       if (!exists $method_ptype_prop{$method}{$ptype}) {
+-        die("unknown ptype: $ptype\n");
++        die("unknown ptype: $method/$ptype\n");
+       }
+       skip_cfws();
+ 
+       # dot
+       if (!/\G\./gcs) {
+-        die("missing property\n");
++        die("missing property: ".substr($_, pos())."\n");
+       }
+       skip_cfws();
+ 
+       # property
+-      if (!/\G(\w+)/gcs) {
+-        die("invalid property\n");
++      if (!/\G([\w-]+)/gcs) {
++        die("invalid property: ".substr($_, pos())."\n");
+       }
+       $property = lc($1);
+       if (!exists $method_ptype_prop{$method}{$ptype}{$property} &&
+           !exists $method_ptype_prop{$method}{$ptype}{'*'}) {
+-        die("unknown property for $ptype: $property\n");
++        die("unknown property for $method/$ptype: $property\n");
+       }
+       skip_cfws();
+ 
+       # =
+       if (!/\G=/gcs) {
+-        die("missing property value\n");
++        die("missing property value: ".substr($_, pos())."\n");
+       }
+       skip_cfws();
+ 
+@@ -493,7 +560,7 @@ sub parse_authres {
+       # where value := token / quoted-string
+       # and local-part := dot-atom / quoted-string / obs-local-part
+       if (!/\G$QUOTED_STRING|($ATOM(?:\.$ATOM)*|$TOKEN)(?=(?:[\s;]|$))/gcs) {
+-        die("invalid $ptype.$property value\n");
++        die("invalid $method/$ptype.$property value: ".substr($_, pos())."\n");
+       }
+       $value = defined $1 ? $1 : $2;
+       skip_cfws();
+@@ -512,12 +579,13 @@ sub parse_authres {
+         'result' => $result,
+         'reason' => $reason,
+         'properties' => $props,
++        'arc_index' => $arc_index,
+         }];
+   }
+ 
+   # paranoid check..
+   if (pos() < length()) {
+-    die("parse ended prematurely?\n");
++    die("parse ended prematurely? ".substr($_, pos())."\n");
+   }
+ 
+   # Pushed to pms only if header parsed completely
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/AutoLearnThreshold.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/AutoLearnThreshold.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/AutoLearnThreshold.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/AutoLearnThreshold.pm	2023-04-30 13:05:28.949997124 +0000
+@@ -77,7 +77,7 @@ sub set_config {
+   my($self, $conf) = @_;
+   my @cmds;
+ 
+-=head1 USER OPTIONS
++=head1 USER SETTINGS
+ 
+ The following configuration settings are used to control auto-learning:
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Bayes.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Bayes.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Bayes.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Bayes.pm	2023-04-30 13:05:28.959997124 +0000
+@@ -37,7 +37,7 @@ And the chi-square probability combiner
+ 
+ The results are incorporated into SpamAssassin as the BAYES_* rules.
+ 
+-=head1 ADMINISTRATOR SETTINGS
++=head1 USER SETTINGS
+ 
+ =over 4
+ 
+@@ -288,14 +288,12 @@ sub set_config {
+   push(@cmds, {
+     setting => 'bayes_max_token_length',
+     default => MAX_TOKEN_LENGTH,
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+   });
+ 
+   push(@cmds, {
+     setting => 'bayes_stopword_languages',
+     default => ['en'],
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_STRINGLIST,
+     code => sub {
+       my ($self, $key, $value, $line) = @_;
+@@ -324,9 +322,6 @@ sub set_config {
+ sub parse_config {
+   my ($self, $opts) = @_;
+ 
+-  # Ignore users's configuration lines
+-  return 0 if $opts->{user_config};
+-
+   if ($opts->{key} =~ /^bayes_stopword_([a-z]{2})$/i) {
+       $self->inhibit_further_callbacks();
+       my $lang = lc($1);
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Check.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Check.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Check.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Check.pm	2023-04-04 18:20:21.303333281 +0000
+@@ -666,11 +666,13 @@ sub do_head_tests {
+     # setup the function to run the rules
+     while(my($k,$v) = each %ordered) {
+       my($hdrname, $def) = split(/\t/, $k, 2);
++      # get() might already include newlines, join accordingly (Bug 8121)
+       $self->push_evalstr_prefix($pms, '
+-        @harr = $self->get(q{'.$hdrname.'});
+-        $hval = scalar(@harr) ? join("\n", @harr) : ' .
+-                           (!defined($def) ? 'undef' :
+-                              '$self->{conf}->{test_opt_unset}->{q{'.$def.'}}') . ';
++        if (scalar(@harr = $self->get(q{'.$hdrname.'}))) {
++          $hval = join($harr[0] =~ /\n\z/ ? "" : "\n", @harr);
++        } else {
++          $hval = '.(!defined($def) ? 'undef' :'$self->{conf}->{test_opt_unset}->{q{'.$def.'}}').'
++        }
+       ');
+       foreach my $rulename (@{$v}) {
+           my $tc_ref = $testcode{$rulename};
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DCC.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DCC.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DCC.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DCC.pm	2023-04-30 13:05:28.959997124 +0000
+@@ -128,7 +128,7 @@ sub set_config {
+   my($self, $conf) = @_;
+   my @cmds;
+ 
+-=head1 USER OPTIONS
++=head1 USER SETTINGS
+ 
+ =over 4
+ 
+@@ -141,7 +141,6 @@ Whether to use DCC, if it is available.
+   push(@cmds, {
+     setting => 'use_dcc',
+     default => 1,
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_BOOL,
+   });
+ 
+@@ -156,7 +155,6 @@ where it's automatically used.
+   push(@cmds, {
+     setting => 'use_dcc_rep',
+     default => 1,
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_BOOL,
+   });
+ 
+@@ -189,32 +187,28 @@ default is C<90>.
+ 
+   push (@cmds, {
+     setting => 'dcc_body_max',
+-    is_admin => 1,
+     default => 999999,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   },
+   {
+     setting => 'dcc_fuz1_max',
+-    is_admin => 1,
+     default => 999999,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   },
+   {
+     setting => 'dcc_fuz2_max',
+-    is_admin => 1,
+     default => 999999,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   },
+   {
+     setting => 'dcc_rep_percent',
+-    is_admin => 1,
+     default => 90,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   });
+ 
+ =back
+ 
+-=head1 ADMINISTRATOR OPTIONS
++=head1 ADMINISTRATOR SETTINGS
+ 
+ =over 4
+ 
+@@ -799,7 +793,7 @@ sub _launch_dcc {
+     return;
+   }
+ 
+-  if ($pms->get('ALL-TRUSTED') =~ /^(X-DCC-[^:]*?-Metrics: .*)$/m) {
++  #if ($pms->get('ALL-TRUSTED') =~ /^(X-DCC-[^:]*?-Metrics: .*)$/m) {
+     # short-circuit if there is already a X-DCC header with value of
+     # "bulk" from an upstream DCC check
+     # require "bulk" because then at least one body checksum will be "many"
+@@ -807,7 +801,7 @@ sub _launch_dcc {
+     #if ($1 =~ / bulk /) {
+     #  return $self->check_dcc_result($pms, $1);
+     #}
+-  }
++  #}
+ 
+   my $envelope = $pms->{relays_external}->[0];
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DKIM.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DKIM.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DKIM.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DKIM.pm	2023-04-04 18:20:21.299999948 +0000
+@@ -807,7 +807,7 @@ sub _check_dkim_signed_by {
+ }
+ 
+ sub _get_authors {
+-  my ($self, $pms) = @_;
++  my ($self, $pms, $sig_type) = @_;
+ 
+   # Note that RFC 5322 permits multiple addresses in the From header field,
+   # and according to RFC 5617 such message has multiple authors and hence
+@@ -820,8 +820,8 @@ sub _get_authors {
+     # be tolerant, ignore trailing WSP after a domain name
+     $author_domains{lc $1} = 1  if /\@([^\@]+?)[ \t]*\z/s;
+   }
+-  $pms->{dkim_author_addresses} = \@authors;       # list of full addresses
+-  $pms->{dkim_author_domains} = \%author_domains;  # hash of their domains
++  $pms->{"${sig_type}_author_addresses"} = \@authors;       # list of full addresses
++  $pms->{"${sig_type}_author_domains"} = \%author_domains;  # hash of their domains
+ }
+ 
+ sub _check_dkim_signature {
+@@ -908,7 +908,7 @@ sub _check_signature {
+   my($self, $pms, $verifier, $type, $signatures) = @_;
+ 
+   my $sig_type = lc $type;
+-  $self->_get_authors($pms)  if !$pms->{"${sig_type}_author_addresses"};
++  $self->_get_authors($pms, $sig_type)  if !$pms->{"${sig_type}_author_addresses"};
+ 
+   my(@valid_signatures);
+   my $conf = $pms->{conf};
+@@ -1003,7 +1003,7 @@ sub _check_valid_signature {
+   my($self, $pms, $verifier, $type, $signatures) = @_;
+ 
+   my $sig_type = lc $type;
+-  $self->_get_authors($pms)  if !$pms->{"${sig_type}_author_addresses"};
++  $self->_get_authors($pms, $sig_type)  if !$pms->{"${sig_type}_author_addresses"};
+ 
+   my(@valid_signatures);
+   my $conf = $pms->{conf};
+@@ -1143,7 +1143,7 @@ sub _check_dkim_adsp {
+   $pms->{dkim_adsp} = {};  # a hash: author_domain => adsp
+   my $practices_as_string = '';
+ 
+-  $self->_get_authors($pms)  if !$pms->{dkim_author_addresses};
++  $self->_get_authors($pms, 'dkim')  if !$pms->{dkim_author_addresses};
+ 
+   # collect only fully qualified domain names, allow '-', think of IDN
+   my @author_domains = grep { /.\.[a-z-]{2,}\z/si }
+@@ -1296,7 +1296,7 @@ sub _check_dkim_welcomelist {
+ 
+   $pms->{welcomelist_checked} = 1;
+ 
+-  $self->_get_authors($pms)  if !$pms->{dkim_author_addresses};
++  $self->_get_authors($pms, 'dkim')  if !$pms->{dkim_author_addresses};
+ 
+   my $authors_str = join(", ", @{$pms->{dkim_author_addresses}});
+   if ($authors_str eq '') {
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DMARC.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DMARC.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DMARC.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DMARC.pm	2023-04-30 13:05:28.953330458 +0000
+@@ -108,6 +108,7 @@ Store DMARC reports using Mail::DMARC::S
+ 
+   push(@cmds, {
+     setting => 'dmarc_save_reports',
++    is_admin => 1,
+     default => 0,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_BOOL,
+   });
+@@ -326,6 +327,71 @@ sub _check_dmarc {
+     return;
+   }
+ 
++  my $dmarc_arc_verified = 0;
++  if (($result->result ne 'pass') and (ref($pms->{arc_verifier}) and ($pms->{arc_verifier}->result))) {
++    undef $result;
++    $dmarc_arc_verified = 1;
++    # if DMARC fails retry by reading data from AAR headers
++    # use Mail::SpamAssassin::Plugin::AuthRes if available to read ARC signature details
++    my @spf_parsed = sort { ( $a->{authres_parsed}{spf}{arc_index} // 0 ) <=> ( $b->{authres_parsed}{spf}{arc_index} // 0 ) } @{$pms->{authres_parsed}{spf}};
++    my $old_arc_index = 0;
++    foreach my $spf_parse ( @spf_parsed ) {
++      last if not defined $spf_parse->{arc_index};
++      last if $old_arc_index > $spf_parse->{arc_index};
++      dbg("Evaluate DMARC using AAR spf information for index $spf_parse->{arc_index}");
++      if(exists $spf_parse->{properties}{smtp}{mailfrom}) {
++        my $mfrom_dom = $spf_parse->{properties}{smtp}{mailfrom};
++        if($mfrom_dom =~ /\@(.*)/) {
++          $mfrom_dom = $1;
++        }
++        $dmarc->spf([
++          {
++            scope  => 'mfrom',
++            domain => $mfrom_dom,
++            result => $spf_parse->{result},
++          }
++        ]);
++      }
++      if(exists $spf_parse->{properties}{smtp}{helo}) {
++        $dmarc->spf([
++          {
++            scope  => 'helo',
++            domain => $spf_parse->{properties}{smtp}{helo},
++            result => $spf_parse->{result},
++          }
++        ]);
++      }
++      $old_arc_index = $spf_parse->{arc_index};
++    }
++
++    my @arc_seals = sort { ( $a->{arc_verifier}{seals}{tags_by_name}{i}{value} // 0 ) <=> ( $b->{arc_verifier}{seals}{tags_by_name}{i}{value} // 0 ) } @{$pms->{arc_verifier}{seals}};
++    foreach my $seals ( @arc_seals ) {
++      if(exists($seals->{tags_by_name}{d}) and exists($pms->{arc_author_domains}->{$mfrom_domain})) {
++        dbg("Evaluate DMARC using AAR dkim information for index $seals->{tags_by_name}{i}{value}");
++        $dmarc->dkim(domain => $mfrom_domain, selector => $seals->{tags_by_name}{s}{value}, result => $seals->{verify_result});
++        last;
++      }
++    }
++
++    eval { $result = $dmarc->validate(); };
++  }
++
++  # Report that DMARC failed but it has been overridden because of AAR headers
++  if(ref($pms->{arc_verifier}) and ($pms->{arc_verifier}->result) and ($dmarc_arc_verified)) {
++    $result->reason->[0]{type} = 'local_policy';
++    $result->reason->[0]{comment} = "arc=" . $pms->{arc_verifier}->result;
++    my $cnt = 1;
++    foreach my $seals ( @{$pms->{arc_verifier}{seals}} ) {
++      if(exists($seals->{tags_by_name}{d}) and exists($seals->{tags_by_name}{s})) {
++        $result->reason->[0]{comment} .= " as[$cnt].d=$seals->{tags_by_name}{d}{value} as[$cnt].s=$seals->{tags_by_name}{s}{value}";
++        $cnt++;
++      }
++    }
++    if($cnt gt 1) {
++      $result->reason->[0]{comment} .= " remote-ip[1]=$lasthop->{ip}";
++    }
++  }
++
+   if (defined($pms->{dmarc_result} = $result->result)) {
+     if ($pms->{conf}->{dmarc_save_reports}) {
+       my $rua = eval { $result->published()->rua(); };
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DNSEval.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DNSEval.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DNSEval.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DNSEval.pm	2023-04-30 13:05:28.953330458 +0000
+@@ -141,6 +141,7 @@ sub set_config {
+     my @cmds;
+     push(@cmds, {
+         setting => 'rbl_headers',
++        is_priv => 1,
+         default => 'EnvelopeFrom,Reply-To,Disposition-Notification-To,X-WebmailclientIP,X-Source-IP',
+         type => $Mail::SpamAssassin::Conf::CONF_TYPE_STRING,
+         }
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DecodeShortURLs.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DecodeShortURLs.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/DecodeShortURLs.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/DecodeShortURLs.pm	2023-04-30 13:05:28.946663791 +0000
+@@ -128,7 +128,7 @@ sub new {
+   return $self;
+ }
+ 
+-=head1 PRIVILEGED SETTINGS
++=head1 USER SETTINGS
+ 
+ =over 4
+ 
+@@ -218,6 +218,8 @@ then only those are removed from list.
+     }
+   });
+ 
++=head1 PRIVILEGED SETTINGS
++
+ =over 4
+ 
+ =item url_shortener_cache_type     (default: none)
+@@ -329,6 +331,8 @@ See C<url_shortener_cache_autoclean> for
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   });
+ 
++=head1 ADMINISTRATOR SETTINGS
++
+ =over 4
+ 
+ =item url_shortener_cache_autoclean	(default: 1000)
+@@ -593,7 +597,7 @@ sub initialise_url_shortener_cache {
+       ");
+       $self->{sth_delete} = $self->{dbh}->prepare("
+         DELETE FROM short_url_cache
+-        WHERE short_url ? = AND created < CAST(EXTRACT(epoch FROM NOW()) AS INT) - $conf->{url_shortener_cache_ttl}
++        WHERE short_url = ? AND created < CAST(EXTRACT(epoch FROM NOW()) AS INT) - $conf->{url_shortener_cache_ttl}
+       ");
+       $self->{sth_clean} = $self->{dbh}->prepare("
+         DELETE FROM short_url_cache
+@@ -827,7 +831,7 @@ sub recursive_lookup {
+       return;
+     }
+     $location = $response->headers->{location};
+-    if ($self->{url_shortener_loginfo}) {
++    if ($conf->{url_shortener_loginfo}) {
+       info("found $short_url => $location");
+     } else {
+       dbg("found $short_url => $location");
+@@ -850,21 +854,19 @@ sub recursive_lookup {
+   # redirect back to the same host as chaining incorrectly.
+   $pms->{short_url_chained} = 1 if $count;
+ 
+-  # Check if we are being redirected to a local page
+-  # Don't recurse in this case...
++  # Check if it is a redirection to a relative URI
++  # Make it an absolute URI and chain to it in that case
+   if ($location !~ m{^[a-z]+://}i) {
+     my $orig_location = $location;
+     my $orig_short_url = $short_url;
+     # Strip to..
+     if (index($location, '/') == 0) {
+-      $short_url =~ s{^([a-z]+://.*?)[/?#].*}{$1}; # ..absolute path
++      $short_url =~ s{^([a-z]+://.*?)[/?#].*}{$1}; # ..absolute path base is http://example.com
+     } else {
+-      $short_url =~ s{^([a-z]+://.*)/}{$1}; # ..relative path
++      $short_url =~ s{^([a-z]+://.*/)}{$1}; # ..relative path base is http://example.com/a/b/
+     }
+-    $location = "$short_url/$location";
+-    dbg("looks like a local redirection: $orig_short_url => $location ($orig_location)");
+-    $pms->add_uri_detail_list($location) if !$pms->{uri_detail_list}->{$location};
+-    return;
++    $location = "$short_url$location";
++    dbg("looks like a redirection to a relative URI: $orig_short_url => $location ($orig_location)");
+   }
+ 
+   if (exists $been_here{$location}) {
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/ExtractText.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/ExtractText.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/ExtractText.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/ExtractText.pm	2023-04-30 13:05:28.953330458 +0000
+@@ -292,12 +292,14 @@ sub set_config {
+ 
+   push(@cmds, {
+     setting => 'extracttext_maxparts',
++    is_admin => 1,
+     default => 10,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+   });
+ 
+   push(@cmds, {
+     setting => 'extracttext_timeout',
++    is_admin => 1,
+     default => 5,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+     code => sub {
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/HashBL.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/HashBL.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/HashBL.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/HashBL.pm	2023-04-30 13:05:28.956663791 +0000
+@@ -286,7 +286,6 @@ sub set_config {
+ 
+   push (@cmds, {
+     setting => 'hashbl_ignore',
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_HASH_KEY_VALUE,
+     default => {},
+     code => sub {
+@@ -302,7 +301,6 @@ sub set_config {
+ 
+   push (@cmds, {
+     setting => 'hashbl_email_domain_alias',
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_HASH_KEY_VALUE,
+     default => {},
+     code => sub {
+@@ -323,7 +321,6 @@ sub set_config {
+ 
+   push (@cmds, {
+     setting => 'hashbl_email_regex',
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_STRING,
+     # Some regexp tips courtesy of http://www.regular-expressions.info/email.html
+     # full email regex v0.02
+@@ -355,7 +352,6 @@ sub set_config {
+   push (@cmds, {
+     setting => 'hashbl_email_welcomelist',
+     aliases => ['hashbl_email_whitelist'], # removed in 4.1
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_STRING,
+     default => qr/(?i)
+       ^(?:
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/OLEVBMacro.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/OLEVBMacro.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/OLEVBMacro.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/OLEVBMacro.pm	2023-05-31 18:01:42.133332846 +0000
+@@ -81,7 +81,7 @@ use strict;
+ use warnings;
+ 
+ use Mail::SpamAssassin::Plugin;
+-use Mail::SpamAssassin::Util qw(compile_regexp);
++use Mail::SpamAssassin::Util qw(compile_regexp get_part_details);
+ 
+ use constant HAS_ARCHIVE_ZIP => eval { require Archive::Zip; };
+ use constant HAS_IO_STRING => eval { require IO::String; };
+@@ -550,7 +550,7 @@ sub _check_attachments {
+   foreach my $part ($pms->{msg}->find_parts(qr/./, 1)) {
+     next if $part->{type} =~ /$conf->{olemacro_skip_ctypes}/i;
+ 
+-    my ($ctt, $ctd, $cte, $name) = _get_part_details($pms, $part);
++    my ($ctt, $ctd, $cte, $name) = get_part_details($pms, $part, $conf->{olemacro_prefer_contentdisposition});
+     next unless defined $ctt;
+     next if $name eq '';
+ 
+@@ -771,53 +771,6 @@ sub _check_zip {
+   return 1;
+ }
+ 
+-sub _get_part_details {
+-    my ($pms, $part) = @_;
+-    #https://en.wikipedia.org/wiki/MIME#Content-Disposition
+-    #https://github.com/mikel/mail/pull/464
+-
+-    my $ctt = $part->get_header('content-type');
+-    return undef unless defined $ctt; ## no critic (ProhibitExplicitReturnUndef)
+-
+-    my $cte = lc($part->get_header('content-transfer-encoding') || '');
+-    return undef unless ($cte =~ /^(?:base64|quoted\-printable)$/); ## no critic (ProhibitExplicitReturnUndef)
+-
+-    $ctt = _decode_part_header($part, $ctt || '');
+-
+-    my $name = '';
+-    my $cttname = '';
+-    my $ctdname = '';
+-
+-    if ($ctt =~ m/name\s*=\s*["']?([^"';]*)/is) {
+-      $cttname = $1;
+-      $cttname =~ s/\s+$//;
+-    }
+-
+-    my $ctd = $part->get_header('content-disposition');
+-    $ctd = _decode_part_header($part, $ctd || '');
+-
+-    if ($ctd =~ m/filename\s*=\s*["']?([^"';]*)/is) {
+-      $ctdname = $1;
+-      $ctdname =~ s/\s+$//;
+-    }
+-
+-    if (lc $ctdname eq lc $cttname) {
+-      $name = $ctdname;
+-    } elsif ($ctdname eq '') {
+-      $name = $cttname;
+-    } elsif ($cttname eq '') {
+-      $name = $ctdname;
+-    } else {
+-      if ($pms->{conf}->{olemacro_prefer_contentdisposition}) {
+-        $name = $ctdname;
+-      } else {
+-        $name = $cttname;
+-      }
+-    }
+-
+-    return $ctt, $ctd, $cte, $name;
+-}
+-
+ sub _open_zip_handle {
+   my ($data) = @_;
+ 
+@@ -1093,35 +1046,6 @@ sub _zip_error_handler {
+   1;
+ }
+ 
+-sub _decode_part_header {
+-  my($part, $header_field_body) = @_;
+-
+-  return '' unless defined $header_field_body && $header_field_body ne '';
+-
+-  # deal with folding and cream the newlines and such
+-  $header_field_body =~ s/\n[ \t]+/\n /g;
+-  $header_field_body =~ s/\015?\012//gs;
+-
+-  local($1,$2,$3);
+-
+-  # Multiple encoded sections must ignore the interim whitespace.
+-  # To avoid possible FPs with (\s+(?==\?))?, look for the whole RE
+-  # separated by whitespace.
+-  1 while $header_field_body =~
+-            s{ ( = \? [A-Za-z0-9_-]+ \? [bqBQ] \? [^?]* \? = ) \s+
+-               ( = \? [A-Za-z0-9_-]+ \? [bqBQ] \? [^?]* \? = ) }
+-             {$1$2}xsg;
+-
+-  # transcode properly encoded RFC 2047 substrings into UTF-8 octets,
+-  # leave everything else unchanged as it is supposed to be UTF-8 (RFC 6532)
+-  # or plain US-ASCII
+-  $header_field_body =~
+-    s{ (?: = \? ([A-Za-z0-9_-]+) \? ([bqBQ]) \? ([^?]*) \? = ) }
+-     { $part->__decode_header($1, uc($2), $3) }xsge;
+-
+-  return $header_field_body;
+-}
+-
+ # Version features
+ sub has_olemacro_redirect_uri { 1 }
+ sub has_olemacro_mhtml_uri { 1 }
+Only in Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin: P595Body.pm
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/PDFInfo.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/PDFInfo.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/PDFInfo.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/PDFInfo.pm	2023-06-13 01:33:35.189999438 +0000
+@@ -331,6 +331,7 @@ sub _get_pdf_details {
+     if (keys %uris < 20 && $line =~ /(?:\/S\s{0,2}\/URI\s{0,2}|^\s*)\/URI\s{0,2}( \( .*? (?<!\\) \) | < [^>]* > )/x) {
+       my $location = _parse_string($1);
+       next unless index($location, '.') > 0; # ignore some binary mess
++      next if $location =~ /\0/; # ignore urls with NUL characters
+       if (!exists $uris{$location}) {
+         $uris{$location} = 1;
+         dbg("pdfinfo: found URI: $location");
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Phishing.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Phishing.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Phishing.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Phishing.pm	2023-07-19 23:37:12.986666008 +0000
+@@ -255,6 +255,7 @@ sub _read_configfile {
+ 
+ 	# CSV: Date,Score,URL,IP
+         @phstats_ln = split(/,/, $_);
++        next if (not defined $phstats_ln[1] or not defined $phstats_ln[2]);
+         $phstats_ln[1] =~ s/\"//g;
+         $phstats_ln[2] =~ s/\"//g;
+ 	if ( $conf->{phishing_phishstats_minscore} >= $phstats_ln[1] ) {
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Pyzor.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Pyzor.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Pyzor.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Pyzor.pm	2023-07-16 19:19:11.099999662 +0000
+@@ -79,7 +79,7 @@ sub set_config {
+   my ($self, $conf) = @_;
+   my @cmds;
+ 
+-=head1 USER OPTIONS
++=head1 USER SETTINGS
+ 
+ =over 4
+ 
+@@ -91,26 +91,10 @@ Whether to use Pyzor, if it is available
+ 
+   push (@cmds, {
+     setting => 'use_pyzor',
+-    is_admin => 1,
+     default => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_BOOL
+   });
+ 
+-=item pyzor_fork (0|1)		(default: 1)
+-
+-Instead of running Pyzor synchronously, fork separate process for it and
+-read the results in later (similar to async DNS lookups).  Increases
+-throughput. Considered experimental on Windows, where default is 0.
+-
+-=cut
+-
+-  push(@cmds, {
+-    setting => 'pyzor_fork',
+-    is_admin => 1,
+-    default => am_running_on_windows()?0:1,
+-    type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+-  });
+-
+ =item pyzor_count_min NUMBER	(default: 5)
+ 
+ This option sets how often a message's body checksum must have been
+@@ -124,7 +108,6 @@ set this to a relatively low value, e.g.
+ 
+   push (@cmds, {
+     setting => 'pyzor_count_min',
+-    is_admin => 1,
+     default => 5,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   });
+@@ -132,7 +115,6 @@ set this to a relatively low value, e.g.
+   # Deprecated setting, the name makes no sense!
+   push (@cmds, {
+     setting => 'pyzor_max',
+-    is_admin => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+     code => sub {
+       my ($self, $key, $value, $line) = @_;
+@@ -157,7 +139,6 @@ result.  Final decision is made by pyzor
+   push (@cmds, {
+     setting => 'pyzor_welcomelist_min',
+     aliases => ['pyzor_whitelist_min'], # removed in 4.1
+-    is_admin => 1,
+     default => 10,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   });
+@@ -166,7 +147,7 @@ result.  Final decision is made by pyzor
+ 
+ Previously pyzor_whitelist_factor which will work interchangeably until 4.1.
+ 
+-Ignore Pyzor result if REPORTCOUNT x NUMBER >= pyzor_welcomelist_min.
++Ignore Pyzor result if REPORTCOUNT x NUMBER E<gt>= pyzor_welcomelist_min.
+ For default setting this means: 50 reports requires 10 welcomelistings.
+ 
+ =cut
+@@ -174,17 +155,44 @@ For default setting this means: 50 repor
+   push (@cmds, {
+     setting => 'pyzor_welcomelist_factor',
+     aliases => ['pyzor_whitelist_factor'], # removed in 4.1
+-    is_admin => 1,
+     default => 0.2,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC
+   });
+ 
+ =back
+ 
+-=head1 ADMINISTRATOR OPTIONS
++=head1 ADMINISTRATOR SETTINGS
+ 
+ =over 4
+ 
++=item pyzor_fork (0|1)		(default: 1)
++
++Instead of running Pyzor synchronously, fork separate process for it and
++read the results in later (similar to async DNS lookups).  Increases
++throughput. Considered experimental on Windows, where default is 0.
++
++=cut
++
++  push(@cmds, {
++    setting => 'pyzor_fork',
++    is_admin => 1,
++    default => am_running_on_windows()?0:1,
++    type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
++  });
++
++=item pyzor_perl (0|1)         (default: 0)
++
++Instead of running Pyzor client, use a pure Perl client.
++
++=cut
++
++    push(@cmds, {
++      setting => 'pyzor_perl',
++      is_admin => 1,
++      default => 0,
++      type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
++    });
++
+ =item pyzor_timeout n		(default: 5)
+ 
+ How many seconds you wait for Pyzor to complete, before scanning continues
+@@ -232,11 +240,11 @@ characters in the range [0-9A-Za-z =,._/
+     code => sub {
+       my ($self, $key, $value, $line) = @_;
+       if ($value !~ m{^([0-9A-Za-z =,._/-]+)$}) {
+-	return $Mail::SpamAssassin::Conf::INVALID_VALUE;
++        return $Mail::SpamAssassin::Conf::INVALID_VALUE;
+       }
+       $self->{pyzor_options} = $1;
+     }
+-  });
++});
+ 
+ =item pyzor_path STRING
+ 
+@@ -255,38 +263,89 @@ you should use this, as the current PATH
+     code => sub {
+       my ($self, $key, $value, $line) = @_;
+       if (!defined $value || !length $value) {
+-	return $Mail::SpamAssassin::Conf::MISSING_REQUIRED_VALUE;
++        return $Mail::SpamAssassin::Conf::MISSING_REQUIRED_VALUE;
+       }
+       $value = untaint_file_path($value);
+       if (!-x $value) {
+-	info("config: pyzor_path \"$value\" isn't an executable");
+-	return $Mail::SpamAssassin::Conf::INVALID_VALUE;
++        info("config: pyzor_path \"$value\" isn't an executable");
++        return $Mail::SpamAssassin::Conf::INVALID_VALUE;
+       }
+ 
+       $self->{pyzor_path} = $value;
+     }
+   });
+ 
++=item pyzor_server_file FILE
++
++Pyzor servers configuration file path, used by Pyzor Perl implementation.
++By default Pyzor will connect to public.pyzor.org on port 24441.
++
++=cut
++
++  push (@cmds, {
++    setting => 'pyzor_server_file',
++    is_admin => 1,
++    type => $Mail::SpamAssassin::Conf::CONF_TYPE_STRING,
++    code => sub {
++      my ($self, $key, $value, $line) = @_;
++      if (! -f $value) {
++        return $Mail::SpamAssassin::Conf::INVALID_VALUE;
++      } else {
++        my $i = 0;
++        open(PSF, '<', untaint_file_path($value));
++        while(<PSF>) {
++          chomp;
++          next if (/^#/);
++          my ($host, $port) = split(/:/, $_);
++          $self->{pyzor_host}[$i] = $host;
++          $self->{pyzor_port}[$i] = $port;
++          dbg("Setting Pyzor host to $host and port to $port");
++          $i++;
++        }
++        close(PSF);
++      }
++    }
++  });
++
+   $conf->{parser}->register_commands(\@cmds);
+ }
+ 
+ sub is_pyzor_available {
+-  my ($self) = @_;
+-
+-  my $pyzor = $self->{main}->{conf}->{pyzor_path} ||
+-    Mail::SpamAssassin::Util::find_executable_in_env_path('pyzor');
+-
+-  unless ($pyzor && -x $pyzor) {
+-    dbg("pyzor: no pyzor executable found");
+-    $self->{pyzor_available} = 0;
+-    return 0;
+-  }
++    my ($self) = @_;
+ 
+-  # remember any found pyzor
+-  $self->{main}->{conf}->{pyzor_path} = $pyzor;
++    if($self->{main}->{conf}->{pyzor_perl} and $self->{main}->{conf}->{pyzor_fork}) {
++      info("pyzor: pyzor_perl and pyzor_fork cannot be enabled at the same time, Pyzor support will be disabled");
++      return 0;
++    }
++    local $@;
++    if($self->{main}->{conf}->{pyzor_perl}) {
++      eval {
++        require Mail::SpamAssassin::Pyzor::Digest;
++        require Mail::SpamAssassin::Pyzor::Client;
++      };
++      if($@) {
++        $self->{pyzor_available} = 0;
++        dbg("pyzor: pyzor Perl module is not available");
++        return 0;
++      } else {
++        $self->{pyzor_available} = 1;
++        dbg("pyzor: pyzor Perl module is available");
++        return 1;
++      }
++    } else {
++      my $pyzor = $self->{main}->{conf}->{pyzor_path} ||
++        Mail::SpamAssassin::Util::find_executable_in_env_path('pyzor');
++      unless ($pyzor && -x $pyzor) {
++        dbg("pyzor: no pyzor executable found");
++        $self->{pyzor_available} = 0;
++        return 0;
++      }
+ 
+-  dbg("pyzor: pyzor is available: $pyzor");
+-  return 1;
++      # remember any found pyzor
++      $self->{main}->{conf}->{pyzor_path} = $pyzor;
++      dbg("pyzor: pyzor is available: $pyzor");
++      return 1;
++    }
+ }
+ 
+ sub finish_parsing_start {
+@@ -319,17 +378,23 @@ sub check_pyzor {
+   $pms->{tag_data}->{PYZOR} = '';
+ 
+   # create fulltext tmpfile now (before possible forking)
+-  $pms->{pyzor_tmpfile} = $pms->create_fulltext_tmpfile();
++  if(!$self->{main}->{conf}->{pyzor_perl}) {
++    $pms->{pyzor_tmpfile} = $pms->create_fulltext_tmpfile();
++  }
+ 
+   ## non-forking method
+-
+-  if (!$self->{main}->{conf}->{pyzor_fork}) {
++  if ((!$self->{main}->{conf}->{pyzor_fork}) and (!$self->{main}->{conf}->{pyzor_perl})) {
+     my @results = $self->pyzor_lookup($pms);
+     return $self->_check_result($pms, \@results);
+   }
+ 
+-  ## forking method
++  ## Pure Perl implementation
++  if($self->{main}->{conf}->{pyzor_perl}) {
++    my @results = $self->pyzor_lookup($pms, $full);
++    return $self->_check_result($pms, \@results);
++  }
+ 
++  ## forking method
+   $pms->{pyzor_rulename} = $pms->get_current_eval_rule_name();
+ 
+   # create socketpair for communication
+@@ -389,76 +454,121 @@ sub check_pyzor {
+ }
+ 
+ sub pyzor_lookup {
+-  my ($self, $pms) = @_;
+-
++  my ( $self, $pms, $fulltext ) = @_;
+   my $conf = $self->{main}->{conf};
+   my $timeout = $conf->{pyzor_timeout};
++  my $server_port;
++  my @pyzor_hosts;
++  my @pyzor_ports;
++  if(defined $conf->{pyzor_host}) {
++    @pyzor_hosts = @{$conf->{pyzor_host}};
++  }
++  if(defined $conf->{pyzor_port}) {
++    @pyzor_ports = @{$conf->{pyzor_port}};
++  }
++  $pyzor_hosts[0] //= 'public.pyzor.org';
++  $pyzor_ports[0] //= 24441;
++
++  if($self->{main}->{conf}->{pyzor_perl}) {
++    my @resp;
++    my $cnt = 0;
++    my $resp;
++    my $ref;
++
++    my $digest = Mail::SpamAssassin::Pyzor::Digest::get( $pms, $fulltext );
++
++    foreach my $server_host ( @pyzor_hosts ) {
++      $server_port = $pyzor_ports[$cnt];
++      $cnt++;
++      my $client = Mail::SpamAssassin::Pyzor::Client->new( 'timeout' => $timeout,
++                                                                         'server_host' => $server_host,
++                                                                         'server_port' => $server_port );
++      local $@;
++      $ref = eval { $client->check($digest); };
++      # $client reply must be an hash
++      return 0 if (not (ref $ref eq ref {}));
++      if ($@) {
++        my $err = $@;
+ 
+-  # note: not really tainted, this came from system configuration file
+-  my $path = untaint_file_path($conf->{pyzor_path});
+-  my $opts = untaint_var($conf->{pyzor_options}) || '';
+-
+-  $pms->enter_helper_run_mode();
+-
+-  my $pid;
+-  my @resp;
+-  my $timer = Mail::SpamAssassin::Timeout->new(
+-           { secs => $timeout, deadline => $pms->{master_deadline} });
+-  my $err = $timer->run_and_catch(sub {
+-    local $SIG{PIPE} = sub { die "__brokenpipe__ignore__\n" };
+-
+-    dbg("pyzor: opening pipe: ".
+-      join(' ', $path, $opts, "check", "<".$pms->{pyzor_tmpfile}));
+-
+-    $pid = Mail::SpamAssassin::Util::helper_app_pipe_open(*PYZOR,
+-	$pms->{pyzor_tmpfile}, 1, $path, split(' ', $opts), "check");
+-    $pid or die "$!\n";
+-
+-    # read+split avoids a Perl I/O bug (Bug 5985)
+-    my($inbuf, $nread);
+-    my $resp = '';
+-    while ($nread = read(PYZOR, $inbuf, 8192)) { $resp .= $inbuf }
+-    defined $nread  or die "error reading from pipe: $!";
+-    @resp = split(/^/m, $resp, -1);
++        $err = eval { $err->get_message() } || $err;
+ 
+-    my $errno = 0;
+-    close PYZOR or $errno = $!;
+-    if (proc_status_ok($?, $errno)) {
+-      dbg("pyzor: [%s] finished successfully", $pid);
+-    } elsif (proc_status_ok($?, $errno, 0, 1)) {  # sometimes it exits with 1
+-      dbg("pyzor: [%s] finished: %s", $pid, exit_status_str($?, $errno));
+-    } else {
+-      info("pyzor: [%s] error: %s", $pid, exit_status_str($?, $errno));
++        warn("pyzor: check failed: $err\n");
++        return 0;
++      }
++      # mimic pyzor client reply
++      # public.pyzor.org:24441\t(200, 'OK')\t1\t0
++      $resp .= "$server_host:$server_port\t($ref->{'Code'}, '" . $ref->{'Diag'} . "')\t$ref->{'Count'}\t$ref->{'WL-Count'}\n";
++      undef $ref;
+     }
++    @resp = split(/^/m, $resp, -1);
++    return @resp;
++  } else {
++    # note: not really tainted, this came from system configuration file
++    my $path = untaint_file_path($conf->{pyzor_path});
++    my $opts = untaint_var($conf->{pyzor_options}) || '';
++
++    $pms->enter_helper_run_mode();
++
++    my $pid;
++    my @resp;
++    my $timer = Mail::SpamAssassin::Timeout->new(
++             { secs => $timeout, deadline => $pms->{master_deadline} });
++    my $err = $timer->run_and_catch(sub {
++      local $SIG{PIPE} = sub { die "__brokenpipe__ignore__\n" };
++
++      dbg("pyzor: opening pipe: ".
++        join(' ', $path, $opts, "check", "<".$pms->{pyzor_tmpfile}));
++
++      $pid = Mail::SpamAssassin::Util::helper_app_pipe_open(*PYZOR,
++      $pms->{pyzor_tmpfile}, 1, $path, split(' ', $opts), "check");
++      $pid or die "$!\n";
++
++      # read+split avoids a Perl I/O bug (Bug 5985)
++      my($inbuf, $nread);
++      my $resp = '';
++      while ($nread = read(PYZOR, $inbuf, 8192)) { $resp .= $inbuf }
++      defined $nread  or die "error reading from pipe: $!";
++      @resp = split(/^/m, $resp, -1);
++
++      my $errno = 0;
++      close PYZOR or $errno = $!;
++      if (proc_status_ok($?, $errno)) {
++        dbg("pyzor: [%s] finished successfully", $pid);
++      } elsif (proc_status_ok($?, $errno, 0, 1)) {  # sometimes it exits with 1
++        dbg("pyzor: [%s] finished: %s", $pid, exit_status_str($?, $errno));
++      } else {
++        info("pyzor: [%s] error: %s", $pid, exit_status_str($?, $errno));
++      }
+ 
+-  });
++    });
+ 
+-  if (defined(fileno(*PYZOR))) {  # still open
+-    if ($pid) {
+-      if (kill('TERM', $pid)) {
+-        dbg("pyzor: killed stale helper [$pid]");
+-      } else {
+-        dbg("pyzor: killing helper application [$pid] failed: $!");
++    if (defined(fileno(*PYZOR))) {  # still open
++      if ($pid) {
++        if (kill('TERM', $pid)) {
++          dbg("pyzor: killed stale helper [$pid]");
++        } else {
++          dbg("pyzor: killing helper application [$pid] failed: $!");
++        }
+       }
++      my $errno = 0;
++      close PYZOR or $errno = $!;
++      proc_status_ok($?, $errno)
++        or info("pyzor: [%s] error: %s", $pid, exit_status_str($?, $errno));
+     }
+-    my $errno = 0;
+-    close PYZOR or $errno = $!;
+-    proc_status_ok($?, $errno)
+-      or info("pyzor: [%s] error: %s", $pid, exit_status_str($?, $errno));
+-  }
+ 
+-  $pms->leave_helper_run_mode();
++    $pms->leave_helper_run_mode();
+ 
+-  if ($timer->timed_out()) {
+-    dbg("pyzor: check timed out after $timeout seconds");
+-    return ();
+-  } elsif ($err) {
+-    chomp $err;
+-    info("pyzor: check failed: $err");
+-    return ();
+-  }
++    if ($timer->timed_out()) {
++      dbg("pyzor: check timed out after $timeout seconds");
++      return ();
++    } elsif ($err) {
++      chomp $err;
++      info("pyzor: check failed: $err");
++      return ();
++    }
+ 
+-  return @resp;
++    return @resp;
++  }
+ }
+ 
+ sub check_tick {
+@@ -569,7 +679,7 @@ sub _check_result {
+   my $wl_min = $conf->{pyzor_welcomelist_min};
+ 
+   my $wl_limit = $count_wl >= $wl_min ?
+-    $count * $conf->{pyzor_welcomelist_factor} : 0;
++  $count * $conf->{pyzor_welcomelist_factor} : 0;
+ 
+   dbg("pyzor: result: COUNT=$count/$count_min WELCOMELIST=$count_wl/$wl_min/%.1f",
+     $wl_limit);
+@@ -606,84 +716,138 @@ sub plugin_report {
+   return if $options->{report}->{options}->{dont_report_to_pyzor};
+   return if !$self->is_pyzor_available();
+ 
+-  # use temporary file: open2() is unreliable due to buffering under spamd
+-  my $tmpf = $options->{report}->create_fulltext_tmpfile($options->{text});
+-  if ($self->pyzor_report($options, $tmpf)) {
+-    $options->{report}->{report_available} = 1;
+-    info("reporter: spam reported to Pyzor");
+-    $options->{report}->{report_return} = 1;
+-  }
+-  else {
+-    info("reporter: could not report spam to Pyzor");
++  if($self->{main}->{conf}->{pyzor_perl}) {
++    if (!$options->{report}->{options}->{dont_report_to_pyzor} && $self->is_pyzor_available()) {
++      if ($self->pyzor_report($options)) {
++        $options->{report}->{report_available} = 1;
++        info("reporter: spam reported to Pyzor");
++        $options->{report}->{report_return} = 1;
++      } else {
++        info("reporter: could not report spam to Pyzor");
++      }
++    }
++  } else {
++    # use temporary file: open2() is unreliable due to buffering under spamd
++    my $tmpf = $options->{report}->create_fulltext_tmpfile($options->{text});
++    if ($self->pyzor_report($options, $tmpf)) {
++      $options->{report}->{report_available} = 1;
++      info("reporter: spam reported to Pyzor");
++      $options->{report}->{report_return} = 1;
++    }
++    else {
++      info("reporter: could not report spam to Pyzor");
++    }
++    $options->{report}->delete_fulltext_tmpfile($tmpf);
+   }
+-  $options->{report}->delete_fulltext_tmpfile($tmpf);
+-
+   return 1;
+ }
+ 
+ sub pyzor_report {
+-  my ($self, $options, $tmpf) = @_;
++  my ( $self, $options, $tmpf ) = @_;
+ 
+-  # note: not really tainted, this came from system configuration file
+-  my $path = untaint_file_path($options->{report}->{conf}->{pyzor_path});
+-  my $opts = untaint_var($options->{report}->{conf}->{pyzor_options}) || '';
++  my $conf = $self->{main}->{conf};
++
++  my $server_port;
++  my @pyzor_hosts;
++  my @pyzor_ports;
++  if(defined $conf->{pyzor_host}) {
++    @pyzor_hosts = @{$conf->{pyzor_host}};
++  }
++  if(defined $conf->{pyzor_port}) {
++    @pyzor_ports = @{$conf->{pyzor_port}};
++  }
++  $pyzor_hosts[0] //= 'public.pyzor.org';
++  $pyzor_ports[0] //= 24441;
+ 
+   my $timeout = $self->{main}->{conf}->{pyzor_timeout};
+ 
+-  $options->{report}->enter_helper_run_mode();
++  if($self->{main}->{conf}->{pyzor_perl}) {
++    my $pms =
++        Mail::SpamAssassin::PerMsgStatus->new($self->{main}, $options->{msg});
++
++    my $cnt = 0;
++    foreach my $server_host ( @pyzor_hosts ) {
++      $server_port = $pyzor_ports[$cnt];
++      $cnt++;
++      my $client = Mail::SpamAssassin::Pyzor::Client->new( 'timeout' => $timeout,
++                                                                           'server_host' => $server_host,
++                                                                           'server_port' => $server_port );
++
++      my $digest = Mail::SpamAssassin::Pyzor::Digest::get( $pms );
++
++      local $@;
++      my $ref = eval { $client->report($digest); };
++      if ($@) {
++        warn("pyzor: report failed: $@");
++        return 0;
++      }
++      elsif ( $ref->{'Code'} ne 200 ) {
++        dbg("pyzor: report failed with invalid code: $ref->{'Code'}: $ref->{'Diag'}");
++        return 0;
++      }
++    }
++  } else {
++    # note: not really tainted, this came from system configuration file
++    my $path = untaint_file_path($options->{report}->{conf}->{pyzor_path});
++    my $opts = untaint_var($options->{report}->{conf}->{pyzor_options}) || '';
+ 
+-  my $timer = Mail::SpamAssassin::Timeout->new({ secs => $timeout });
+-  my $err = $timer->run_and_catch(sub {
++    my $timeout = $self->{main}->{conf}->{pyzor_timeout};
+ 
+-    local $SIG{PIPE} = sub { die "__brokenpipe__ignore__\n" };
++    $options->{report}->enter_helper_run_mode();
+ 
+-    dbg("pyzor: opening pipe: " . join(' ', $path, $opts, "report", "< $tmpf"));
++    my $timer = Mail::SpamAssassin::Timeout->new({ secs => $timeout });
++    my $err = $timer->run_and_catch(sub {
+ 
+-    my $pid = Mail::SpamAssassin::Util::helper_app_pipe_open(*PYZOR,
+-	$tmpf, 1, $path, split(' ', $opts), "report");
+-    $pid or die "$!\n";
++      local $SIG{PIPE} = sub { die "__brokenpipe__ignore__\n" };
+ 
+-    my($inbuf,$nread,$nread_all); $nread_all = 0;
+-    # response is ignored, just check its existence
+-    while ( $nread=read(PYZOR,$inbuf,8192) ) { $nread_all += $nread }
+-    defined $nread  or die "error reading from pipe: $!";
++      dbg("pyzor: opening pipe: " . join(' ', $path, $opts, "report", "< $tmpf"));
+ 
+-    dbg("pyzor: empty response")  if $nread_all < 1;
++      my $pid = Mail::SpamAssassin::Util::helper_app_pipe_open(*PYZOR,
++  	$tmpf, 1, $path, split(' ', $opts), "report");
++      $pid or die "$!\n";
+ 
+-    my $errno = 0;  close PYZOR or $errno = $!;
+-    # closing a pipe also waits for the process executing on the pipe to
+-    # complete, no need to explicitly call waitpid
+-    # my $child_stat = waitpid($pid,0) > 0 ? $? : undef;
+-    if (proc_status_ok($?,$errno, 0)) {
+-      dbg("pyzor: [%s] reporter finished successfully", $pid);
+-    } else {
+-      info("pyzor: [%s] reporter error: %s", $pid, exit_status_str($?,$errno));
+-    }
++      my($inbuf,$nread,$nread_all); $nread_all = 0;
++      # response is ignored, just check its existence
++      while ( $nread=read(PYZOR,$inbuf,8192) ) { $nread_all += $nread }
++      defined $nread  or die "error reading from pipe: $!";
+ 
+-  });
++      dbg("pyzor: empty response")  if $nread_all < 1;
+ 
+-  $options->{report}->leave_helper_run_mode();
++      my $errno = 0;  close PYZOR or $errno = $!;
++      # closing a pipe also waits for the process executing on the pipe to
++      # complete, no need to explicitly call waitpid
++      # my $child_stat = waitpid($pid,0) > 0 ? $? : undef;
++      if (proc_status_ok($?,$errno, 0)) {
++        dbg("pyzor: [%s] reporter finished successfully", $pid);
++      } else {
++        info("pyzor: [%s] reporter error: %s", $pid, exit_status_str($?,$errno));
++      }
+ 
+-  if ($timer->timed_out()) {
+-    dbg("reporter: pyzor report timed out after $timeout seconds");
+-    return 0;
+-  }
++    });
+ 
+-  if ($err) {
+-    chomp $err;
+-    if ($err eq '__brokenpipe__ignore__') {
+-      dbg("reporter: pyzor report failed: broken pipe");
+-    } else {
+-      warn("reporter: pyzor report failed: $err\n");
++    $options->{report}->leave_helper_run_mode();
++
++    if ($timer->timed_out()) {
++      dbg("reporter: pyzor report timed out after $timeout seconds");
++      return 0;
+     }
+-    return 0;
+-  }
+ 
++    if ($err) {
++      chomp $err;
++      if ($err eq '__brokenpipe__ignore__') {
++        dbg("reporter: pyzor report failed: broken pipe");
++      } else {
++        warn("reporter: pyzor report failed: $err\n");
++      }
++      return 0;
++    }
++  }
+   return 1;
+ }
+ 
+ # Version features
+ sub has_fork { 1 }
++sub has_perl { 1 }
+ 
+ 1;
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Razor2.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Razor2.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Razor2.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Razor2.pm	2023-04-30 13:05:28.956663791 +0000
+@@ -32,10 +32,6 @@ input is validated through reputation as
+ 
+ See http://razor.sourceforge.net/ for more information about Razor.
+ 
+-=head1 USER SETTINGS
+-
+-=over 4
+-
+ =cut
+ 
+ package Mail::SpamAssassin::Plugin::Razor2;
+@@ -90,6 +86,10 @@ sub set_config {
+   my ($self, $conf) = @_;
+   my @cmds;
+ 
++=head1 USER SETTINGS
++
++=over 4
++
+ =item use_razor2 (0|1)		(default: 1)
+ 
+ Whether to use Razor2, if it is available.
+@@ -98,11 +98,16 @@ Whether to use Razor2, if it is availabl
+ 
+   push(@cmds, {
+     setting => 'use_razor2',
+-    is_admin => 1,
+     default => 1,
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+   });
+ 
++=back
++
++=head1 ADMINISTRATOR SETTINGS
++
++=over 4
++
+ =item razor_fork (0|1)		(default: 1)
+ 
+ Instead of running Razor2 synchronously, fork separate process for it and
+@@ -118,12 +123,6 @@ throughput. Considered experimental on W
+     type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+   });
+ 
+-=back
+-
+-=head1 ADMINISTRATOR SETTINGS
+-
+-=over 4
+-
+ =item razor_timeout n		(default: 5)
+ 
+ How many seconds you wait for Razor to complete before you go on without
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/SPF.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/SPF.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/SPF.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/SPF.pm	2023-04-30 13:05:28.949997124 +0000
+@@ -171,7 +171,7 @@ by a local or site-specific configuratio
+ 
+ =back
+ 
+-=head1 ADMINISTRATOR OPTIONS
++=head1 ADMINISTRATOR SETTINGS
+ 
+ =over 4
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/SpamCop.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/SpamCop.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/SpamCop.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/SpamCop.pm	2023-05-19 12:09:00.179999613 +0000
+@@ -44,7 +44,6 @@ package Mail::SpamAssassin::Plugin::Spam
+ use Mail::SpamAssassin::Plugin;
+ use Mail::SpamAssassin::Logger;
+ use Mail::SpamAssassin::Util qw(untaint_var);
+-use IO::Socket;
+ use strict;
+ use warnings;
+ # use bytes;
+@@ -81,7 +80,7 @@ sub set_config {
+   my($self, $conf) = @_;
+   my @cmds;
+ 
+-=head1 USER OPTIONS
++=head1 USER SETTINGS
+ 
+ =over 4
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/TextCat.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/TextCat.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/TextCat.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/TextCat.pm	2023-04-30 13:05:28.949997124 +0000
+@@ -99,7 +99,7 @@ sub set_config {
+   my ($self, $conf) = @_;
+   my @cmds;
+ 
+-=head1 USER OPTIONS
++=head1 USER SETTINGS
+ 
+ =over 4
+ 
+@@ -630,6 +630,10 @@ sub check_language {
+     }
+   }
+ 
++  my $rulename = $scan->get_current_eval_rule_name();
++  my $matched_languages = join(' ', @matches);
++  $scan->test_log("Languages detected: $matched_languages", $rulename);
++
+   return 1;
+ }
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/TxRep.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/TxRep.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/TxRep.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/TxRep.pm	2023-05-19 12:09:00.179999613 +0000
+@@ -204,7 +204,6 @@ use warnings;
+ # use bytes;
+ use re 'taint';
+ 
+-use NetAddr::IP 4.000;                          # qw(:upper);
+ use Mail::SpamAssassin::Plugin;
+ use Mail::SpamAssassin::Plugin::Bayes;
+ use Mail::SpamAssassin::Util qw(untaint_var);
+@@ -897,6 +896,48 @@ some testing it could be likely at least
+     }
+   });
+ 
++=item B<txrep_report_details>
++
++  0 | 1 | 2             (default: 0)
++
++Add TxRep details to the rule's description in the message report or summary,
++similar to how RBL rules commonly are showing listed domains.
++
++If enabled (value 1) the identificators (From address bound to originating IP
++address fraction, From address alone, domain name bound to originating IP
++address fraction, originating IP address and HELO if available) used in
++calculating the sender's overall reputation are listed, including the
++originating IP address fraction (according to the mask settings) where
++applicable.
++
++If this option is set to 2, the listed identificators' individual mean
++reputation and count are reported in addition.
++
++Identificators and additional data will only be added to the description on a
++message's initial scan.  Re-processing a previously already scanned message
++will not list the individual idenficators and their respective reputation
++values used originally.
++
++This option is disabled by default for now, due to potential formatting issues
++caused by the number and length of additional description details.
++
++=cut
++
++  push (@cmds, {
++    setting     => 'txrep_report_details',
++    default     => 0,
++    type        => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
++    code        => sub {
++        my ($self, $key, $value, $line) = @_;
++
++        return $Mail::SpamAssassin::Conf::MISSING_REQUIRED_VALUE
++          if ($value eq '');
++        return $Mail::SpamAssassin::Conf::INVALID_VALUE
++          unless ($value =~ /^[012]$/);
++
++        $self->{txrep_report_details} = $value;
++    }
++  });
+ 
+ =back
+ 
+@@ -1240,9 +1281,13 @@ sub check_senders_reputation {
+ 
+   my $autolearn = defined $self->{autolearn};
+   $self->{last_pms} = $self->{autolearn} = undef;
++  $self->{pms} = $pms;
+ 
+   # Cases where we would not be able to use TxRep
+-  return 0 unless ($self->{conf}->{use_txrep});
++  if(not $self->{conf}->{use_txrep}) {
++    dbg("TxRep is disabled, quitting");
++    return 0;
++  }
+   if ($self->{conf}->{use_auto_welcomelist}) {
+     warn("TxRep: cannot run when Auto-Welcomelist is enabled. Please disable it!\n");
+     return 0;
+@@ -1294,7 +1339,7 @@ sub check_senders_reputation {
+   if ($self->{conf}->{txrep_track_messages}) {
+     if ($msg_id) {
+         my $msg_rep = $self->check_reputations($pms, 'MSG_ID', $msg_id, undef, $date, undef);
+-        if (defined $msg_rep && $self->count()) {
++        if (defined $msg_rep && ($self->count() > 0)) {
+             if (defined $self->{learning} && !defined $self->{forgetting}) {
+                 # already learned, forget only if already learned (count>1), and relearn
+                 # when only scanned (count=1), go ahead with normal rep scan
+@@ -1312,6 +1357,9 @@ sub check_senders_reputation {
+                     $pms->got_hit("TXREP", "TXREP: ", ruletype => 'eval', score => sprintf("%0.3f", $delta));
+                 }
+                 dbg("TxRep: message %s already scanned, using old data; post-TxRep score: %0.3f", $msg_id, $pms->{score} || 'undef');
++                if (!defined $self->{txKeepStoreTied}) {
++                  $self->finish();
++                }
+                 return 0;
+             }
+         }       # no stored reputation found, go ahead with normal rep scan
+@@ -1345,9 +1393,16 @@ sub check_senders_reputation {
+   );
+ 
+   my $ip = $origip;
++  my $spf_domain;
+   if ($signedby) {
+     $ip       = undef;
+     $domain   = $signedby;
++  } elsif ($pms->{spf_pass} && $self->{conf}->{txrep_spf} && defined $pms->{spf_sender}) {
++    $ip       = undef;
++    $spf_domain = $pms->{spf_sender};
++    $spf_domain =~ s/^.+@//;
++    $signedby   = 'spf-'.$spf_domain;
++    dbg("TxRep: email signed by spf domain $spf_domain");
+   } elsif ($pms->{spf_pass} && $self->{conf}->{txrep_spf}) {
+     $ip       = undef;
+     $signedby = 'spf';
+@@ -1463,7 +1518,7 @@ sub check_reputation {
+     # TEMPLATE TAGS should match [A-Z] in their name
+     # and "_" must be avoided
+     $tag_id =~ s/_//g;
+-    if (defined $found && $self->count()) {
++    if (defined $found && ($self->count() > 0)) {
+         $meanrep = $self->total() / $self->count();
+     }
+     if ($self->{learning} && defined $msgscore) {
+@@ -1479,13 +1534,28 @@ sub check_reputation {
+         );
+     } else {
+         $self->{totalweight} += $weight;
+-        if ($key eq 'MSG_ID' && $self->count() > 0) {
++        if ($key eq 'MSG_ID' && ($self->count() > 0)) {
+             $delta = $self->total() / $self->count();
+ 	    $pms->set_tag('TXREP'.$tag_id,              sprintf("%2.1f", $delta));
+         } elsif (defined $self->total()) {
+             #Bug 7164 - $msgscore undefined
+-            if (defined $msgscore) {
+-              $delta = ($self->total() + $msgscore) / (1 + $self->count()) - $msgscore;
++            # in some cases we can have negative number
++            # even if both total and $msgscore are positive numbers
++            my $deltacheck;
++            my $skipmsgscore = 0;
++            if(defined $msgscore) {
++              $deltacheck = ($self->total() + $msgscore) / (1 + $self->count()) - $msgscore;
++              if(($self->total() > 0) && ($msgscore > 0) && ($deltacheck < 0)) {
++                $skipmsgscore = 1;
++              } elsif(($self->total() < 0) && ($msgscore < 0) && ($deltacheck > 0)) {
++                $skipmsgscore = 1;
++              }
++            }
++            if($skipmsgscore) {
++              dbg("TxRep: skipping msg score $msgscore when calculating delta");
++            }
++            if (defined $msgscore and not $skipmsgscore) {
++              $delta = $deltacheck;
+             } else {
+               $delta = ($self->total()) / (1 + $self->count());
+             }
+@@ -1506,6 +1576,26 @@ sub check_reputation {
+             $delta              || 0,
+             $id                 || 'none'
+         );
++
++        if ($self->{conf}->{txrep_report_details}
++            && defined $id && defined $meanrep && $tag_id ne "MSGID") {
++
++            my $log = sprintf("%s: %s",
++                              $tag_id,
++                              (defined $ip) ? $id."|".$self->ip_to_awl_key($ip) : $id
++                );
++
++            if ($self->{conf}->{txrep_report_details} == 2) {
++                $log .= sprintf(", rep: %.2f, count: %d",
++                                $meanrep,
++                                $self->count() || 0
++                    );
++            }
++
++            $pms->test_log($log, "TXREP");
++            # dbg ("TxRep: test_log: $log");
++        }
++
+     }
+     $timer = $self->{main}->time_method('update_txrep_'.lc($key));
+     if (defined $msgscore) {
+@@ -1538,7 +1628,7 @@ sub check_reputation {
+ #--------------------------------------------------------------------------
+ 
+ ###########################################################################
+-sub count {my $self=shift;  return (defined $self->{checker})? $self->{entry}->{msgcount}    : undef;}
++sub count {my $self=shift;  return (defined $self->{checker})? $self->{entry}->{msgcount} : 0;}
+ sub total {my $self=shift;  return (defined $self->{checker})? $self->{entry}->{totscore} : undef;}
+ ###########################################################################
+ 
+@@ -1577,7 +1667,7 @@ sub add_score {
+   $self->{entry}->{msgcount} ||= 0;
+ 
+   # performing the dilution aging correction
+-  if (defined $self->total() && defined $self->count() && defined $self->{txrep_dilution_factor}) {
++  if (defined $self->total() && defined $self->count() && $self->count() > 0 && defined $self->{txrep_dilution_factor}) {
+     my $diluted_total =
+         ($self->count() + 1) *
+         ($self->{txrep_dilution_factor} * $self->total() + $score) /
+@@ -1802,6 +1892,12 @@ sub pack_addr {
+ 
+   if ( defined $origip) {$origip = $self->ip_to_awl_key($origip);}
+   if (!defined $origip) {$origip = 'none';}
++  if ( $self->{conf}->{txrep_welcomelist_out} &&
++    defined $self->{pms}->{relays_internal} &&  @{$self->{pms}->{relays_internal}} &&
++    (!defined $self->{pms}->{relays_external} || !@{$self->{pms}->{relays_external}})
++    and $addr =~ /(?:[^\s\@]+)\@(?:[^\s\@]+)/) {
++      $origip = 'WELCOMELIST_OUT';
++  }
+   return $addr . "|ip=" . $origip;
+ }
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/URIDNSBL.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/URIDNSBL.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/URIDNSBL.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/URIDNSBL.pm	2023-04-21 03:47:41.093332032 +0000
+@@ -419,7 +419,9 @@ sub check_dnsbl {
+   # 3: !a_empty
+   # 4: parsed
+   # 5: a_empty
+-  while (my($uri, $info) = each %{$uris}) {
++  my %huris = %{$uris};
++  foreach my $uri (keys %huris) {
++    my $info = $huris{$uri};
+     # we want to skip mailto: uris
+     next if ($uri =~ /^mailto:/i);
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/URIDetail.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/URIDetail.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/URIDetail.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/URIDetail.pm	2023-06-08 07:46:14.499999683 +0000
+@@ -156,14 +156,13 @@ sub set_config {
+ sub check_uri_detail {
+   my ($self, $permsg) = @_;
+ 
++  my $test = $permsg->{current_rule_name}; 
++  my $rule = $permsg->{conf}->{uri_detail}->{$test};
++
+   my %uri_detail = %{ $permsg->get_uri_detail_list() };
+ 
+   while (my ($raw, $info) = each %uri_detail) {
+-    my $test = $permsg->{current_rule_name}; 
+-
+-    dbg("uri: running $test\n");
+-
+-    my $rule = $permsg->{conf}->{uri_detail}->{$test};
++    dbg("uri: running uri_detail $test: $raw");
+ 
+     if (exists $rule->{raw}) {
+       my($op,$patt) = @{$rule->{raw}};
+@@ -235,13 +234,7 @@ sub check_uri_detail {
+       dbg("uri: host matched: '%s' %s /%s/", $match,$op,$patt);
+     }
+ 
+-    if (would_log('dbg', 'rules') > 1) {
+-      dbg("uri: criteria for $test met");
+-    }
+-    
+-    # reset hash
+-    keys %uri_detail;
+-
++    dbg("uri: all criteria for $test met - HIT");
+     return 1;
+   }
+ 
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/WLBLEval.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/WLBLEval.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/WLBLEval.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/WLBLEval.pm	2023-05-19 12:09:00.183332946 +0000
+@@ -22,8 +22,6 @@ use warnings;
+ # use bytes;
+ use re 'taint';
+ 
+-use NetAddr::IP 4.000;
+-
+ use Mail::SpamAssassin::Plugin;
+ use Mail::SpamAssassin::Logger;
+ 
+Only in Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin: Pyzor
+Only in Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin: Pyzor.pm
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/SQLBasedAddrList.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/SQLBasedAddrList.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/SQLBasedAddrList.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/SQLBasedAddrList.pm	2023-06-10 21:55:00.809999493 +0000
+@@ -201,7 +201,37 @@ sub get_addr_entry {
+ 
+   return $entry  unless $email ne '' && (defined $ip || defined $signedby);
+ 
+-  my $sql = "SELECT msgcount, totscore FROM $self->{tablename} " .
++  my $sql;
++  my $sth;
++  my $rc;
++  if($self->{main}->{conf}->{txrep_welcomelist_out} and ($email =~ /(?:[^\s\@]+)\@(?:[^\s\@]+)/)) {
++    $sql = "SELECT msgcount, totscore FROM $self->{tablename} " .
++            "WHERE username = ? AND email = ? AND ip = 'WELCOMELIST_OUT'";
++    $sth = $self->{dbh}->prepare($sql);
++    unless (defined($sth)) {
++      info("auto-welcomelist: sql-based get_addr_entry %s: SQL prepare error: %s",
++         "$self->{_username}|$ip", $self->{dbh}->errstr);
++    }
++    $rc = $sth->execute($self->{_username}, $email);
++    my $cnt = 0;
++    my $aryref;
++    # how to combine data if there are several entries (like signed by
++    # an author domain and by a remailer)?  for now just take an average
++    while ( defined($aryref = $sth->fetchrow_arrayref()) ) {
++      if (defined $entry->{msgcount} && defined $aryref->[1]) {
++        $entry->{msgcount} = $aryref->[0];
++        $entry->{totscore} = $aryref->[1];
++      }
++      $entry->{exists_p} = 1;
++      $cnt++;
++    }
++    $sth->finish();
++    return $entry if $rc;
++  }
++  undef $sth;
++  undef $rc;
++
++  $sql = "SELECT msgcount, totscore FROM $self->{tablename} " .
+             "WHERE username = ? AND email = ?";
+   my @args = ( $email );
+   if (!$self->{_with_awl_signer}) {
+@@ -221,7 +251,7 @@ sub get_addr_entry {
+   }
+   $sql .= " ORDER BY last_hit";
+ 
+-  my $sth = $self->{dbh}->prepare($sql);
++  $sth = $self->{dbh}->prepare($sql);
+ 
+   unless (defined($sth)) {
+     info("auto-welcomelist: sql-based get_addr_entry %s: SQL prepare error: %s",
+@@ -229,7 +259,7 @@ sub get_addr_entry {
+     return $entry;
+   }
+ 
+-  my $rc = $sth->execute($self->{_username}, @args);
++  $rc = $sth->execute($self->{_username}, @args);
+ 
+   if (!$rc) { # there was an error, but try to go on
+     info("auto-welcomelist: sql-based get_addr_entry %s: SQL error: %s",
+@@ -298,7 +328,7 @@ sub add_score {
+ 
+   { my @fields = qw(username email ip msgcount totscore);
+     my @signedby;
+-    if ($self->{_with_awl_signer}) {
++    if ($self->{_with_awl_signer} or (defined $signedby and $signedby =~ /^spf\-/) and not ($self->{main}->{conf}->{txrep_welcomelist_out} and ($email =~ /(?:[^\s\@]+)\@(?:[^\s\@]+)/)) ) {
+       push(@fields, 'signedby');
+       @signedby = !defined $signedby ? () : split(' ', lc $signedby);
+       @signedby = ( '' )  if !@signedby;
+@@ -307,7 +337,7 @@ sub add_score {
+     my $sql = sprintf("INSERT INTO %s (%s) VALUES (%s)", $self->{tablename},
+                       join(',', @fields),  join(',', ('?') x @fields));
+     if ($self->{dsn} =~ /^DBI:(?:pg|SQLite)/i) {
+-       $sql .= " ON CONFLICT (username, email, signedby, ip) DO UPDATE set msgcount = ?, totscore = totscore + ?";
++       $sql .= " ON CONFLICT (username, email, signedby, ip) DO UPDATE set msgcount = ?, totscore = " . $self->{tablename} . ".totscore + ?";
+     } elsif ($self->{dsn} =~ /^DBI:(?:mysql|MariaDB)/i) {
+        $sql .= " ON DUPLICATE KEY UPDATE msgcount = ?, totscore = totscore + ?";
+     }
+@@ -320,7 +350,7 @@ sub add_score {
+       return $entry;
+     }
+ 
+-    if (!$self->{_with_awl_signer}) {
++    if (!$self->{_with_awl_signer} && !(defined $signedby and $signedby =~ /^spf\-/)) {
+       my $rc;
+       if ($self->{dsn} =~ /^DBI:(?:pg|SQLite|mysql|MariaDB)/i) {
+           $rc = $sth->execute(@args, $entry->{msgcount}, $score);
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Util.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Util.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Util.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Util.pm	2023-05-31 18:01:42.139999513 +0000
+@@ -60,7 +60,7 @@ our @EXPORT_OK = qw(&local_tz &base64_de
+                   &parse_rfc822_date &idn_to_ascii &is_valid_utf_8
+                   &get_user_groups &compile_regexp &qr_to_string
+                   &is_fqdn_valid &parse_header_addresses &force_die
+-                  &domain_to_search_list);
++                  &domain_to_search_list &get_part_details);
+ 
+ our $AM_TAINTED;
+ 
+@@ -75,10 +75,10 @@ use Fcntl;
+ use Errno qw(ENOENT EACCES EEXIST);
+ use POSIX qw(:sys_wait_h WIFEXITED WIFSIGNALED WIFSTOPPED WEXITSTATUS
+              WTERMSIG WSTOPSIG);
++use NetAddr::IP 4.010;
+ 
+ ###########################################################################
+ 
+-use constant HAS_NETADDR_IP => eval { require NetAddr::IP; };
+ use constant HAS_MIME_BASE64 => eval { require MIME::Base64; };
+ use constant RUNNING_ON_WINDOWS => ($^O =~ /^(?:mswin|dos|os2)/i);
+ 
+@@ -1190,8 +1190,6 @@ sub reverse_ip_address {
+     $revip = "$4.$3.$2.$1";
+   } elsif (index($ip, ':') == -1 || $ip !~ /^[0-9a-fA-F:.]{2,}\z/) {  # triage
+     # obviously unrecognized syntax
+-  } elsif (!HAS_NETADDR_IP || !NetAddr::IP->can('full6')) {  # since NetAddr::IP 4.010
+-    info("util: sufficiently new NetAddr::IP not found, IPv6 not supported");
+   } else {
+     # looks like an IPv6 address, let NetAddr::IP check the details
+     my $ip_obj = NetAddr::IP->new6($ip);
+@@ -2557,6 +2555,82 @@ sub parse_header_addresses {
+   return @results;
+ }
+ 
++sub get_part_details {
++    my ($pms, $part, $prefer_contentdisposition) = @_;
++    #https://en.wikipedia.org/wiki/MIME#Content-Disposition
++    #https://github.com/mikel/mail/pull/464
++
++    my $ctt = $part->get_header('content-type');
++    return undef unless defined $ctt; ## no critic (ProhibitExplicitReturnUndef)
++
++    my $cte = lc($part->get_header('content-transfer-encoding') || '');
++    return undef unless ($cte =~ /^(?:base64|quoted\-printable)$/); ## no critic (ProhibitExplicitReturnUndef)
++
++    $ctt = _decode_part_header($part, $ctt || '');
++
++    my $name = '';
++    my $cttname = '';
++    my $ctdname = '';
++
++    if ($ctt =~ m/name\s*=\s*["']?([^"';]*)/is) {
++      $cttname = $1;
++      $cttname =~ s/\s+$//;
++    }
++
++    my $ctd = $part->get_header('content-disposition');
++    $ctd = _decode_part_header($part, $ctd || '');
++
++    if ($ctd =~ m/filename\s*=\s*["']?([^"';]*)/is) {
++      $ctdname = $1;
++      $ctdname =~ s/\s+$//;
++    }
++
++    if (lc $ctdname eq lc $cttname) {
++      $name = $ctdname;
++    } elsif ($ctdname eq '') {
++      $name = $cttname;
++    } elsif ($cttname eq '') {
++      $name = $ctdname;
++    } else {
++      if ((defined $ctdname) and $prefer_contentdisposition) {
++        $name = $ctdname;
++      } else {
++        $name = $cttname;
++      }
++    }
++
++    return $ctt, $ctd, $cte, $name;
++}
++
++sub _decode_part_header {
++  my($part, $header_field_body) = @_;
++
++  return '' unless defined $header_field_body && $header_field_body ne '';
++
++  # deal with folding and cream the newlines and such
++  $header_field_body =~ s/\n[ \t]+/\n /g;
++  $header_field_body =~ s/\015?\012//gs;
++
++  local($1,$2,$3);
++
++  # Multiple encoded sections must ignore the interim whitespace.
++  # To avoid possible FPs with (\s+(?==\?))?, look for the whole RE
++  # separated by whitespace.
++  1 while $header_field_body =~
++            s{ ( = \? [A-Za-z0-9_-]+ \? [bqBQ] \? [^?]* \? = ) \s+
++               ( = \? [A-Za-z0-9_-]+ \? [bqBQ] \? [^?]* \? = ) }
++             {$1$2}xsg;
++
++  # transcode properly encoded RFC 2047 substrings into UTF-8 octets,
++  # leave everything else unchanged as it is supposed to be UTF-8 (RFC 6532)
++  # or plain US-ASCII
++  $header_field_body =~
++    s{ (?: = \? ([A-Za-z0-9_-]+) \? ([bqBQ]) \? ([^?]*) \? = ) }
++     { $part->__decode_header($1, uc($2), $3) }xsge;
++
++  return $header_field_body;
++}
++
+ # Check some basic parsing mistakes
+ sub _valid_parsed_address {
+   return 0 if !defined $_[0];
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin.pm	2022-12-14 06:03:20.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin.pm	2023-04-04 18:20:21.513333281 +0000
+@@ -88,8 +88,8 @@ use Cwd;
+ use Config;
+ 
+ our $VERSION = "4.000000";      # update after release (same format as perl $])
+-#our $IS_DEVEL_BUILD = 1;        # 1 for devel build 
+-our $IS_DEVEL_BUILD = 0;        # 0 for release versions including rc & pre releases
++our $IS_DEVEL_BUILD = 1;        # 1 for devel build 
++#our $IS_DEVEL_BUILD = 0;        # 0 for release versions including rc & pre releases
+ 
+ # Used during the prerelease/release-candidate part of the official release
+ # process. If you hacked up your SA, you should add a version_tag to your .cf
+@@ -100,18 +100,18 @@ our @ISA = qw();
+ 
+ # SUB_VERSION is now just <yyyy>-<mm>-<dd>
+ our $SUB_VERSION = 'svnunknown';
+-if ('$LastChangedDate: 2022-12-14 02:29:30 +0000 (Wed, 14 Dec 2022) $' =~ ':') {
+-  # Subversion keyword "$LastChangedDate: 2022-12-14 02:29:30 +0000 (Wed, 14 Dec 2022) $" has been successfully expanded.
++if ('$LastChangedDate: 2022-12-17 09:18:28 +0000 (Sat, 17 Dec 2022) $' =~ ':') {
++  # Subversion keyword "$LastChangedDate: 2022-12-17 09:18:28 +0000 (Sat, 17 Dec 2022) $" has been successfully expanded.
+   # Doesn't happen with automated launchpad builds:
+   # https://bugs.launchpad.net/launchpad/+bug/780916
+-  $SUB_VERSION = (split(/\s+/,'$LastChangedDate: 2022-12-14 02:29:30 +0000 (Wed, 14 Dec 2022) $ updated by SVN'))[1];
++  $SUB_VERSION = (split(/\s+/,'$LastChangedDate: 2022-12-17 09:18:28 +0000 (Sat, 17 Dec 2022) $ updated by SVN'))[1];
+ }
+ 
+ 
+ if (defined $IS_DEVEL_BUILD && $IS_DEVEL_BUILD) {
+-  if ('$LastChangedRevision: 1905971 $' =~ ':') {
+-    # Subversion keyword "$LastChangedRevision: 1905971 $" has been successfully expanded.
+-    push(@EXTRA_VERSION, ('r' . qw{$LastChangedRevision: 1905971 $ updated by SVN}[1]));
++  if ('$LastChangedRevision: 1906050 $' =~ ':') {
++    # Subversion keyword "$LastChangedRevision: 1906050 $" has been successfully expanded.
++    push(@EXTRA_VERSION, ('r' . qw{$LastChangedRevision: 1906050 $ updated by SVN}[1]));
+   } else {
+     push(@EXTRA_VERSION, ('r' . 'svnunknown'));
+   }
+diff -urp Mail-SpamAssassin-4.0.0/lib/spamassassin-run.pod Mail-SpamAssassin-trunk/lib/spamassassin-run.pod
+--- Mail-SpamAssassin-4.0.0/lib/spamassassin-run.pod	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/spamassassin-run.pod	2023-05-11 13:15:01.493332465 +0000
+@@ -59,6 +59,8 @@ Options:
+  --add-addr-to-welcomelist=addr    Add addr to persistent address welcomelist
+  --add-addr-to-blocklist=addr      Add addr to persistent address blocklist
+  --remove-addr-from-welcomelist=addr Remove addr from persistent address list
++ -u username, --username=username  Override username taken from the runtime
++                                   environment, used with SQL
+  -4 --ipv4only, --ipv4-only, --ipv4 Use IPv4, disable use of IPv6 for DNS etc.
+  -6                                Use IPv6, disable use of IPv4 where possible
+  --progress                        Print progress bar
+@@ -219,6 +221,17 @@ Remove the named email address from a pe
+ you must be running C<spamassassin> or C<spamd> with a persistent address
+ list plugin enabled for this to work.
+ 
++=item B<-u> I<username>, B<--username>=I<username>
++
++If specified this username will override the username taken from the runtime
++environment.  You can use this option to specify users in a virtual user
++configuration when using SQL as the Bayes backend.
++
++NOTE: This option will not change to the given I<username>, it will only attempt
++to act on behalf of that user.  Because of this you will need to have proper
++permissions to be able to change files owned by I<username>.  In the case of SQL
++this generally is not a problem.
++
+ =item B< --ipv4only>, B<--ipv4-only>, B<--ipv4>
+ 
+ Do not use IPv6 for DNS tests. Normally, SpamAssassin will try to detect if
