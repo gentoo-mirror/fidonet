@@ -1371,15 +1371,115 @@ diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/PDFInfo.pm Mail-S
          dbg("pdfinfo: found URI: $location");
 diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Phishing.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Phishing.pm
 --- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Phishing.pm	2022-12-14 06:03:20.000000000 +0000
-+++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Phishing.pm	2023-07-19 23:37:12.986666008 +0000
-@@ -255,6 +255,7 @@ sub _read_configfile {
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Phishing.pm	2023-07-25 20:57:13.369999506 +0000
+@@ -31,7 +31,6 @@ Mail::SpamAssassin::Plugin::Phishing - c
+   ifplugin Mail::SpamAssassin::Plugin::Phishing
+     phishing_openphish_feed /etc/mail/spamassassin/openphish-feed.txt
+     phishing_phishtank_feed /etc/mail/spamassassin/phishtank-feed.csv
+-    phishing_phishstats_feed /etc/mail/spamassassin/phishstats-feed.csv
+     body     URI_PHISHING      eval:check_phishing()
+     describe URI_PHISHING      Url match phishing in feed
+   endif
+@@ -48,9 +47,6 @@ The PhishTank free feed is updated every
+ http://data.phishtank.com/data/online-valid.csv.
+ To avoid download limits a registration is required.
  
- 	# CSV: Date,Score,URL,IP
-         @phstats_ln = split(/,/, $_);
-+        next if (not defined $phstats_ln[1] or not defined $phstats_ln[2]);
-         $phstats_ln[1] =~ s/\"//g;
-         $phstats_ln[2] =~ s/\"//g;
- 	if ( $conf->{phishing_phishstats_minscore} >= $phstats_ln[1] ) {
+-The PhishStats feed is updated every 90 minutes and can be downloaded from
+-https://phishstats.info/phish_score.csv.
+-
+ =cut
+ 
+ package Mail::SpamAssassin::Plugin::Phishing;
+@@ -144,40 +140,6 @@ skipped.
+ =back
+ 
+ =cut
+-    push(@cmds, {
+-        setting => 'phishing_phishstats_feed',
+-        is_admin => 1,
+-        type => $Mail::SpamAssassin::Conf::CONF_TYPE_STRING,
+-        }
+-    );
+-
+-=over 4
+-
+-=item phishing_phishstats_feed
+-
+-Absolute path of the downloaded PhishStats datafeed.
+-
+-=back
+-
+-=cut
+-    push(@cmds, {
+-        setting => 'phishing_phishstats_minscore',
+-        is_admin => 1,
+-        default => 6,
+-        type => $Mail::SpamAssassin::Conf::CONF_TYPE_NUMERIC,
+-        }
+-    );
+-
+-=over 4
+-
+-=item phishing_phishstats_minscore ( 0 - 10 ) (default: 6)
+-
+-Minimum score to take into consideration for phishing uris downloaded
+-from PhishStats datafeed.
+-
+-=back
+-
+-=cut
+     $conf->{parser}->register_commands(\@cmds);
+ }
+ 
+@@ -189,7 +151,7 @@ sub finish_parsing_end {
+ sub _read_configfile {
+   my ($self) = @_;
+   my $conf = $self->{main}->{registryboundaries}->{conf};
+-  my (@phtank_ln, @phstats_ln);
++  my @phtank_ln;
+   my $stripped_cluri;
+ 
+   local *F;
+@@ -238,39 +200,6 @@ sub _read_configfile {
+         }
+     }
+ 
+-    defined $_ || $!==0  or
+-      $!==EBADF ? dbg("PHISHING: error reading config file: $!")
+-                : die "error reading config file: $!";
+-    close(F) or die "error closing config file: $!";
+-  }
+-
+-  if ( defined($conf->{phishing_phishstats_feed}) && (-f $conf->{phishing_phishstats_feed} ) ) {
+-    open(F, '<', $conf->{phishing_phishstats_feed});
+-    for ($!=0; <F>; $!=0) {
+-        #skip first line
+-        next if ( $. eq 1);
+-        chomp;
+-        #lines that start with pound are comments
+-        next if(/^\s*\#/);
+-
+-	# CSV: Date,Score,URL,IP
+-        @phstats_ln = split(/,/, $_);
+-        $phstats_ln[1] =~ s/\"//g;
+-        $phstats_ln[2] =~ s/\"//g;
+-	if ( $conf->{phishing_phishstats_minscore} >= $phstats_ln[1] ) {
+-	  next;
+-	}
+-        $stripped_cluri = $phstats_ln[2];
+-	if ( $conf->{phishing_uri_noparam} eq 1 ) {
+-          $stripped_cluri =~ s/\?.*//;
+-	}
+-        my $phishdomain = $self->{main}->{registryboundaries}->uri_to_domain($phstats_ln[2]);
+-        if ( defined $phishdomain ) {
+-          push @{$self->{PHISHING}->{$stripped_cluri}->{phishdomain}}, $phishdomain;
+-          push @{$self->{PHISHING}->{$stripped_cluri}->{phishinfo}->{$phishdomain}}, "PhishStats";
+-        }
+-    }
+-
+     defined $_ || $!==0  or
+       $!==EBADF ? dbg("PHISHING: error reading config file: $!")
+                 : die "error reading config file: $!";
 diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Pyzor.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Pyzor.pm
 --- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Plugin/Pyzor.pm	2022-12-14 06:03:20.000000000 +0000
 +++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Plugin/Pyzor.pm	2023-07-16 19:19:11.099999662 +0000
