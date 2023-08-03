@@ -113,6 +113,40 @@ diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/DnsResolver.pm Mail-Spam
      }
    }
  
+diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/HTML.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/HTML.pm
+--- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/HTML.pm	2022-12-14 06:03:21.000000000 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/HTML.pm	2023-08-03 18:30:01.629999987 +0000
+@@ -349,12 +349,17 @@ sub push_uri {
+   my ($self, $type, $uri) = @_;
+ 
+   $uri = $self->canon_uri($uri);
++  return if $uri eq '';
+   utf8::encode($uri) if $self->{SA_encode_results};
+ 
+-  my $target = target_uri($self->{base_href} || "", $uri);
+-
+-  # skip things like <iframe src="" ...>
+-  $self->{uri}->{$uri}->{types}->{$type} = 1  if $uri ne '';
++  if ($uri =~ /^(?:data|mailto|file|cid|tel):/i) {
++    # No target handling required
++    $self->{uri}->{$uri}->{types}->{$type} = 1;
++  } else {
++    my $target = target_uri($self->{base_href} || "", $uri);
++    # skip things like <iframe src="" ...>
++    $self->{uri}->{$target}->{types}->{$type} = 1  if $target ne '';
++  }
+ }
+ 
+ sub canon_uri {
+@@ -1255,7 +1260,7 @@ sub target_uri {
+       $result .= "ftp:";
+     }
+   }
+-  if ($t{authority}) {
++  if (defined $t{authority}) {
+     $result .= "//" . $t{authority};
+   }
+   $result .= $t{path};
 diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Logger.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Logger.pm
 --- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/Logger.pm	2022-12-14 06:03:21.000000000 +0000
 +++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/Logger.pm	2023-06-08 07:46:14.503333016 +0000
