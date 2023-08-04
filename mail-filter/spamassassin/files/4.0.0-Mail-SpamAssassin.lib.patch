@@ -115,7 +115,7 @@ diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/DnsResolver.pm Mail-Spam
  
 diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/HTML.pm Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/HTML.pm
 --- Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/HTML.pm	2022-12-14 06:03:21.000000000 +0000
-+++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/HTML.pm	2023-08-03 18:30:01.629999987 +0000
++++ Mail-SpamAssassin-trunk/lib/Mail/SpamAssassin/HTML.pm	2023-08-04 22:05:26.713333107 +0000
 @@ -349,12 +349,17 @@ sub push_uri {
    my ($self, $type, $uri) = @_;
  
@@ -138,7 +138,28 @@ diff -urp Mail-SpamAssassin-4.0.0/lib/Mail/SpamAssassin/HTML.pm Mail-SpamAssassi
  }
  
  sub canon_uri {
-@@ -1255,7 +1260,7 @@ sub target_uri {
+@@ -535,6 +540,9 @@ sub text_style {
+ 	  if (/^\s*(background-)?color:\s*(.+?)\s*$/i) {
+ 	    my $whcolor = $1 ? 'bgcolor' : 'fgcolor';
+ 	    my $value = lc $2;
++	    # prevent parsing of the valid CSS3 property value as
++	    # 'invalid color' (Bug 7892)
++	    $value =~ s/\s+!important$//;
+ 
+ 	    if (index($value, 'rgb') >= 0) {
+ 	      $value =~ tr/0-9,//cd;
+@@ -547,10 +555,6 @@ sub text_style {
+               # do nothing, just prevent parsing of the valid
+               # CSS3 property value as 'invalid color' (Bug 7778)
+             }
+-            elsif ($value eq '!important') {
+-              # do nothing, just prevent parsing of the valid
+-              # CSS3 property value as 'invalid color' (Bug 7892)
+-            }
+ 	    else {
+ 	      $new{$whcolor} = name_to_rgb($value);
+ 	    }
+@@ -1255,7 +1259,7 @@ sub target_uri {
        $result .= "ftp:";
      }
    }
