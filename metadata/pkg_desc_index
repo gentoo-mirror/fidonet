@@ -4,15 +4,4 @@ acct-user/fuglu 0: User for fuglu
 acct-user/wforce 0: User for net-analyzer/weakforced
 mail-filter/spamassassin 4.0.0-r2: An extensible mail filter which can identify and tag spam
 net-analyzer/weakforced 2.8.0: Anti-Abuse for servers at authentication time
-net-fido/binkd 1.1: Binkd daemon for ftn over ip
-net-fido/husky-areafix 9999: FTN husky areafix library
-net-fido/husky-fidoconf 9999: FTN husky fidoconf library
-net-fido/husky-hpt 9999: FTN husky hpt library
-net-fido/husky-hptzip 9999: FTN husky hptzip library
-net-fido/husky-htick 9999: FTN husky htick library
-net-fido/husky-huskylib 9999: FTN husky huskylib library
-net-fido/husky-msged 9999: FTN husky msged library
-net-fido/husky-nltools 9999: FTN husky nltools library
-net-fido/husky-smapi 9999: FTN husky smapi library
-net-fido/husky-sqpack 9999: FTN husky sqpack library
 virtual/spamassassin-meta 0-r1 1-r1: Virtual for optional spamassassin perl modules
