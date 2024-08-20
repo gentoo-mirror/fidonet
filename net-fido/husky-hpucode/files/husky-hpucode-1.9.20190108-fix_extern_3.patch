@@ -1,0 +1,11 @@
+--- a/src/uuefile.c	2019-01-08 16:48:33.000000000 +0100
++++ b/src/uuefile.c	2024-07-03 21:53:32.598843777 +0200
+@@ -29,6 +29,8 @@
+ #include <sys/stat.h>
+ #include <huskylib/huskylib.h>
+ 
++XMSG     xmsg;
++dword    currMsgUid;
+ 
+ static char *invalidExt[] = {"*.mo?", "*.tu?", "*.we?", "*.th?", "*.fr?", 
+                                    "*.sa?", "*.su?", "*.pkt", "*.tic"};

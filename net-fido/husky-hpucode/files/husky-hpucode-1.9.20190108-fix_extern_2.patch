@@ -1,0 +1,16 @@
+--- a/src/uuecode.c	2019-01-08 16:48:33.000000000 +0100
++++ b/src/uuecode.c	2024-07-03 21:51:39.678233764 +0200
+@@ -55,6 +55,13 @@
+ char *versionStr;
+ int  nDelMsg, nCutMsg, nAllAreas;
+ 
++s_fidoconfig *config;
++s_area   *currArea;
++tree *UUEFileTree;
++DelCutStruct*   toBeDeleted;
++dword    nMaxDeleted;
++int      lock_fd;
++
+ typedef struct {
+     int   Negative;
+     char* Mask;

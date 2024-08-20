@@ -1,0 +1,38 @@
+--- a/Makefile	2024-07-03 22:42:55.272002123 +0200
++++ b/Makefile	2024-07-03 22:46:23.454988062 +0200
+@@ -59,15 +59,15 @@
+ docs: info html
+ 
+ ifdef INFODIR
+-  all: hpucode info hpucode.1.gz
++  all: hpucode info
+ ifdef HTMLDIR
+-  all: hpucode docs hpucode.1.gz
++  all: hpucode docs
+ endif
+ else
+ ifdef HTMLDIR
+-  all: hpucode html hpucode.1.gz
++  all: hpucode html
+ else
+-  all: hpucode hpucode.1.gz
++  all: hpucode
+ endif
+ endif
+         
+@@ -84,7 +84,7 @@
+ endif
+ ifdef MANDIR
+ 	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(MANDIR)$(DIRSEP)man1
+-	$(INSTALL) $(IMOPT) hpucode.1.gz $(DESTDIR)$(MANDIR)$(DIRSEP)man1
++	$(INSTALL) $(IMOPT) man/hpucode.1 $(DESTDIR)$(MANDIR)$(DIRSEP)man1
+ endif
+ 
+ uninstall:
+@@ -96,5 +96,5 @@
+ 	$(RM) $(RMOPT) $(HTMLDIR)$(DIRSEP)hpucode.html
+ endif
+ ifdef MANDIR
+-	$(RM) $(RMOPT) $(MANDIR)$(DIRSEP)man1$(DIRSEP)hpucode.1.gz
++	$(RM) $(RMOPT) $(MANDIR)$(DIRSEP)man1$(DIRSEP)hpucode.1
+ endif
