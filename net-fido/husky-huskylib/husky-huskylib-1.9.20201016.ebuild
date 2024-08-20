@@ -21,7 +21,6 @@ HOMEPAGE="https://huskyproject.github.io/"
 LICENSE="LGPL-2.1"
 SLOT="0"
 IUSE=""
-RESTRICT="mirror"
 
 DEPEND=""
 RDEPEND="${DEPEND}"
