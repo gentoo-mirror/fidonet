@@ -1,0 +1,36 @@
+--- a/h/uuecode.h	2019-01-08 16:48:33.000000000 +0100
++++ b/h/uuecode.h	2024-07-03 21:36:29.732338835 +0200
+@@ -62,7 +62,7 @@
+     hs_addr         origin;
+ } UUEFile ;
+ 
+-tree *UUEFileTree;
++extern tree *UUEFileTree;
+ 
+ 
+ int processMsg(HAREA hArea, dword msgNumb, int scan_cut, UINT nBegCut, UINT nEndCut);
+@@ -74,16 +74,16 @@
+ 
+ void AddPart(UUEFile* uuc, char* msgBody, char* uuepart, int section, int slen);
+ 
+-int      nDelMsg;
+-int      nCutMsg;
+-DelCutStruct*   toBeDeleted;
+-dword    nMaxDeleted;
+-s_area   *currArea;
+-s_fidoconfig *config;
+-XMSG     xmsg;
+-dword    currMsgUid;
+-char*    versionStr;
+-int      lock_fd;
++extern int      nDelMsg;
++extern int      nCutMsg;
++extern DelCutStruct*   toBeDeleted;
++extern dword    nMaxDeleted;
++extern s_area   *currArea;
++extern s_fidoconfig *config;
++extern XMSG     xmsg;
++extern dword    currMsgUid;
++extern char*    versionStr;
++extern int      lock_fd;
+ 
