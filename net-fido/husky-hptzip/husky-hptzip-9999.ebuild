@@ -31,7 +31,3 @@ RDEPEND="${DEPEND}"
 S="${WORKDIR}/${HUSKY_MODULE}-${PV}"
 
 DOCS="${S}/ChangeLog ${S}/MiniZip64_info.txt ${S}/README.md"
-
-PATCHES=(
-        "${FILESDIR}"/${P}-cast_pointers.patch
-)
