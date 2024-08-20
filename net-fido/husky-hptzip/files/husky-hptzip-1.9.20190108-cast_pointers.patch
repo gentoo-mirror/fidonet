@@ -1,0 +1,11 @@
+--- a/src/zip.c	2019-12-09 09:33:45.000000000 +0100
++++ b/src/zip.c	2024-06-27 00:43:22.308895680 +0200
+@@ -1245,7 +1245,7 @@
+         unsigned char bufHead[RAND_HEAD_LEN];
+         unsigned int sizeHead;
+         zi->ci.encrypt = 1;
+-        zi->ci.pcrc_32_tab = get_crc_table();
++        zi->ci.pcrc_32_tab = (const long unsigned int *)get_crc_table();
+         /*init_keys(password,zi->ci.keys,zi->ci.pcrc_32_tab);*/
+ 
+         sizeHead=crypthead(password,bufHead,RAND_HEAD_LEN,zi->ci.keys,zi->ci.pcrc_32_tab,crcForCrypting);
