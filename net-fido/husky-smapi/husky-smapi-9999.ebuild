@@ -21,9 +21,8 @@ HOMEPAGE="https://huskyproject.github.io/"
 LICENSE="LGPL-2.1"
 SLOT="0"
 IUSE=""
-RESTRICT="mirror"
 
-DEPEND="net-fido/husky-huskylib"
+DEPEND=">=net-fido/husky-huskylib-1.9.20201016"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${HUSKY_MODULE}-${PV}"
