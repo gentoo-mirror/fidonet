@@ -36,10 +36,6 @@ S="${WORKDIR}/${HUSKY_MODULE}-${PV}"
 
 DOCS="${S}/BUGS ${S}/CREDITS ${S}/ChangeLog ${S}/HISTORY ${S}/README.md ${S}/TODO"
 
-PATCHES=(
-	"${FILESDIR}"/${P}-hptlink_no_global.patch
-)
-
 multilib_src_install() {
 	cmake_src_install
 	insinto /etc/ftn
